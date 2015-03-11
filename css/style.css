@@ -1,0 +1,41 @@
+body{
+	font-family: Monospace!important;
+	font-size: small;;
+}
+
+#wrap {
+width: auto;
+position: relative;
+}
+
+#graphTitle{
+	margin: 10px;
+	vertical-align: sub;
+	font-size: 25px;;
+}
+.selectList{
+	margin-top: 10%;
+}
+
+.searchList{
+	margin-top: 10%;
+}
+.left,.right {
+	width: 22%;
+	float: left;
+}
+
+.center {
+float: left;
+min-width: 55%;
+width: auto;
+position: relative;
+}
+
+.clearBoth {
+clear: both;
+}
+
+.ms-parent{
+	width: 200px!important;
+}

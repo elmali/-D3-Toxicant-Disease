@@ -1,0 +1,20 @@
+{
+	"name":"diseases",
+	"children":[
+		{
+			"name":"Allergy",
+			"children":[
+				{"name":"Asthma - allergen, sensitizer", "ID":"d001"},
+				{"name":"Autoimmune antibodies (positive ANA, anti-DNA, RF, etc.)", "ID":"d002"}
+			]
+		},
+		{
+			"name":"Birth Defects",
+			"children":[
+				{"name":"Cardiac congenital malformations*", "ID":"d003"},
+				{"name":"Choanal atresia", "ID":"d004"}
+			]
+
+		}
+	]
+}
