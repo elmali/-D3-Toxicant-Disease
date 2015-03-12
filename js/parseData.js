@@ -1,3 +1,4 @@
+
 /**
  * Get all toxicants in the DB
  * @return {obj} 
@@ -11,7 +12,20 @@
  *	}
  */
 function getAllT(){
-	return data;
+	var cities = TAFFY();
+	$.ajax({
+	    url: "json/toxicants.json",
+	    success: function(data) {
+	        
+	        //data downloaded so we call parseJSON function 
+	        //and pass downloaded data
+	        var json = $.parseJSON(data);
+	        //now json variable contains data in json format
+	        //let's display a few items
+	        console.log(json);
+	    }
+    });
+	//return data;
 }
 		
 /**
@@ -27,7 +41,7 @@ function getAllT(){
  *	} 
  */
 function getAllD(){
-	return data;
+	//return data;
 }
 
 /**
@@ -46,7 +60,7 @@ function getAllD(){
  *	}
  */
 function getFilteredT(tid,cid){
-	return data;
+	//return data;
 }
 
 /**
@@ -64,7 +78,7 @@ function getFilteredT(tid,cid){
  *	} 
  */
 function getFilterdD(tid,cid){
-	return data;
+	//return data;
 }
 
 function getTwithD(tid,cid){
