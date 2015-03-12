@@ -3,14 +3,14 @@
 <head>
 	<title>Toxicants</title>
 	<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/jquery.qtip.min.css">
+	<link rel="stylesheet" type="text/css" href="plugin/jquery.qtip.custom/jquery.qtip.min.css">
 	<link rel="stylesheet" href="plugin/multiple-select/multiple-select.css" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 	<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/jquery.qtip.min.js"></script>
+	<script type="text/javascript" src="plugin/jquery.qtip.custom/jquery.qtip.min.js"></script>
 	<script type="text/javascript" src="plugin/multiple-select/jquery.multiple.select.js"></script>
   <script type="text/javascript" src="plugin/query-string/query-string.js"></script>
 </head>
