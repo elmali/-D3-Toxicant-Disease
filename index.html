@@ -101,20 +101,20 @@ function appendCircles(root){
   if(currentURL.specificData!=""){
     $("#graphTitle").text("Diseases realted to " +root.name);
   }
-  
+
 
 	//calculating layout values
 	var nodes = bubble.nodes(classes(root))
 			          .filter(function(d) { return !d.children; }); // filter out the outer bubble
-	
+
 	var bubbleNode = svg.selectAll('circle')
 	                   .data(nodes);
 	var bubbleText = svg.selectAll('text')
 	             		.data(nodes);
 
-	var duration = 200; var delay = 0;   
-	// update 
-	
+	var duration = 200; var delay = 0;
+	// update
+
 	bubbleNode.transition()
 	   .duration(duration)
 	   .delay(function(d, i) {delay = i * 7; return delay;})
@@ -122,49 +122,49 @@ function appendCircles(root){
 	   .attr('r', function(d) { return d.r; })
      .attr('class', function(d) { return d.className; })
     .attr("id", function(d){ return d.ID;})
-      .style("fill", function(d,i) { 
+      .style("fill", function(d,i) {
             //console.log(d.hey);
             var colorshow;
             colorshow = (d.value>2000) ? "rgb(245,110,96)": "rgb(71,245,96)";
             return colorshow;
-            //color(d.packageName); 
-      })  
+            //color(d.packageName);
+      })
 
 	bubbleText.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
             .attr("dy", ".3em")
             .style("text-anchor", "middle")
-            .text(function(d) { 
+            .text(function(d) {
             var circleName = d.className.substring(0, d.r / 3);
-            return circleName; 
+            return circleName;
           });
 
-	
-	// enter	
+
+	// enter
 	bubbleNode.enter().append('circle')
 	  .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
 	  .attr('r', function(d) { return d.r; })
 	  .attr('class', function(d) { return d.className; })
 	  .attr("id", function(d){ return d.ID;})
-    .style("fill", function(d,i) { 
+    .style("fill", function(d,i) {
       			//console.log(d.hey);
       			var colorshow;
       			colorshow = (d.value>2000) ? "rgb(245,110,96)": "rgb(71,245,96)";
       			return colorshow;
-      			//color(d.packageName); 
+      			//color(d.packageName);
     })
 	  .style('opacity', 0) .transition()
 	  .duration(duration * 1.2)
-	  .style('opacity', 1);   
+	  .style('opacity', 1);
 
 	bubbleText.enter().append('text')
 			  .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
 			  .attr("dy", ".3em")
       		  .style("text-anchor", "middle")
-      		  .text(function(d) { 
+      		  .text(function(d) {
       			var circleName = d.className.substring(0, d.r / 3);
-      			return circleName; 
+      			return circleName;
       		});
-	// exit 
+	// exit
 	bubbleNode.exit()
 	  	      .transition()
 	  	      .duration(duration + delay)
@@ -203,7 +203,7 @@ function appendCircles(root){
               at: 'top right'
           },
           style:{
-            classes:'qtip-bootstrap'            
+            classes:'qtip-bootstrap'
           }
       });
     })
@@ -217,20 +217,20 @@ function appendCircles(root){
 	      		  .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
 
-    
+
   	node.append("title")
       	.text(function(d) { return d.className + ": " + format(d.value); });
-    
+
 
   	node.append("circle")
       	.attr("r", function(d) { return d.r; })
         .attr("id", function(d){ return d.ID;})
-      	.style("fill", function(d,i) { 
+      	.style("fill", function(d,i) {
       			//console.log(d.hey);
       			var colorshow;
       			colorshow = (d.value>2000) ? "rgb(245,110,96)": "rgb(71,245,96)";
       			return colorshow;
-      			//color(d.packageName); 
+      			//color(d.packageName);
       	}).on("mouseover", function(){
       		    d3.select(this).transition().attr("r", function(d) { return d.r*1.2; })
 
@@ -239,10 +239,10 @@ function appendCircles(root){
       	});
 
 
-    
-    
-    
-   
+
+
+
+
 
   	node.append("a")
     		.attr("xlink:href", function(d){return "https://www.google.com/?#q="+d.className.substring(0, d.r / 3);})
@@ -250,26 +250,26 @@ function appendCircles(root){
     		.append("text")
         .attr("dy", ".3em")
       	.style("text-anchor", "middle")
-      	.text(function(d) { 
+      	.text(function(d) {
       			var circleName = d.className.substring(0, d.r / 3);
-      			return circleName; 
+      			return circleName;
       	});
-    
+
 
     // New line
     node.append("text")
         .attr("dy", ".3em")
         .style("text-anchor", "middle")
-        .text(function(d) { 
+        .text(function(d) {
             var circleName = d.className.substring(0, d.r / 3);
-            return circleName; 
+            return circleName;
         })
         .append('tspan')
         .text("testing")
         .attr("dy", "1.4em")
-        .attr("x", 0);     
-    
-    **/   
+        .attr("x", 0);
+
+    **/
 }
 
 // Returns a flattened hierarchy containing all leaf nodes under the root.
@@ -279,20 +279,20 @@ d3.select(self.frameElement).style("height", diameter + "px");
 
 function readAllDiseases(){
 	d3.json("json/allDiseases.json", function(error, root) {
-		
+
 		var listHtml = "";
-		
+
   		for(var i=0; i<root.children.length; i++){
-  			
+
   			listHtml += "<optgroup  label="+root.children[i].name+">";
   			for(var j=0; j<root.children[i].children.length;j++){
-  				listHtml += "<option value='" + root.children[i].children[j].ID + "' selected='selected'>" 
+  				listHtml += "<option value='" + root.children[i].children[j].ID + "' selected='selected'>"
   				+ root.children[i].children[j].name + "</option>";
   			}
-  			
-  			listHtml += "</optgroup>";  
+
+  			listHtml += "</optgroup>";
   		}
-  		
+
   		$("#diseasesList").empty().append(listHtml);
   		$("#diseasesList").multipleSelect({
           filter: true,
@@ -318,12 +318,12 @@ function readAllDiseases(){
 					   "children": [
 					    {"name": "LEAD", "size": 3000,"ID":"t2321"},
 					    {"name": "COPPER", "size": 3500,"ID":"t2348"},
-					   
+
 					   ]
 				   };
 				   appendCircles(root);
           		}
-          
+
           }
         });
 	});
@@ -346,72 +346,72 @@ $( document ).ready(function() {
 	readAllDiseases();
 	getToxicants();
 	$( "#selectRadio" ).buttonset();
-	
+
 });
 
 
 /**
 $( document ).ready(function() {
   	d3.json("json/toxicants.json", function(error, root) {
-	
+
 	toxicantsData = root;
   	var detail = "";
-  	
+
   	var i = 0;
   	for(var key in toxicantsData){
   			var selected = "";
   			if(i == 0) selected = "selected='selected'";
-  			detail += "<option value='" + key + "'" + selected + ">" 
+  			detail += "<option value='" + key + "'" + selected + ">"
   				+ toxicantsData[key].name + "</option>";
-  			i++;	  
+  			i++;
   	}
   	$("#librarylist").empty().append(detail);
   	$("#librarylist").multipleSelect({
           filter: true,
           single: true,
-          onClose: 
+          onClose:
             function() {
-					var selectedValue = $("#librarylist").multipleSelect("getSelects"); 
+					var selectedValue = $("#librarylist").multipleSelect("getSelects");
     				if(toxicantsData[selectedValue]){
-    						
+
     					appendCircles(toxicantsData[selectedValue]);
 
-    					var listDetails="";						
+    					var listDetails="";
     		        	for(var j=0; j<toxicantsData[selectedValue].children.length; j++){
 
-  				  		  listDetails += "<option value='" + toxicantsData[selectedValue].children[j].ID + "'>" 
+  				  		  listDetails += "<option value='" + toxicantsData[selectedValue].children[j].ID + "'>"
   				  				           + toxicantsData[selectedValue].children[j].name + "</option>";
-    				  			  
+
     			  		}
     			  		$("#bubbleFilter").empty().append(listDetails).multipleSelect("refresh");
-    						
+
     				}
           }
       });
-    
+
 		appendCircles(toxicantsData["t2321"]);
 		var listDetails="";
 		for(var j=0; j<toxicantsData["t2321"].children.length;j++){
-  			listDetails += "<option value='" + toxicantsData["t2321"].children[j].ID + "'>" 
+  			listDetails += "<option value='" + toxicantsData["t2321"].children[j].ID + "'>"
   				+ toxicantsData["t2321"].children[j].name + "</option>";
-  			//console.log(toxicantsData[key]["children"]+'555');	  
+  			//console.log(toxicantsData[key]["children"]+'555');
 		}
 		$("#bubbleFilter").empty().append(listDetails);
   	$("#bubbleFilter").multipleSelect({
           filter: true,
           single: true,
           onClose: function(){
-          	var circleElement = '#'+ $("#bubbleFilter").multipleSelect("getSelects");            	
-          	d3.selectAll("circle").attr("stroke",null);   			
-            d3.select(circleElement).attr("stroke","black").attr("stroke-width","6");              		
-          }                      	            
+          	var circleElement = '#'+ $("#bubbleFilter").multipleSelect("getSelects");
+          	d3.selectAll("circle").attr("stroke",null);
+            d3.select(circleElement).attr("stroke","black").attr("stroke-width","6");
+          }
     });
   	$("#graph").click(function(){
-      	d3.selectAll("circle").attr("stroke",null); 
+      	d3.selectAll("circle").attr("stroke",null);
   	});
 
 	});
-	
+
 	$( "#selectRadio" ).buttonset();
 
 	readAllDiseases();
@@ -420,3 +420,5 @@ $( document ).ready(function() {
 **/
 
 </script>
+
+</body>
