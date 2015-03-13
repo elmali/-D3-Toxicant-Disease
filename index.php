@@ -72,9 +72,9 @@ location.hash = queryString.stringify(currentURL);
 
 var diameter = 960,
     format = d3.format(",d"),
-    color = d3.scale.ordinal()
-    .domain([0,50])
-    .range(colorbrewer.RdBu[9]);
+    color = d3.scale.linear()
+    .domain([0,960])
+    .range([0,9]);
     //color = d3.scale.category20c();
 
 var bubble = d3.layout.pack()
@@ -115,7 +115,7 @@ function appendCircles(root){
   var bubbleText = svg.selectAll('text')
                   .data(nodes);
 
-  var duration = 200; var delay = 0;
+  var duration = 10; var delay = 0;
   // update
 
   bubbleNode.transition()
@@ -150,7 +150,7 @@ function appendCircles(root){
     .attr("id", function(d){ return d.ID;})
     .style("fill", function(d,i) {
             
-            return color(d.y%50);
+            return colorbrewer.Greens[9][Math.floor(color(d.y))];
             //color(d.packageName);
     })
     .style('opacity', 0) .transition()
