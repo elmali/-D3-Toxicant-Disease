@@ -1,6 +1,5 @@
 <?php
-error_reporting(-1);
-ini_set('display_errors', 'On');
+
 include 'php/global.php';
 include 'php/parseData.php';
 
@@ -88,7 +87,7 @@ function classes(root) {
 
   function recurse(name, node) {
     if (node.children) node.children.forEach(function(child) { recurse(node.name, child); });
-    else classes.push({packageName: name, className: node.name, value: node.size, ID:node.ID});
+    else classes.push({packageName: name, className: node.name, value: node.size, id:node.id});
   }
 
   recurse(null, root);
@@ -156,13 +155,13 @@ function appendCircles(root){
     .style('opacity', 1);
 
   bubbleText.enter().append('text')
-        .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
-        .attr("dy", ".3em")
-            .style("text-anchor", "middle")
-            .text(function(d) {
-            var circleName = d.className.substring(0, d.r / 3);
-            return circleName;
-          });
+                    .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
+                    .attr("dy", ".3em")
+                    .style("text-anchor", "middle")
+                    .text(function(d) {
+                      var circleName = d.className.substring(0, Math.round(d.r / 3));
+                      return circleName;
+                    });
   // exit
   bubbleNode.exit()
             .transition()
@@ -188,7 +187,7 @@ function appendCircles(root){
             };
             appendCircles(data);
         }
-    })
+    });
 
   allCirlces.each(function(d){
         var currentCircle = d3.select(this);
@@ -241,10 +240,23 @@ function bindEvent(){
 }
 
 $( document ).ready(function() {
-  console.log("456");
-  getToxicants();
   $( "#selectRadio" ).buttonset();
   bindEvent();
+  $.ajax({
+    url: 'php/parseData.php',
+    data:{
+        action:"getAllContaminantUI"
+    },
+    success: function(response){
+        var result = JSON.parse(response);
+        //console.log(result);
+        appendCircles(result);
+    }
+  })
+
+
+
+  
 });
 
 </script>

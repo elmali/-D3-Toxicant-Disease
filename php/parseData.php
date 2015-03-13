@@ -1,6 +1,17 @@
 <?php
 include 'global.php';
 
+$action = "";
+$action = $_REQUEST['action'];
+
+switch ($action) {
+	case 'getAllContaminantUI':
+		getAllContaminantUI();
+	break;
+
+	
+
+}
 function getDC(){
 	$conn->query("SELECT * FROM toxins_category;");
 }
@@ -12,7 +23,7 @@ function getAllContaminantUI(){
 	$data = array("name"=>"Contaminant", "children" => array());
 	$toxins_category = array();
 	while($rows = $result->fetch_assoc()){
-		$tempData = array('name' => $rows['name'], 'size' => $rows['number'], 'id' => $rows['number']);
+		$tempData = array('name' => $rows['name'], 'size' => $rows['number'], 'id' => $rows['id']);
 		array_push($data['children'], $tempData);
 		
 	}
