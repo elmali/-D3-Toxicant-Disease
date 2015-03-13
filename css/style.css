@@ -1,6 +1,10 @@
 body{
 	font-family: Monospace!important;
-	font-size: small;;
+	font-size: medium;;
+}
+
+input[type=checkbox]{
+	vertical-align: text-top;
 }
 
 #wrap {
