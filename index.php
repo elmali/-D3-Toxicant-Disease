@@ -26,6 +26,7 @@ while($rows = $result->fetch_assoc()){
   <script type="text/javascript" src="plugin/jquery.qtip.custom/jquery.qtip.min.js"></script>
   <script type="text/javascript" src="plugin/multiple-select/jquery.multiple.select.js"></script>
   <script type="text/javascript" src="plugin/query-string/query-string.js"></script>
+  <script type="text/javascript" src="js/colorbrewer.js"></script>
 </head>
 <body>
   <div id='wrap'>
@@ -68,9 +69,13 @@ var currentURL ={
 location.hash = queryString.stringify(currentURL);
 
 //d3 svg
+
 var diameter = 960,
     format = d3.format(",d"),
-    color = d3.scale.category20c();
+    color = d3.scale.ordinal()
+    .domain([0,50])
+    .range(colorbrewer.RdBu[9]);
+    //color = d3.scale.category20c();
 
 var bubble = d3.layout.pack()
     .sort(null)
@@ -123,7 +128,7 @@ function appendCircles(root){
       .style("fill", function(d,i) {
             //console.log(d.hey);
             var colorshow;
-            colorshow = (d.value>2000) ? "rgb(245,110,96)": "rgb(71,245,96)";
+            colorshow = (d.value > 20) ? "rgb(245,110,96)": "rgb(71,245,96)";
             return colorshow;
             //color(d.packageName);
       })
@@ -144,10 +149,8 @@ function appendCircles(root){
     .attr('class', function(d) { return d.className; })
     .attr("id", function(d){ return d.ID;})
     .style("fill", function(d,i) {
-            //console.log(d.hey);
-            var colorshow;
-            colorshow = (d.value>2000) ? "rgb(245,110,96)": "rgb(71,245,96)";
-            return colorshow;
+            
+            return color(d.y%50);
             //color(d.packageName);
     })
     .style('opacity', 0) .transition()
