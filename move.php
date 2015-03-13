@@ -79,13 +79,15 @@ var diameter = 960,
 
 var bubble = d3.layout.pack()
     .size([diameter, diameter])
-    .padding(1)
+    .padding(2)
     .sort(null);
+
     /**
     .sort(function comparator(a, b) {
       return b.value - a.value;
     });
     **/
+    
 var svg = d3.select("#graph").append("svg")
     .attr("width", diameter)
     .attr("height", diameter)
@@ -103,6 +105,9 @@ function classes(root) {
   return {children: classes};
 }
 
+
+
+
 function appendCircles(root){
   //change graph title
   if(currentURL.specificData!=""){
@@ -113,12 +118,23 @@ function appendCircles(root){
   //calculating layout values
   var nodes = bubble.nodes(classes(root))
                 .filter(function(d) { return !d.children; }); // filter out the outer bubble
-  console.log(nodes);
+  
   var bubbleNode = svg.selectAll('circle')
                      .data(nodes);
 
+  //** new
+  //
+  var radius = d3.scale.sqrt().range([0, 12]);
+  var padding = 2;
+  var force = d3.layout.force()
+    .nodes(nodes)
+    .size([960, 960])
+    .gravity(0)
+    .charge(0)
+    .on("tick", tick)
+    .start();
 
-  var duration = 10; var delay = 0;
+  var duration = 0; var delay = 0;
   // update
 
   bubbleNode.transition()
@@ -149,9 +165,7 @@ function appendCircles(root){
             return colorbrewer.Spectral[9][Math.floor(color(d.y))];
             //color(d.packageName);
     })
-    .style('opacity', 0) .transition()
-    .duration(duration * 1.2)
-    .style('opacity', 1);
+    .style('opacity', 0) .style('opacity', 1).call(force.drag);;
 
 
   if(currentURL.specificData!=""){
@@ -188,6 +202,60 @@ function appendCircles(root){
 
     //tooltip  and event for circle
     var allCirlces = d3.selectAll('circle');
+    
+    //**new
+    //**new
+    function tick(e) {
+      allCirlces.each(gravity(0.2 * e.alpha))
+      .each(collide(0.5))
+      .attr("cx", function (d) { 
+        return d.x;
+      })
+      .attr("cy", function (d) {
+        return d.y;
+      });
+    }
+
+
+    // Move nodes toward cluster focus.
+function gravity(alpha) {
+    return function (d) {
+        d.y += (d.y/100 - d.y) * alpha;
+        d.x += (d.x/100 - d.x) * alpha;
+    };
+}
+
+// Resolve collisions between nodes.
+function collide(alpha) {
+    var quadtree = d3.geom.quadtree(nodes);
+    return function (d) {
+
+        var r = d.radius + radius.domain()[1] + padding,
+            nx1 = d.x - r,
+            nx2 = d.x + r,
+            ny1 = d.y - r,
+            ny2 = d.y + r;
+        quadtree.visit(function (quad, x1, y1, x2, y2) {
+            if (quad.point && (quad.point !== d)) {
+                var x = d.x - quad.point.x,
+                    y = d.y - quad.point.y,
+                    l = Math.sqrt(x * x + y * y),
+                    r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
+                if (l < r) {
+                    l = (l - r) / l * alpha;
+                    d.x -= x *= l;
+                    d.y -= y *= l;
+                    quad.point.x += x;
+                    quad.point.y += y;
+                }
+            }
+            return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+        });
+    };
+}
+
+
+    
     allCirlces.on("click",function(){
         currentURL = queryString.parse(location.hash);
         if(currentURL.specificData==""){
@@ -268,6 +336,14 @@ $( document ).ready(function() {
         appendCircles(result);
     }
   })
+
+
+
+
+
+
+
+
 
 
 
