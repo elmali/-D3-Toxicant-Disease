@@ -31,7 +31,7 @@ while($rows = $result->fetch_assoc()){
 <body>
   <div id='wrap'>
   <div class="left selectList">
-    <div>
+    <div id="checkboxFilters">
       <p>Disease Category : </p>
       <?php  
           echo "<div><input checked='checked' type='checkbox' id='checkall_dc'>" . "<span>Select All</span></div>";
@@ -70,7 +70,7 @@ location.hash = queryString.stringify(currentURL);
 
 var max_range = 60;
 var max_amount = 83;
-var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, max_range])
+var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, max_range]);
 //d3 svg
 var layout_gravity = -0.01;
 var width = 960,
@@ -83,22 +83,22 @@ var diameter = 960,
   
 var svg = d3.select("#graph").append("svg")
     .attr("width", diameter)
-    .attr("height", diameter)
+    .attr("height", diameter);
 
 function classes(root) {
-  var classes = [];
+  var dataNode = [];
 
   root.children.forEach(function(node){
-    classes.push({packageName: name, className: node.name, value: node.size, id:node.id, r:radius_scale(node.size)});
-  })
+    dataNode.push({packageName: name, className: node.name, value: node.size, id:node.id, r:radius_scale(node.size)});
+  });
 
-  return classes
+  return dataNode;
 }
 
 
 function appendCircles(root){
   //change graph title
-  if(currentURL.specificData!=""){
+  if(currentURL.specificData!==""){
     $("#graphTitle").text("Diseases realted to " +root.name);
   }
 
@@ -124,7 +124,7 @@ function appendCircles(root){
      .attr("stroke-width", 1)   
       .style("fill", function(d,i) {  
            return colorbrewer.Spectral[9][Math.floor(color(d.r))];
-      })
+      });
 
 
 
@@ -146,7 +146,7 @@ function appendCircles(root){
     //        .duration(duration + delay)
             .style('opacity', 0).remove();
 
-  bubbleNode.transition().duration(duration).attr("r", function(d){return d.r;})
+  bubbleNode.transition().duration(duration).attr("r", function(d){return d.r;});
   
   if(currentURL.specificData!=""){
     var bubbleText = svg.selectAll('text')
@@ -201,8 +201,8 @@ function appendCircles(root){
     function charge(){
       return function(d){
         return  -Math.pow(d.r, 2.0) / 8;
-      }
-    };
+      };
+    }
     // Move nodes toward cluster focus.
     function move_towards_center(alpha) {
       return function (d) {
@@ -255,7 +255,7 @@ function appendCircles(root){
             classes:'qtip-bootstrap'
           }
       });
-    })
+    });
 }
 
 function getToxicants(){
@@ -282,6 +282,9 @@ function refreshSearchList(data){
   $('select').multipleSelect('refresh');
 }
 
+function checkboxFilters(){
+
+}
 
 function bindEvent(){
 
