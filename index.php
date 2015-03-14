@@ -68,6 +68,7 @@ var currentURL ={
 };
 location.hash = queryString.stringify(currentURL);
 
+var margin = {top: 5, right: 0, bottom: 0, left: 0};
 var max_range = 60;
 var max_amount = 83;
 var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, max_range]);
@@ -334,10 +335,17 @@ $( document ).ready(function() {
         action:"getToxicants"
     },
     success: function(response){
-        var result = JSON.parse(response);
-        appendCircles(result);
-        refreshSearchList(result.children);
+      if (response){
+        try{
+            var result = JSON.parse(response);
+            appendCircles(result);
+            refreshSearchList(result.children);
+        }catch(e){
+            console.log(e); //error
+        }
       }
+
+    }
   });
 
  
