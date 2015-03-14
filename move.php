@@ -304,7 +304,7 @@ function bindEvent(){
       $.ajax({
       url: 'php/parseData.php',
       data:{
-          action:"getAllContaminantUI"
+          action:"getToxicants"
       },
       success: function(response){
           var result = JSON.parse(response);
@@ -321,7 +321,7 @@ $( document ).ready(function() {
   $.ajax({
     url: 'php/parseData.php',
     data:{
-        action:"getAllContaminantUI"
+        action:"getToxicants"
     },
     success: function(response){
         var result = JSON.parse(response);
