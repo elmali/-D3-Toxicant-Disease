@@ -39,6 +39,7 @@ while($rows = $result->fetch_assoc()){
             echo "<div><input checked='checked' type='checkbox' name='dc' id='" . $value['ID'] . "'>" . "<span>" . $value['name'] . "</span></div>";
           }
       ?>
+      
     </div>
   </div>
   <div id="view_selection"  class="center">
@@ -64,44 +65,43 @@ while($rows = $result->fetch_assoc()){
 <script>
 var currentURL ={
   domain:"AToxicants",
-  specificData:""
+  specificData:"",
+  sort: 0
 };
 location.hash = queryString.stringify(currentURL);
 
+  var max_range = 60;
+  var max_amount = 83;
+  var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, max_range])
 //d3 svg
-
+var layout_gravity = -0.01;
+var width = 960,
+    height = 960;
 var diameter = 960,
     format = d3.format(",d"),
-    color = d3.scale.linear()
-    .domain([0,960])
-    .range([0,9]);
+    color = d3.scale.linear().domain([0, max_amount]).range([0,8]);
     //color = d3.scale.category20c();
 
-var bubble = d3.layout.pack()
-    .size([diameter, diameter])
-    .padding(1)
-    .sort(null);
     /**
     .sort(function comparator(a, b) {
       return b.value - a.value;
     });
     **/
+    
 var svg = d3.select("#graph").append("svg")
     .attr("width", diameter)
     .attr("height", diameter)
-    .attr("class", "bubble");
 
 function classes(root) {
   var classes = [];
 
-  function recurse(name, node) {
-    if (node.children) node.children.forEach(function(child) { recurse(node.name, child); });
-    else classes.push({packageName: name, className: node.name, value: node.size, id:node.id});
-  }
+  root.children.forEach(function(node){
+    classes.push({packageName: name, className: node.name, value: node.size, id:node.id, r:radius_scale(node.size)});
+  })
 
-  recurse(null, root);
-  return {children: classes};
+  return classes
 }
+
 
 function appendCircles(root){
   //change graph title
@@ -111,84 +111,128 @@ function appendCircles(root){
 
 
   //calculating layout values
-  var nodes = bubble.nodes(classes(root))
-                    .filter(function(d) { return !d.children; }); // filter out the outer bubble
-  console.log(nodes);
+  var nodes = classes(root);
+  
   var bubbleNode = svg.selectAll('circle')
                      .data(nodes);
 
+  //** new
+  //
 
-  var duration = 1000; var delay = 0;
+
+  var padding = 2;
+
+  var duration = 0; var delay = 0;
   // update
 
-  bubbleNode.transition()
-     .duration(duration)
-     .delay(function(d, i) {delay = i * 7; return delay;})
-     .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
-     .attr('r', function(d) { return d.r; })
-     .attr('class', function(d) { return d.className; })
+  bubbleNode
+    //.transition().duration(duration)
+   //  .delay(function(d, i) {delay = i * 7; return delay;})
+   //  .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
+     .attr('r', 0)
+     .attr("stroke", "black")
+     .attr("stroke-width", 1)
     .attr("id", function(d){ return d.ID;})
       .style("fill", function(d,i) {
-            //console.log(d.hey);
-            var colorshow;
-            colorshow = (d.value > 20) ? "rgb(245,110,96)": "rgb(71,245,96)";
-            return colorshow;
-            //color(d.packageName);
+  
+           return colorbrewer.Spectral[9][Math.floor(color(d.r))];
       })
 
 
 
   // enter
   bubbleNode.enter().append('circle')
-    .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
-    .attr('r', function(d) { return d.r; })
-    .attr('class', function(d) { return d.className; })
+  //  .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
+    .attr('r', 0)
     .attr("id", function(d){ return d.ID;})
+    .attr("stroke", "black")
+    .attr("stroke-width", 1)
     .style("fill", function(d,i) {
+          return colorbrewer.Spectral[9][Math.floor(color(d.r))];
             
-            return colorbrewer.Spectral[9][Math.floor(color(d.y))];
-            //color(d.packageName);
-    })
-    .style('opacity', 0) .transition()
-    .duration(duration * 1.2)
-    .style('opacity', 1);
+    });
 
-    // exit
-    bubbleNode.exit()
-              .transition()
-              .duration(duration + delay)
-              .style('opacity', 0).remove();
+  // exit
+  bubbleNode.exit()
+    //        .transition()
+    //        .duration(duration + delay)
+            .style('opacity', 0).remove();
 
-    if(currentURL.specificData!=""){
-      var bubbleText = svg.selectAll('text')
-                    .data(nodes);
+  bubbleNode.transition().duration(2100).attr("r", function(d){return d.r;})
+  
+  if(currentURL.specificData!=""){
+    var bubbleText = svg.selectAll('text')
+                  .data(nodes);
 
-      bubbleText.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
-                .attr("dy", ".3em")
-                .style("text-anchor", "middle")
-                .text(function(d) {
-                var circleName = d.className.substring(0, d.r / 3);
-                return circleName;
-              });
+    bubbleText.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
+              .attr("dy", ".3em")
+              .style("text-anchor", "middle")
+              .text(function(d) {
+              var circleName = d.className.substring(0, d.r / 3);
+              return circleName;
+            });
 
-      bubbleText.enter().append('text')
-                        .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
-                        .attr("dy", ".3em")
-                        .style("text-anchor", "middle")
-                        .text(function(d) {
-                          var circleName = d.className.substring(0, Math.round(d.r / 3));
-                          return circleName;
-                        });
-      bubbleText.exit().remove();
+    bubbleText.enter().append('text')
+                      .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
+                      .attr("dy", ".3em")
+                      .style("text-anchor", "middle")
+                      .text(function(d) {
+                        var circleName = d.className.substring(0, Math.round(d.r / 3));
+                        return circleName;
+                      });
+    bubbleText.exit().remove();
   }
   
 
 
   
-
-
-    //tooltip  and event for circle
+   //tooltip  and event for circle
     var allCirlces = d3.selectAll('circle');
+    var damper = 0.1;
+    //**new
+    //**new
+    function tick(e) {
+      bubbleNode.each(move_towards_center(e.alpha))
+      .attr("cx", function (d) { 
+        return d.x;
+      })
+      .attr("cy", function (d) {
+        return d.y;
+      });
+    }
+    var force = d3.layout.force()
+    .nodes(nodes)
+    .size([width, height]);
+    
+    force.gravity(layout_gravity)
+        .charge(charge())
+        .friction(0.9)
+        .on("tick", tick)
+        .start();
+
+function charge(){
+    return function(d){
+       return  -Math.pow(d.r, 2.0) / 8;
+    }
+}
+    // Move nodes toward cluster focus.
+function move_towards_center(alpha) {
+    return function (d) {
+        var center = width/2;
+        if(currentURL.sort == 1){
+          var target = width/2;
+          if(d.value > 10) target = width*3/8; else target = width*5/8;
+          d.y += (center - d.y) *  (damper + 0.02)*alpha;
+          d.x += (target - d.x) * (damper + 0.02)* alpha;
+        }else{
+          d.y += (center - d.y) *  (damper + 0.02)*alpha;
+          d.x += (center - d.x) * (damper + 0.02)* alpha;
+        }
+
+    };
+}
+
+    
     allCirlces.on("click",function(){
         currentURL = queryString.parse(location.hash);
         if(currentURL.specificData==""){
@@ -197,8 +241,8 @@ function appendCircles(root){
             var data = {
               "name":"LEAD",
               "children":[
-                {"name":"ADHD","size":2000,"ID":"d555"},
-                {"name":"onedisease","size":3000,"ID":"d556"}
+                {"name":"ADHD","size":10,"ID":"d555"},
+                {"name":"onedisease","size":20,"ID":"d556"}
               ]
             };
             appendCircles(data);
@@ -227,9 +271,9 @@ function getToxicants(){
   root = {
      "name": "Toxicants",
      "children": [
-      {"name": "LEAD", "size": 3000,"ID":"t2321"},
-      {"name": "COPPER", "size": 3500,"ID":"t2348"},
-      {"name": "ACRYLATES", "size": 2000,"ID":"add","ID":"t2348"}
+      {"name": "LEAD", "size": 30,"ID":"t2321"},
+      {"name": "COPPER", "size": 20,"ID":"t2348"},
+      {"name": "ACRYLATES", "size": 10,"ID":"add"}
      ]
    };
 
@@ -253,6 +297,7 @@ function bindEvent(){
         alert($(this).prop("id"));
     }
   }); 
+
 }
 
 $( document ).ready(function() {
@@ -269,6 +314,14 @@ $( document ).ready(function() {
         appendCircles(result);
     }
   })
+
+
+
+
+
+
+
+
 
 
 
