@@ -38,8 +38,7 @@ while($rows = $result->fetch_assoc()){
           foreach ($toxins_category as $value) {
             echo "<div><input checked='checked' type='checkbox' name='dc' id='" . $value['ID'] . "'>" . "<span>" . $value['name'] . "</span></div>";
           }
-      ?>
-      
+      ?>      
     </div>
   </div>
   <div id="view_selection"  class="center">
@@ -65,14 +64,13 @@ while($rows = $result->fetch_assoc()){
 <script>
 var currentURL ={
   domain:"AToxicants",
-  specificData:"",
-  sort: 0
+  specificData:""
 };
 location.hash = queryString.stringify(currentURL);
 
-  var max_range = 60;
-  var max_amount = 83;
-  var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, max_range])
+var max_range = 60;
+var max_amount = 83;
+var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, max_range])
 //d3 svg
 var layout_gravity = -0.01;
 var width = 960,
@@ -82,12 +80,7 @@ var diameter = 960,
     color = d3.scale.linear().domain([0, max_amount]).range([0,8]);
     //color = d3.scale.category20c();
 
-    /**
-    .sort(function comparator(a, b) {
-      return b.value - a.value;
-    });
-    **/
-    
+  
 var svg = d3.select("#graph").append("svg")
     .attr("width", diameter)
     .attr("height", diameter)
@@ -116,13 +109,9 @@ function appendCircles(root){
   var bubbleNode = svg.selectAll('circle')
                      .data(nodes);
 
-  //** new
-  //
-
-
   var padding = 2;
 
-  var duration = 0; var delay = 0;
+  var duration = 1500; var delay = 0;
   // update
 
   bubbleNode
@@ -130,11 +119,10 @@ function appendCircles(root){
    //  .delay(function(d, i) {delay = i * 7; return delay;})
    //  .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
      .attr('r', 0)
+     .attr("id", function(d){ return d.id;})
      .attr("stroke", "black")
-     .attr("stroke-width", 1)
-    .attr("id", function(d){ return d.ID;})
-      .style("fill", function(d,i) {
-  
+     .attr("stroke-width", 1)   
+      .style("fill", function(d,i) {  
            return colorbrewer.Spectral[9][Math.floor(color(d.r))];
       })
 
@@ -144,7 +132,7 @@ function appendCircles(root){
   bubbleNode.enter().append('circle')
   //  .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
     .attr('r', 0)
-    .attr("id", function(d){ return d.ID;})
+    .attr("id", function(d){ return d.id;})
     .attr("stroke", "black")
     .attr("stroke-width", 1)
     .style("fill", function(d,i) {
@@ -158,7 +146,7 @@ function appendCircles(root){
     //        .duration(duration + delay)
             .style('opacity', 0).remove();
 
-  bubbleNode.transition().duration(2100).attr("r", function(d){return d.r;})
+  bubbleNode.transition().duration(duration).attr("r", function(d){return d.r;})
   
   if(currentURL.specificData!=""){
     var bubbleText = svg.selectAll('text')
@@ -210,15 +198,16 @@ function appendCircles(root){
         .on("tick", tick)
         .start();
 
-function charge(){
-    return function(d){
-       return  -Math.pow(d.r, 2.0) / 8;
-    }
-}
+    function charge(){
+      return function(d){
+        return  -Math.pow(d.r, 2.0) / 8;
+      }
+    };
     // Move nodes toward cluster focus.
-function move_towards_center(alpha) {
-    return function (d) {
-        var center = width/2;
+    function move_towards_center(alpha) {
+      return function (d) {
+          var center = width/2;
+        /**
         if(currentURL.sort == 1){
           var target = width/2;
           if(d.value > 10) target = width*3/8; else target = width*5/8;
@@ -228,7 +217,9 @@ function move_towards_center(alpha) {
           d.y += (center - d.y) *  (damper + 0.02)*alpha;
           d.x += (center - d.x) * (damper + 0.02)* alpha;
         }
-
+        **/
+        d.y += (center - d.y) *  (damper + 0.02)*alpha;
+        d.x += (center - d.x) * (damper + 0.02)* alpha;
     };
 }
 
@@ -280,24 +271,55 @@ function getToxicants(){
    appendCircles(root);
 }
 
+function refreshSearchList(data){
+  $('#bubbleFilter').empty();
+  $.each(data, function(key, value) {   
+      $('#bubbleFilter')
+        .append($("<option></option>")
+        .attr("value",value.id)
+        .text(value.name)); 
+  });
+  $('select').multipleSelect('refresh');
+}
+
+
 function bindEvent(){
+
   $(document).on("click","#checkall_dc",function(){
     if($(this).is(':checked')){
-        $("input[name=dc]").each(function(){
+      $("input[name=dc]").each(function(){
         $(this).prop("checked",true);
-    });
+      });
+      $.ajax({
+        url: 'php/parseData.php',
+        data:{ action:"getAllContaminantUI" },
+        success: function(response){
+                var result = JSON.parse(response);
+                appendCircles(result);
+                refreshSearchList(result.children); }
+      });
     }else{
       $("input[name=dc]").each(function(){
         $(this).prop("checked",false);
       });
+      var result = {name:"", children:[]};
+      appendCircles(result);
+      refreshSearchList(result.children);
     }
   });
+
+  //send ajax request to php to request new set of toxicants data
+  //w
   $(document).on("click","input[name=dc]",function(){
     if($(this).is(':checked')){
-        alert($(this).prop("id"));
+        
     }
   }); 
 
+  $("#bubbleFilter").multipleSelect({
+        filter: true,
+        single: true
+  });
 }
 
 $( document ).ready(function() {
@@ -310,22 +332,12 @@ $( document ).ready(function() {
     },
     success: function(response){
         var result = JSON.parse(response);
-        //console.log(result);
         appendCircles(result);
-    }
-  })
+        refreshSearchList(result.children);
+      }
+  });
 
-
-
-
-
-
-
-
-
-
-
-  
+ 
 });
 
 </script>
