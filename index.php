@@ -292,7 +292,7 @@ function bindEvent(){
       });
       $.ajax({
         url: 'php/parseData.php',
-        data:{ action:"getAllContaminantUI" },
+        data:{ action:"getToxicants" },
         success: function(response){
                 var result = JSON.parse(response);
                 appendCircles(result);
@@ -328,7 +328,7 @@ $( document ).ready(function() {
   $.ajax({
     url: 'php/parseData.php',
     data:{
-        action:"getAllContaminantUI"
+        action:"getToxicants"
     },
     success: function(response){
         var result = JSON.parse(response);
