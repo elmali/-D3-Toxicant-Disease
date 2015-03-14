@@ -23,7 +23,7 @@ function getAllContaminantUI(){
 	$data = array("name"=>"Contaminant", "children" => array());
 	$toxins_category = array();
 	while($rows = $result->fetch_assoc()){
-		if($rows['number']>=2){
+		if($rows['number']>=1){
 			$tempData = array('name' => $rows['name'], 'size' => $rows['number'], 'id' => $rows['id']);
 			array_push($data['children'], $tempData);
 		}
