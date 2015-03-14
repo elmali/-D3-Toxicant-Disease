@@ -1,8 +1,12 @@
 <?php
 include 'global.php';
-
-$action = $_POST["action"];
-$filter = $_POST["filter"];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = $_POST["action"];
+    $filter = $_POST["filter"];
+}else{
+    $action = $_REQUEST['action'];
+    $filter = $_REQUEST['filter'];
+}
 
 switch ($action) {
     case 'getDiseaseCategories':
@@ -53,6 +57,7 @@ switch ($action) {
          * Pass POST variable "filter" > Disease ID
         */
         fetchDiseaseReference();
+        break;
 }
 
 /**
@@ -344,4 +349,5 @@ function fetchFromDisease(){
 function fetchDiseaseReference(){
 //TODO
 }
+
 ?>
