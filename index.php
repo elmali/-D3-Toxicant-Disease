@@ -112,13 +112,13 @@ function appendCircles(root){
 
   //calculating layout values
   var nodes = bubble.nodes(classes(root))
-                .filter(function(d) { return !d.children; }); // filter out the outer bubble
+                    .filter(function(d) { return !d.children; }); // filter out the outer bubble
   console.log(nodes);
   var bubbleNode = svg.selectAll('circle')
                      .data(nodes);
 
 
-  var duration = 10; var delay = 0;
+  var duration = 1000; var delay = 0;
   // update
 
   bubbleNode.transition()
@@ -153,35 +153,36 @@ function appendCircles(root){
     .duration(duration * 1.2)
     .style('opacity', 1);
 
+    // exit
+    bubbleNode.exit()
+              .transition()
+              .duration(duration + delay)
+              .style('opacity', 0).remove();
 
-  if(currentURL.specificData!=""){
-    var bubbleText = svg.selectAll('text')
-                  .data(nodes);
+    if(currentURL.specificData!=""){
+      var bubbleText = svg.selectAll('text')
+                    .data(nodes);
 
-    bubbleText.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
-              .attr("dy", ".3em")
-              .style("text-anchor", "middle")
-              .text(function(d) {
-              var circleName = d.className.substring(0, d.r / 3);
-              return circleName;
-            });
+      bubbleText.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
+                .attr("dy", ".3em")
+                .style("text-anchor", "middle")
+                .text(function(d) {
+                var circleName = d.className.substring(0, d.r / 3);
+                return circleName;
+              });
 
-    bubbleText.enter().append('text')
-                      .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
-                      .attr("dy", ".3em")
-                      .style("text-anchor", "middle")
-                      .text(function(d) {
-                        var circleName = d.className.substring(0, Math.round(d.r / 3));
-                        return circleName;
-                      });
-    bubbleText.exit().remove();
+      bubbleText.enter().append('text')
+                        .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
+                        .attr("dy", ".3em")
+                        .style("text-anchor", "middle")
+                        .text(function(d) {
+                          var circleName = d.className.substring(0, Math.round(d.r / 3));
+                          return circleName;
+                        });
+      bubbleText.exit().remove();
   }
   
-  // exit
-  bubbleNode.exit()
-            .transition()
-            .duration(duration + delay)
-            .style('opacity', 0).remove();
+
 
   
 
