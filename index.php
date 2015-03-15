@@ -1,40 +1,20 @@
 <?php
+//Include header.php in the beginning
+    $pageTitle = "Toxicants-Diseases";
+    require('php/header.php');
 
-include 'php/global.php';
-include 'php/tempParseData.php';
-
-//dc
-
-$result = $conn->query("SELECT * FROM toxins_category;");
-$toxins_category = array();
-while($rows = $result->fetch_assoc()){
-  array_push($toxins_category,$rows);
-}
-
+    $result = $conn->query("SELECT * FROM toxins_category;");
+    $toxins_category = array();
+    while($rows = $result->fetch_assoc()){
+      array_push($toxins_category,$rows);
+    }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Toxicants</title>
-  <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
-  <link rel="stylesheet" type="text/css" href="plugin/jquery.qtip.custom/jquery.qtip.min.css">
-  <link rel="stylesheet" href="plugin/multiple-select/multiple-select.css" type="text/css" />
-  <link rel="stylesheet" type="text/css" href="css/style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-  <script type="text/javascript" src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
-  <script type="text/javascript" src="plugin/jquery.qtip.custom/jquery.qtip.min.js"></script>
-  <script type="text/javascript" src="plugin/multiple-select/jquery.multiple.select.js"></script>
-  <script type="text/javascript" src="plugin/query-string/query-string.js"></script>
-  <script type="text/javascript" src="js/colorbrewer.js"></script>
-</head>
-<body>
   <div id='wrap'>
   <div class="left selectList">
     <div id="checkboxFilters">
       <p>Disease Category : </p>
-      <?php  
+      <?php
           echo "<div><input checked='checked' type='checkbox' id='checkall_dc'>" . "<span>Select All</span></div>";
           foreach ($toxins_category as $value) {
             echo "<div><input checked='checked' type='checkbox' name='dc' id='" . $value['ID'] . "'>" . "<span>" . $value['name'] . "</span></div>";
@@ -341,7 +321,7 @@ $( document ).ready(function() {
   $( "#selectRadio" ).buttonset();
   bindEvent();
   $.ajax({
-    url: 'php/tempParseData.php',
+    url: 'php/parseData.php',
     data:{
         action:"getToxicants"
     },
@@ -358,11 +338,10 @@ $( document ).ready(function() {
 
     }
   });
-
- 
 });
 
 </script>
 
-</body>
-</html>
+<?php
+    require("php/footer.php");
+?>
