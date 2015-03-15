@@ -1,9 +1,10 @@
 <?php
 
 include 'php/global.php';
-include 'php/parseData.php';
+include 'php/tempParseData.php';
 
 //dc
+
 $result = $conn->query("SELECT * FROM toxins_category;");
 $toxins_category = array();
 while($rows = $result->fetch_assoc()){
@@ -80,11 +81,25 @@ var diameter = 960,
     format = d3.format(",d"),
     color = d3.scale.linear().domain([0, max_amount]).range([0,8]);
     //color = d3.scale.category20c();
+var padding = 2;
 
+var duration = 1500; var delay = 0;
   
 var svg = d3.select("#graph").append("svg")
-    .attr("width", diameter)
-    .attr("height", diameter);
+            .attr("width", diameter)
+            .attr("height", diameter);
+
+
+
+var node = d3.select('svg').append("g").attr("id", "bubble-nodes")
+        .attr("transform", "translate("+margin.left+","+margin.top+")");
+  
+    node.append("rect")
+      .attr("id", "bubble-background")
+      .attr("width", width)
+      .attr("height", height);
+
+
 
 function classes(root) {
   var dataNode = [];
@@ -103,36 +118,33 @@ function appendCircles(root){
     $("#graphTitle").text("Diseases realted to " +root.name);
   }
 
-
   //calculating layout values
   var nodes = classes(root);
-  
-  var bubbleNode = svg.selectAll('circle')
-                     .data(nodes);
+  var bubbleNode = node.selectAll("circle").data(nodes);
+  console.log(bubbleNode);
+  // var label = d3.select("node")
+  //             .append("div")
+  //             .attr("id", "bubble-labels");
+  var bubbleText = node.selectAll(".bubble-label").data(nodes);
 
-  var padding = 2;
 
-  var duration = 1500; var delay = 0;
   // update
-
-  bubbleNode
-    //.transition().duration(duration)
-   //  .delay(function(d, i) {delay = i * 7; return delay;})
-   //  .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
-     .attr('r', 0)
-     .attr("id", function(d){ return d.id;})
-     .attr("stroke", "black")
-     .attr("stroke-width", 1)   
-      .style("fill", function(d,i) {  
-           return colorbrewer.Spectral[9][Math.floor(color(d.r))];
-      });
+  bubbleNode.attr('r', 0)
+    .attr("id", function(d){ return d.id;})
+    .attr('class','bubble-circle')
+    .attr("stroke", "black")
+    .attr("stroke-width", 1)   
+    .style("fill", function(d,i) {  
+         return colorbrewer.Spectral[9][Math.floor(color(d.r))];
+    });
 
 
 
   // enter
-  bubbleNode.enter().append('circle')
-  //  .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
+  bubbleNode.enter()
+    .append('circle')
     .attr('r', 0)
+    .attr('class','bubble-circle bubble')
     .attr("id", function(d){ return d.id;})
     .attr("stroke", "black")
     .attr("stroke-width", 1)
@@ -143,32 +155,32 @@ function appendCircles(root){
 
   // exit
   bubbleNode.exit()
-    //        .transition()
-    //        .duration(duration + delay)
-            .style('opacity', 0).remove();
-
+            .remove();
+  
+  
   bubbleNode.transition().duration(duration).attr("r", function(d){return d.r;});
   
   if(currentURL.specificData!=""){
-    var bubbleText = svg.selectAll('text')
-                  .data(nodes);
-
-    bubbleText.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
-              .attr("dy", ".3em")
-              .style("text-anchor", "middle")
-              .text(function(d) {
+    //bubbleText = label.selectAll(".bubble-label").data(nodes);
+ 
+    bubbleText.text(function(d) {
               var circleName = d.className.substring(0, d.r / 3);
               return circleName;
             });
 
-    bubbleText.enter().append('text')
-                      .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
-                      .attr("dy", ".3em")
-                      .style("text-anchor", "middle")
-                      .text(function(d) {
-                        var circleName = d.className.substring(0, Math.round(d.r / 3));
-                        return circleName;
-                      });
+    bubbleText.enter()
+              .append('a')
+              .attr("class", "bubble-label  bubble")
+              .attr("xlink:href","https://www.google.ca/")
+              .attr("target","_blank")
+              .append('text')
+              //.attr("dy", ".3em")
+              .style("text-anchor", "middle")
+              .attr("fill","black")
+              .text(function(d) {
+                var circleName = d.className.substring(0, Math.round(d.r / 3));
+                return circleName;
+              });
     bubbleText.exit().remove();
   }
   
@@ -182,12 +194,11 @@ function appendCircles(root){
     //**new
     function tick(e) {
       bubbleNode.each(move_towards_center(e.alpha))
-      .attr("cx", function (d) { 
-        return d.x;
-      })
-      .attr("cy", function (d) {
-        return d.y;
-      });
+      .attr("transform", function(d){ return 'translate(' + d.x + ',' + d.y + ')';} );
+
+      bubbleText.attr("transform", function(d){ return 'translate(' + (margin.left + d.x) + ',' + (margin.top + d.y)  + ')';} );
+        // .style("left", function(d){ return (margin.left + d.x) - d.dx / 2 + "px"})
+        // .style("top", function(d){ return (margin.top + d.y) - d.dy / 2 + "px"});
     }
     var force = d3.layout.force()
     .nodes(nodes)
@@ -236,12 +247,12 @@ function appendCircles(root){
                 {"name":"ADHD","size":10,"ID":"d555"},
                 {"name":"onedisease","size":20,"ID":"d556"}
               ]
-            };
+            };            
             appendCircles(data);
         }
     });
-
-  allCirlces.each(function(d){
+    
+  d3.selectAll('.bubble').each(function(d){
         var currentCircle = d3.select(this);
         var showText = d.className + ": " + format(d.value);
         $(currentCircle).qtip({
@@ -330,7 +341,7 @@ $( document ).ready(function() {
   $( "#selectRadio" ).buttonset();
   bindEvent();
   $.ajax({
-    url: 'php/parseData.php',
+    url: 'php/tempParseData.php',
     data:{
         action:"getToxicants"
     },

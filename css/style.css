@@ -9,6 +9,10 @@ input[type=checkbox]{
 	vertical-align: text-top;
 }
 
+svg{
+	fill:#FCFCFC;
+}
+
 #wrap {
 width: auto;
 position: relative;
