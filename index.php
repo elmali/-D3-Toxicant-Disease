@@ -113,7 +113,7 @@ function appendCircles(root){
     .attr("id", function(d){ return d.id;})
     .attr('class','bubble-circle')
     .attr("stroke", "black")
-    .attr("stroke-width", 1)   
+    .attr("stroke-width", 1)
     .style("fill", function(d,i) {  
          return colorbrewer.Spectral[9][Math.floor(color(d.r))];
     });
