@@ -50,16 +50,17 @@ var currentURL ={
 location.hash = queryString.stringify(currentURL);
 
 var margin = {top: 5, right: 0, bottom: 0, left: 0};
-var max_range = 60;
-var max_amount = 83;
-var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, max_range]);
+
 //d3 svg
 var layout_gravity = -0.01;
+
 var width = 960,
     height = 960;
 var diameter = 960,
-    format = d3.format(",d"),
-    color = d3.scale.linear().domain([0, max_amount]).range([0,8]);
+    format = d3.format(",d");
+var max_amount = 80;
+
+
     //color = d3.scale.category20c();
 var padding = 2;
 
@@ -83,6 +84,10 @@ var node = d3.select('svg').append("g").attr("id", "bubble-nodes")
 
 function classes(root) {
   var dataNode = [];
+  var max_range = 60;
+      max_amount = d3.max(root.children, function(d) { return +d.size;} );
+  if(max_amount < 5) max_range = 40;
+  var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, max_range]);
 
   root.children.forEach(function(node){
     dataNode.push({packageName: name, className: node.name, value: node.size, id:node.id, r:radius_scale(node.size)});
@@ -94,7 +99,7 @@ function classes(root) {
 
 function appendCircles(root){
 
-
+  var color = d3.scale.linear().domain([0, max_amount]).range([0,8]);
   //calculating layout values
   var nodes = classes(root);
   var bubbleNode = node.selectAll("circle").data(nodes);
@@ -193,17 +198,7 @@ function appendCircles(root){
     function move_towards_center(alpha) {
       return function (d) {
           var center = width/2;
-        /**
-        if(currentURL.sort == 1){
-          var target = width/2;
-          if(d.value > 10) target = width*3/8; else target = width*5/8;
-          d.y += (center - d.y) *  (damper + 0.02)*alpha;
-          d.x += (target - d.x) * (damper + 0.02)* alpha;
-        }else{
-          d.y += (center - d.y) *  (damper + 0.02)*alpha;
-          d.x += (center - d.x) * (damper + 0.02)* alpha;
-        }
-        **/
+
         d.y += (center - d.y) *  (damper + 0.02)*alpha;
         d.x += (center - d.x) * (damper + 0.02)* alpha;
     };
@@ -225,6 +220,7 @@ function appendCircles(root){
                 if (response){
                   try{
                       var result = JSON.parse(response);
+                      console.log(result);
                       appendCircles(result);
                       refreshSearchList(result.children);
                       $("#graphTitle").text("Diseases realted to " +root.name); 
