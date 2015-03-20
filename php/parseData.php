@@ -79,12 +79,12 @@ switch ($action) {
 function getAllContaminants(){
     global $conn;
 
-    $filename = __DIR__.'/../json/Contaminants.json';
+//     $filename = __DIR__.'/../json/Contaminants.json';
 
-    if(file_exists($filename)){
-//        $data = file_get_contents($filename);
-        unlink($filename);
-    }
+//     if(file_exists($filename)){
+//         $data = file_get_contents($filename);
+//         unlink($filename);
+//     }
 //    else{
     $stmt = 'SELECT count(distinct r.disease_id) as size, s.name as name, s.ID as id
                     FROM toxins_links as r LEFT join toxins_contaminant as s ON r.contaminant_id=s.ID
@@ -96,9 +96,9 @@ function getAllContaminants(){
         $tempData = array('name' => $rows['name'], 'size' => $rows['size'], 'id' => $rows['id']);
         array_push($data['children'], $tempData);
     }
-    $fp = fopen($filename, "w") or die("can't open file");
-    fwrite($fp, json_encode($data));
-    fclose($fp);
+    // $fp = fopen($filename, "w") or die("can't open file");
+    // fwrite($fp, json_encode($data));
+    // fclose($fp);
 //    }
     echo json_encode($data);
 }
@@ -262,11 +262,11 @@ function fetchFromToxicant(){
     global $conn;
     global $filter;
 
-    $filename = __DIR__.'/../json/tempT.json';
+    // $filename = __DIR__.'/../json/tempT.json';
 
-    if(file_exists($filename)){
-        unlink($filename);
-    }
+    // if(file_exists($filename)){
+    //     unlink($filename);
+    // }
 //    else{
 
     $stmt = $conn->prepare('SELECT D.ID as id, D.name as name, D.notes as notes, L.evidence as strength
@@ -280,13 +280,13 @@ function fetchFromToxicant(){
 
     $data = array("name"=>"DiseasesByToxicant", "children"=> array());
     while($stmt->fetch()){
-        $_ = array('id' => $id, 'name' => $name, 'notes' => $notes, 'strength' => $str);
+        $_ = array('id' => $id, 'name' => $name, 'notes' => $notes, 'size' => $str);
         array_push($data['children'], $_);
     }
 
-    $fp = fopen($filename, "w") or die("can't open file");
-    fwrite($fp, json_encode($data));
-    fclose($fp);
+    // $fp = fopen($filename, "w") or die("can't open file");
+    // fwrite($fp, json_encode($data));
+    // fclose($fp);
     //   }
     echo json_encode($data);
 }
