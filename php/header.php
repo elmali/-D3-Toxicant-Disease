@@ -26,6 +26,7 @@
     <script type="text/javascript" src="plugin/query-string/query-string.js"></script>
     <script type="text/javascript" src="js/colorbrewer.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="js/parseData.js"></script>
 
 <!--Include headers here-->
 
