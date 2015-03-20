@@ -3,7 +3,7 @@
  */
 
 //Global variables
-var color, currentURL, margin, layout_gravity, width, height, diameter, format, max_amount, max_range, padding, duration, delay, svg, node;
+var currentSearch,color, currentURL, margin, layout_gravity, width, height, diameter, format, max_amount, max_range, padding, duration, delay, svg, node;
 
 /**
  * This function executes when DOM is ready
@@ -15,6 +15,7 @@ $( document ).ready(function() {
     };
     location.hash = queryString.stringify(currentURL);
 
+    currentSearch="";
     margin = {top: 5, right: 0, bottom: 0, left: 0};
 
     //d3 svg
@@ -216,6 +217,12 @@ function appendCircles(root){
         }
     });
 
+    // allCirlces.on("mouseover" ,function(){
+    //          d3.select(this).attr("stroke-width", 3);
+    //     }).on("mouseout",function(){
+    //         d3.select(this).attr("stroke-width", 1);
+    //     });
+
     d3.selectAll('.bubble').each(function(d){
         var currentCircle = d3.select(this);
         var showText = d.className + ": " + format(d.value);
@@ -229,6 +236,19 @@ function appendCircles(root){
             },
             style:{
                 classes:'qtip-bootstrap'
+            }
+        });
+
+        
+        $(currentCircle[0]).on({
+            mouseover: function () {
+                console.log("yes");
+                var toD3 = this;
+                d3.select(toD3).attr("stroke-width", 4);
+            },
+            mouseout: function () {
+                var toD3 = this;
+                d3.select(toD3).attr("stroke-width", 1);
             }
         });
     });
@@ -316,6 +336,17 @@ function bindEvent(){
 
     $("#bubbleFilter").multipleSelect({
         filter: true,
-        single: true
+        single: true,       
+        onClose: function() {
+            var searchID = "#"+$('select').multipleSelect('getSelects');
+            currentSearch = searchID;
+            $(searchID).trigger('mouseover');
+        }
     });
+
+    $('#graph').on("click",function(){
+        if(currentSearch!=""){
+            $(currentSearch).trigger('mouseout');
+        }
+    })
 }
