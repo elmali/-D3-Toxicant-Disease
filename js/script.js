@@ -150,6 +150,14 @@ function appendCircles(root){
                 return circleName;
             });
         bubbleText.exit().remove();
+    }else{
+        bubbleText.text(function(d) {
+            //var circleName = d.className.substring(0, d.r / 3);
+            return "";
+        });
+
+
+        bubbleText.exit().remove();
     }
 
     //tooltip  and event for circle
