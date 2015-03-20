@@ -265,43 +265,52 @@ function bindEvent(){
             $("input[name=dc]").each(function(){
                 $(this).prop("checked",true);
             });
+            if(currentURL.specificData==""){
+                $.ajax({
+                    url: 'php/parseData.php',
+                    data:{ action:"getToxicants" },
+                    success: function(response){
+                        var result = JSON.parse(response);
+                        currentURL.specificData="";
+                        location.hash = queryString.stringify(currentURL);
+                        appendCircles(result);
+                        refreshSearchList(result.children); }
+                });
+            }
+
+        }else{
+            $("input[name=dc]").each(function(){
+                $(this).prop("checked",false);
+            });
+            if(currentURL.specificData==""){
+                var result = {name:"empty", children:[]};
+                appendCircles(result);
+                refreshSearchList(result.children);
+            }
+
+        }
+    });
+
+    //send ajax request to php to request new set of toxicants data
+    $(document).on("click","input[name=dc]",function(){
+        if(currentURL.specificData==""){
+            var filter = [];
+            $("input[name=dc]:checked").each(function(){
+                filter.push($(this).prop("id"));
+            });
+            
             $.ajax({
                 url: 'php/parseData.php',
-                data:{ action:"getToxicants" },
+                data:{ action:"getFilterToxicantsByDC" , filter:filter},
                 success: function(response){
                     var result = JSON.parse(response);
                     currentURL.specificData="";
                     location.hash = queryString.stringify(currentURL);
                     appendCircles(result);
                     refreshSearchList(result.children); }
-            });
-        }else{
-            $("input[name=dc]").each(function(){
-                $(this).prop("checked",false);
-            });
-            var result = {name:"empty", children:[]};
-            appendCircles(result);
-            refreshSearchList(result.children);
+            });            
         }
-    });
 
-    //send ajax request to php to request new set of toxicants data
-    $(document).on("click","input[name=dc]",function(){
-        var filter = [];
-        $("input[name=dc]:checked").each(function(){
-            filter.push($(this).prop("id"));
-        });
-        
-        $.ajax({
-            url: 'php/parseData.php',
-            data:{ action:"getFilterToxicantsByDC" , filter:filter},
-            success: function(response){
-                var result = JSON.parse(response);
-                currentURL.specificData="";
-                location.hash = queryString.stringify(currentURL);
-                appendCircles(result);
-                refreshSearchList(result.children); }
-        });
         
     });
 
