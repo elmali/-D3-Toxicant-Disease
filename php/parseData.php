@@ -58,6 +58,8 @@ switch ($action) {
         */
         fetchDiseaseReference();
         break;
+    case 'getFilterToxicantsByDC':
+        getFilterToxicantsByDC();
 }
 
 /**
@@ -349,5 +351,36 @@ function fetchFromDisease(){
 function fetchDiseaseReference(){
 //TODO
 }
+
+/**
+ * Get filteted toxicants results by disease category
+ *
+ */
+function getFilterToxicantsByDC(){
+    global $conn;
+    global $filter;
+    if($filter){
+        $cstring = implode(",",$filter);
+
+        $stmt = 'SELECT count(distinct r.disease_id) as size, s.name as name, s.ID as id ,r.disease_id
+                                FROM toxins_links as r LEFT join toxins_contaminant as s ON r.contaminant_id=s.ID
+                                WHERE r.disease_id in (SELECT did FROM toxins_disease_category WHERE cid in ('.$cstring.'))
+                                group by r.contaminant_id';
+
+        $result = $conn->query($stmt);
+        $data = array("name"=>"Contaminants", "children" => array());
+        while($rows = $result->fetch_assoc()){
+            $tempData = array('name' => $rows['name'], 'size' => $rows['size'], 'id' => $rows['id']);
+            array_push($data['children'], $tempData);
+        }
+
+        echo json_encode($data);
+    }
+    else{
+        $data = array("name"=>"Contaminants", "children" => array());
+        echo json_encode($data);
+    }
+}
+
 
 ?>

@@ -3,7 +3,7 @@
  */
 
 //Global variables
-var currentURL, margin, layout_gravity, width, height, diameter, format, max_amount, padding, duration, delay, svg, node;
+var color, currentURL, margin, layout_gravity, width, height, diameter, format, max_amount, max_range, padding, duration, delay, svg, node;
 
 /**
  * This function executes when DOM is ready
@@ -25,7 +25,7 @@ $( document ).ready(function() {
     diameter = 960,
         format = d3.format(",d");
     max_amount = 80;
-
+    max_range = 60;
     //color = d3.scale.category20c();
     padding = 2;
 
@@ -73,15 +73,15 @@ $( document ).ready(function() {
  */
 function classes(root) {
     var dataNode = [];
-    var max_range = 60;
+    
     max_amount = d3.max(root.children, function(d) { return +d.size;} );
-    if(max_amount < 5) max_range = 40;
-    var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, max_range]);
+    (max_amount < 5) ? max_range = 40 : max_range = 60;
+    var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([0, max_range]);
 
     root.children.forEach(function(node){
         dataNode.push({packageName: name, className: node.name, value: node.size, id:node.id, r:radius_scale(node.size)});
     });
-
+    color = d3.scale.linear().domain([0, max_range]).range([0,8]);
     return dataNode;
 }
 
@@ -90,7 +90,7 @@ function classes(root) {
  * @param root
  */
 function appendCircles(root){
-    var color = d3.scale.linear().domain([0, max_amount]).range([0,8]);
+    
     //calculating layout values
     var nodes = classes(root);
     var bubbleNode = node.selectAll("circle").data(nodes);
@@ -119,7 +119,6 @@ function appendCircles(root){
         .attr("stroke-width", 1)
         .style("fill", function(d,i) {
             return colorbrewer.Spectral[9][Math.floor(color(d.r))];
-
         });
 
     // exit
@@ -206,7 +205,6 @@ function appendCircles(root){
                     if (response){
                         try{
                             var result = JSON.parse(response);
-                            console.log(result);
                             appendCircles(result);
                             refreshSearchList(result.children);
                             $("#graphTitle").text("Diseases realted to " +root.name);
@@ -272,6 +270,8 @@ function bindEvent(){
                 data:{ action:"getToxicants" },
                 success: function(response){
                     var result = JSON.parse(response);
+                    currentURL.specificData="";
+                    location.hash = queryString.stringify(currentURL);
                     appendCircles(result);
                     refreshSearchList(result.children); }
             });
@@ -279,7 +279,7 @@ function bindEvent(){
             $("input[name=dc]").each(function(){
                 $(this).prop("checked",false);
             });
-            var result = {name:"", children:[]};
+            var result = {name:"empty", children:[]};
             appendCircles(result);
             refreshSearchList(result.children);
         }
@@ -287,9 +287,22 @@ function bindEvent(){
 
     //send ajax request to php to request new set of toxicants data
     $(document).on("click","input[name=dc]",function(){
-        if($(this).is(':checked')){
-
-        }
+        var filter = [];
+        $("input[name=dc]:checked").each(function(){
+            filter.push($(this).prop("id"));
+        });
+        
+        $.ajax({
+            url: 'php/parseData.php',
+            data:{ action:"getFilterToxicantsByDC" , filter:filter},
+            success: function(response){
+                var result = JSON.parse(response);
+                currentURL.specificData="";
+                location.hash = queryString.stringify(currentURL);
+                appendCircles(result);
+                refreshSearchList(result.children); }
+        });
+        
     });
 
     $("#bubbleFilter").multipleSelect({
