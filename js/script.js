@@ -242,13 +242,10 @@ function appendCircles(root){
         
         $(currentCircle[0]).on({
             mouseover: function () {
-                console.log("yes");
-                var toD3 = this;
-                d3.select(toD3).attr("stroke-width", 4);
+                d3.select(this).attr("stroke-width", 4);
             },
             mouseout: function () {
-                var toD3 = this;
-                d3.select(toD3).attr("stroke-width", 1);
+                d3.select(this).attr("stroke-width", 1);
             }
         });
     });
@@ -348,5 +345,18 @@ function bindEvent(){
         if(currentSearch!=""){
             $(currentSearch).trigger('mouseout');
         }
+    })
+
+    $(document).on('click', "#AToxicants", function(){
+        $.ajax({
+            url: 'php/parseData.php',
+            data:{ action:"getToxicants" },
+            success: function(response){
+                var result = JSON.parse(response);
+                currentURL.specificData="";
+                location.hash = queryString.stringify(currentURL);
+                appendCircles(result);
+                refreshSearchList(result.children); }
+        });
     })
 }
