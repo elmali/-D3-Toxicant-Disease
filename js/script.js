@@ -228,8 +228,8 @@ function appendCircles(root){
                             console.log(e); //error
                         }
             }}
-        }
-    });
+        });
+    }});
 
     // allCirlces.on("mouseover" ,function(){
     //          d3.select(this).attr("stroke-width", 3);
