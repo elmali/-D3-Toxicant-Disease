@@ -47,24 +47,7 @@ $( document ).ready(function() {
 
     $( "#selectRadio" ).buttonset();
     bindEvent();
-    $.ajax({
-        url: 'php/parseData.php',
-        data:{
-            action:"getToxicants"
-        },
-        success: function(response){
-            if (response){
-                try{
-                    var result = JSON.parse(response);
-                    appendCircles(result);
-                    refreshSearchList(result.children);
-                }catch(e){
-                    console.log(e); //error
-                }
-            }
-
-        }
-    });
+    ajaxRequestAllData('getToxicants');
 });
 
 /**
@@ -233,17 +216,19 @@ function appendCircles(root){
 
     d3.selectAll('.bubble').each(function(d){
         var currentCircle = d3.select(this);
-        var showText = d.className + ": " + format(d.value);
+        var titleString = "<text id='tooltipTitle'>"+capitalizeFirstLetter(d.className)+"</text>";
+        var textString = "Related cases: "+d.value;
         $(currentCircle).qtip({
             content: {
-                text:showText
+                title: titleString,
+                text: textString
             },
             position: {
                 my: 'bottom left',
                 at: 'top right'
             },
             style:{
-                classes:'qtip-bootstrap'
+                classes:'qtip-bootstrap qtip2Css'
             }
         });
 
@@ -274,6 +259,24 @@ function refreshSearchList(data){
     $('select').multipleSelect('refresh');
 }
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+
+function ajaxRequestAllData(ac){
+    $.ajax({
+        url: 'php/parseData.php',
+        data:{ action:ac },
+        success: function(response){
+            var result = JSON.parse(response);
+            currentURL.specificData="";
+            location.hash = queryString.stringify(currentURL);
+            appendCircles(result);
+            refreshSearchList(result.children); }
+    });
+}
+
 /**
  * NYI
  */
@@ -291,16 +294,7 @@ function bindEvent(){
                 $(this).prop("checked",true);
             });
             if(currentURL.specificData==""){
-                $.ajax({
-                    url: 'php/parseData.php',
-                    data:{ action:"getToxicants" },
-                    success: function(response){
-                        var result = JSON.parse(response);
-                        currentURL.specificData="";
-                        location.hash = queryString.stringify(currentURL);
-                        appendCircles(result);
-                        refreshSearchList(result.children); }
-                });
+                ajaxRequestAllData('getToxicants');
             }
 
         }else{
@@ -356,15 +350,6 @@ function bindEvent(){
     })
 
     $(document).on('click', "#AToxicants", function(){
-        $.ajax({
-            url: 'php/parseData.php',
-            data:{ action:"getToxicants" },
-            success: function(response){
-                var result = JSON.parse(response);
-                currentURL.specificData="";
-                location.hash = queryString.stringify(currentURL);
-                appendCircles(result);
-                refreshSearchList(result.children); }
-        });
+        ajaxRequestAllData('getToxicants');
     })
 }
