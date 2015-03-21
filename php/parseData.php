@@ -216,12 +216,12 @@ function fetchFromDiseaseCategory(){
  */
 function getAllDiseases(){
     global $conn;
-    $filename = __DIR__.'/../json/Diseases.json';
+    // $filename = __DIR__.'/../json/Diseases.json';
 
-    if(file_exists($filename)){
-        //    $data = file_get_contents($filename);
-        unlink($filename);
-    }
+    // if(file_exists($filename)){
+    //     //    $data = file_get_contents($filename);
+    //     unlink($filename);
+    // }
 //    else{
     $stmt = 'SELECT D.ID as id, D.name as name, D.notes as notes, count(L.contaminant_id) as size
                     FROM toxins_disease as D, toxins_links as L
@@ -238,9 +238,9 @@ function getAllDiseases(){
         $tempData = array('id' => $rows['id'], 'name' => $rows['name'], 'size' => $rows['size'], 'notes' => $rows['notes']);
         array_push($data['children'], $tempData);
     }
-    $fp = fopen($filename, "w") or die("can't open file");
-    fwrite($fp, json_encode($data));
-    fclose($fp);
+    // $fp = fopen($filename, "w") or die("can't open file");
+    // fwrite($fp, json_encode($data));
+    // fclose($fp);
     //   }
     echo json_encode($data);
 }

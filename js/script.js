@@ -334,8 +334,10 @@ function bindEvent(){
     })
 
     $(document).on('click', "#AToxicants", function(){
-
         ajaxRequestAllData('getToxicants');
+    })
 
+    $(document).on('click', "#ADiseases", function(){
+        ajaxRequestAllData('getDiseases');
     })
 }
