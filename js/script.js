@@ -33,6 +33,8 @@ $( document ).ready(function() {
     duration = 1500;
     delay = 0;
 
+    appendDiseaseCategoriesList();
+
     svg = d3.select("#graph").append("svg")
         .attr("width", diameter)
         .attr("height", diameter);
@@ -51,6 +53,26 @@ $( document ).ready(function() {
     ajaxRequestAllData('getToxicants');
 
 });
+
+/**
+ * Add disease-category list to the left side bar
+ */
+function appendDiseaseCategoriesList(){
+    $('#checkboxFilters').append("<p>Disease Category : </p>");
+    $('#checkboxFilters').append('<div>'+
+        '<input type="checkbox" checked="checked" id="checkall_dc">'+
+        '<span>Select All</span>'+
+        '</div>');
+    getAllDiseaseCategories(function(result){
+        result.children.forEach(function(item){
+            var i = $('<div>'+
+                '<input type="checkbox" checked="checked" name="dc" id='+item.id+'>'+
+                '<span>'+item.name+'</span>'+
+                '</div>');
+            $('#checkboxFilters').append(i);
+        });
+    });
+}
 
 /**
  *

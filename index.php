@@ -2,24 +2,11 @@
 //Include header.php in the beginning
     $pageTitle = "Toxicants-Diseases";
     require('php/header.php');
-
-    $result = $conn->query("SELECT * FROM toxins_category;");
-    $toxins_category = array();
-    while($rows = $result->fetch_assoc()){
-      array_push($toxins_category,$rows);
-    }
 ?>
 
 <div id='wrap'>
     <div class="left selectList">
         <div id="checkboxFilters">
-          <p>Disease Category : </p>
-          <?php
-              echo "<div><input checked='checked' type='checkbox' id='checkall_dc'>" . "<span>Select All</span></div>";
-              foreach ($toxins_category as $value) {
-                echo "<div><input checked='checked' type='checkbox' name='dc' id='" . $value['ID'] . "'>" . "<span>" . $value['name'] . "</span></div>";
-              }
-          ?>
         </div>
     </div>
 
