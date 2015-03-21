@@ -211,11 +211,23 @@ function appendCircles(root){
         if(currentURL.specificData==""){
             currentURL.specificData =d.id;
             location.hash = queryString.stringify(currentURL);
-            fetchFromToxicant(d.id, function(result){
-                appendCircles(result);
-                refreshSearchList(result.children);
-                $("#graphTitle").text("Diseases realted to " +root.name);
-            });
+            $.ajax({
+            url: 'php/parseData.php',
+                data:{
+                    action:"fetchFromToxicant",
+                    filter:d.id
+                },
+                success: function(response){
+                    if (response){
+                        try{
+                            var result = JSON.parse(response);
+                            appendCircles(result);
+                            refreshSearchList(result.children);
+                            $("#graphTitle").text("Diseases realted to " +root.name);
+                        }catch(e){
+                            console.log(e); //error
+                        }
+            }}
         }
     });
 
