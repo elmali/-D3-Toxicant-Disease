@@ -10,7 +10,7 @@ var currentSearch,color, currentURL, margin, layout_gravity, width, height, diam
  */
 $( document ).ready(function() {
     currentURL ={
-        domain:"AToxicants",
+        domain:"Toxicants",
         specificData:""
     };
     location.hash = queryString.stringify(currentURL);
@@ -260,6 +260,8 @@ function ajaxRequestAllData(ac){
         success: function(response){
             var result = JSON.parse(response);
             currentURL.specificData="";
+            if(ac=="getToxicants") currentURL.domain = 'Toxicants';
+            else if(ac="getDiseases")  currentURL.domain = 'Diseases';
             location.hash = queryString.stringify(currentURL);
             appendCircles(result);
             refreshSearchList(result.children); }
