@@ -47,7 +47,9 @@ $( document ).ready(function() {
 
     $( "#selectRadio" ).buttonset();
     bindEvent();
+
     ajaxRequestAllData('getToxicants');
+
 });
 
 /**
@@ -57,7 +59,7 @@ $( document ).ready(function() {
  */
 function classes(root) {
     var dataNode = [];
-    
+
     max_amount = d3.max(root.children, function(d) { return +d.size;} );
     (max_amount < 5) ? max_range = 40 : max_range = 60;
     var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([0, max_range]);
@@ -74,7 +76,7 @@ function classes(root) {
  * @param root
  */
 function appendCircles(root){
-    
+
     //calculating layout values
     var nodes = classes(root);
     var bubbleNode = node.selectAll("circle").data(nodes);
@@ -187,23 +189,10 @@ function appendCircles(root){
         if(currentURL.specificData==""){
             currentURL.specificData =d.id;
             location.hash = queryString.stringify(currentURL);
-            $.ajax({
-                url: 'php/parseData.php',
-                data:{
-                    action:"fetchFromToxicant",
-                    filter:d.id
-                },
-                success: function(response){
-                    if (response){
-                        try{
-                            var result = JSON.parse(response);
-                            appendCircles(result);
-                            refreshSearchList(result.children);
-                            $("#graphTitle").text("Diseases realted to " +root.name);
-                        }catch(e){
-                            console.log(e); //error
-                        }
-                    }}
+            fetchFromToxicant(d.id, function(result){
+                appendCircles(result);
+                refreshSearchList(result.children);
+                $("#graphTitle").text("Diseases realted to " +root.name);
             });
         }
     });
@@ -232,7 +221,7 @@ function appendCircles(root){
             }
         });
 
-        
+
         $(currentCircle[0]).on({
             mouseover: function () {
                 d3.select(this).attr("stroke-width", 4);
@@ -294,7 +283,9 @@ function bindEvent(){
                 $(this).prop("checked",true);
             });
             if(currentURL.specificData==""){
+
                 ajaxRequestAllData('getToxicants');
+
             }
 
         }else{
@@ -317,25 +308,18 @@ function bindEvent(){
             $("input[name=dc]:checked").each(function(){
                 filter.push($(this).prop("id"));
             });
-            
-            $.ajax({
-                url: 'php/parseData.php',
-                data:{ action:"getFilterToxicantsByDC" , filter:filter},
-                success: function(response){
-                    var result = JSON.parse(response);
-                    currentURL.specificData="";
-                    location.hash = queryString.stringify(currentURL);
-                    appendCircles(result);
-                    refreshSearchList(result.children); }
-            });            
+            getFilterToxicantsByDC(filter, function(result){
+                currentURL.specificData="";
+                location.hash = queryString.stringify(currentURL);
+                appendCircles(result);
+                refreshSearchList(result.children);
+            });
         }
-
-        
     });
 
     $("#bubbleFilter").multipleSelect({
         filter: true,
-        single: true,       
+        single: true,
         onClose: function() {
             var searchID = "#"+$('select').multipleSelect('getSelects');
             currentSearch = searchID;
@@ -350,6 +334,8 @@ function bindEvent(){
     })
 
     $(document).on('click', "#AToxicants", function(){
+
         ajaxRequestAllData('getToxicants');
+
     })
 }

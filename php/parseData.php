@@ -60,6 +60,7 @@ switch ($action) {
         break;
     case 'getFilterToxicantsByDC':
         getFilterToxicantsByDC();
+        break;
 }
 
 /**
