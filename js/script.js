@@ -137,12 +137,12 @@ function appendCircles(root){
     bubbleNode.transition().duration(duration).attr("r", function(d){return d.r;});
 
     if(currentURL.specificData!=""){
-        //bubbleText = label.selectAll(".bubble-label").data(nodes);
+        bubbleText.remove();
 
-        bubbleText.text(function(d) {
-            var circleName = d.className.substring(0, Math.round(d.r / 3));
-            return circleName;
-        });
+        // bubbleText.text(function(d) {
+        //     var circleName = d.className.substring(0, Math.round(d.r / 3));
+        //     return circleName;
+        // });
 
         bubbleText.enter()
             .append('a')
@@ -150,22 +150,16 @@ function appendCircles(root){
             .attr("xlink:href", function(d){ return "https://www.google.ca/#q="+d.className;})
             .attr("target","_blank")
             .append('text')
-            //.attr("dy", ".3em")
             .style("text-anchor", "middle")
             .attr("fill","black")
             .text(function(d) {
                 var circleName = d.className.substring(0, Math.round(d.r / 3));
                 return circleName;
             });
-        bubbleText.exit().remove();
+        // bubbleText.exit().remove();
     }else{
-        bubbleText.text(function(d) {
-            //var circleName = d.className.substring(0, d.r / 3);
-            return "";
-        });
-
-
-        bubbleText.exit().remove();
+ 
+        bubbleText.remove();
     }
 
 
@@ -299,8 +293,6 @@ function ajaxRequestAllData(ac){
 }
 
 function ajaxRequestDeepView(ac,id,root){
-    console.log(ac);
-    console.log(id);
     $.ajax({
         url: 'php/parseData.php',
         data:{
@@ -313,7 +305,7 @@ function ajaxRequestDeepView(ac,id,root){
                     var result = JSON.parse(response);
                     appendCircles(result);
                     refreshSearchList(result.children);
-                    $("#graphTitle").text("Diseases realted to " +root.name);
+                    //$("#graphTitle").text("Diseases realted to " +root.name);
                 }catch(e){
                     console.log(e); //error
                 }
@@ -397,6 +389,7 @@ function bindEvent(){
         });
         getFilterToxicantsByDC(filter, function(result){
             currentURL.specificData="";
+            currentURL.domain="Toxicants";
             location.hash = queryString.stringify(currentURL);
             appendCircles(result);
             refreshSearchList(result.children);
@@ -404,6 +397,9 @@ function bindEvent(){
     })
 
     $(document).on('click', "#ADiseases", function(){
+        currentURL.domain="Diseases";
+        currentURL.specificData="";
+        location.hash = queryString.stringify(currentURL);
         ajaxRequestAllData('getDiseases');
     })
 }
