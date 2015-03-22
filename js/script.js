@@ -212,7 +212,7 @@ function appendCircles(root){
             currentURL.specificData =d.id;
             location.hash = queryString.stringify(currentURL);
             $.ajax({
-            url: 'php/parseData.php',
+                url: 'php/parseData.php',
                 data:{
                     action:"fetchFromToxicant",
                     filter:d.id
@@ -227,7 +227,8 @@ function appendCircles(root){
                         }catch(e){
                             console.log(e); //error
                         }
-            }}
+                }}
+            })
         }
     });
 
