@@ -1,2 +1,5 @@
 sftp-config.json
 tags
+.buildpath
+.project
+.settings/
