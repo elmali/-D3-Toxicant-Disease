@@ -373,7 +373,12 @@ function bindEvent(){
             var searchID = "#"+$('select').multipleSelect('getSelects');
             currentSearch = searchID;
             $(searchID).trigger('mouseover');
-        }
+        },
+        onOpen: function() {
+            if(currentSearch!=""){
+                $(currentSearch).trigger('mouseout');
+            }
+        },
     });
 
     $('#graph').on("click",function(){
