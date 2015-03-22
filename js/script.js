@@ -98,6 +98,8 @@ function classes(root) {
  * @param root
  */
 function appendCircles(root){
+
+    clearSearch();
     var radius = d3.scale.sqrt().range([0, 12]);
     //calculating layout values
     var nodes = classes(root);
@@ -172,8 +174,14 @@ function appendCircles(root){
         if(currentURL.specificData==""){
             currentURL.specificData = d.id;
             location.hash = queryString.stringify(currentURL);
-            if (currentURL.domain=="Toxicants")ajaxRequestDeepView("fetchFromToxicant",d.id);
-            else ajaxRequestDeepView("fetchFromDisease",d.id,root);
+            if (currentURL.domain=="Toxicants"){
+                $("#graphTitle").text("Diseases realted to " + d.className);
+                ajaxRequestDeepView("fetchFromToxicant",d.id);
+            }
+            else {
+                $("#graphTitle").text("Toxicants realted to " +d.className);
+                ajaxRequestDeepView("fetchFromDisease",d.id);
+            }
         }
     });
  
@@ -292,7 +300,7 @@ function ajaxRequestAllData(ac){
     });
 }
 
-function ajaxRequestDeepView(ac,id,root){
+function ajaxRequestDeepView(ac,id){
     $.ajax({
         url: 'php/parseData.php',
         data:{
@@ -305,7 +313,6 @@ function ajaxRequestDeepView(ac,id,root){
                     var result = JSON.parse(response);
                     appendCircles(result);
                     refreshSearchList(result.children);
-                    //$("#graphTitle").text("Diseases realted to " +root.name);
                 }catch(e){
                     console.log(e); //error
                 }
@@ -315,11 +322,15 @@ function ajaxRequestDeepView(ac,id,root){
 }
 
 
-/**
- * NYI
- */
-function checkboxFilters(){
 
+function changeGraphTitle(text){
+    $("#graphTitle").text(text);
+}
+
+function clearSearch(){
+    if(currentSearch!=""){
+            $(currentSearch).trigger('mouseout');
+    }
 }
 
 /**
@@ -387,8 +398,9 @@ function bindEvent(){
         }
     })
 
-    $(document).on('click', "#AToxicants", function(){
+    $(document).on('click', "#AToxicants", function(){        
         var filter = [];
+        changeGraphTitle("All toxicants");
         $("input[name=dc]:checked").each(function(){
             filter.push($(this).prop("id"));
         });
@@ -402,6 +414,7 @@ function bindEvent(){
     })
 
     $(document).on('click', "#ADiseases", function(){
+        changeGraphTitle("All diseases");
         currentURL.domain="Diseases";
         currentURL.specificData="";
         location.hash = queryString.stringify(currentURL);
