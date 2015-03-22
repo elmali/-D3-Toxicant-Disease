@@ -179,7 +179,7 @@ function appendCircles(root){
             currentURL.specificData = d.id;
             location.hash = queryString.stringify(currentURL);
             if (currentURL.domain=="Toxicants")ajaxRequestDeepView("fetchFromToxicant",d.id);
-            else ajaxRequestDeepView("fetchFromDisease",d.id);
+            else ajaxRequestDeepView("fetchFromDisease",d.id,root);
         }
     });
  
@@ -298,7 +298,7 @@ function ajaxRequestAllData(ac){
     });
 }
 
-function ajaxRequestDeepView(ac,id){
+function ajaxRequestDeepView(ac,id,root){
     console.log(ac);
     console.log(id);
     $.ajax({
@@ -391,7 +391,16 @@ function bindEvent(){
     })
 
     $(document).on('click', "#AToxicants", function(){
-        ajaxRequestAllData('getToxicants');
+        var filter = [];
+        $("input[name=dc]:checked").each(function(){
+            filter.push($(this).prop("id"));
+        });
+        getFilterToxicantsByDC(filter, function(result){
+            currentURL.specificData="";
+            location.hash = queryString.stringify(currentURL);
+            appendCircles(result);
+            refreshSearchList(result.children);
+        });
     })
 
     $(document).on('click', "#ADiseases", function(){
