@@ -61,9 +61,9 @@ switch ($action) {
     case 'getFilterToxicantsByDC':
         getFilterToxicantsByDC();
         break;
-    default: 
-        die("No case selected in parseData.php.");
-        break;
+    // default: 
+    //     die("No case selected in parseData.php.");
+    //     break;
 }
 
 /**
@@ -334,7 +334,7 @@ function fetchFromDisease(){
 
     $data = array("name"=>"ToxicantsByDisease", "children"=> array());
     while($stmt->fetch()){
-        $d = array('id' => $id, 'name' => $name, 'strength' => $str);
+        $d = array('id' => $id, 'name' => $name, 'size' => $str);
         array_push($data['children'], $d);
     }
 

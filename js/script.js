@@ -3,7 +3,7 @@
  */
 
 //Global variables
-var currentSearch,color, currentURL, margin, layout_gravity, width, height, diameter, format, max_amount, max_range, padding, duration, delay, svg, node;
+var currentSearch,pastForce,color, currentURL, margin, layout_gravity, width, height, diameter, format, max_amount, max_range, padding, duration, delay, svg, node;
 
 /**
  * This function executes when DOM is ready
@@ -14,7 +14,6 @@ $( document ).ready(function() {
         specificData:""
     };
     location.hash = queryString.stringify(currentURL);
-
     currentSearch="";
     margin = {top: 5, right: 0, bottom: 0, left: 0};
 
@@ -91,6 +90,7 @@ function classes(root) {
     });
     color = d3.scale.linear().domain([0, max_range]).range([0,8]);
     return dataNode;
+    //x:Math.random() * 900, y:Math.random() * 900
 }
 
 /**
@@ -98,7 +98,7 @@ function classes(root) {
  * @param root
  */
 function appendCircles(root){
-
+    var radius = d3.scale.sqrt().range([0, 12]);
     //calculating layout values
     var nodes = classes(root);
     var bubbleNode = node.selectAll("circle").data(nodes);
@@ -107,6 +107,7 @@ function appendCircles(root){
     //             .attr("id", "bubble-labels");
     var bubbleText = node.selectAll(".bubble-label").data(nodes);
 
+    //bubbleNode.property({'px':null, 'px':null});
     // update
     bubbleNode.attr('r', 0)
         .attr("id", function(d){ return d.id;})
@@ -139,7 +140,7 @@ function appendCircles(root){
         //bubbleText = label.selectAll(".bubble-label").data(nodes);
 
         bubbleText.text(function(d) {
-            var circleName = d.className.substring(0, d.r / 3);
+            var circleName = d.className.substring(0, Math.round(d.r / 3));
             return circleName;
         });
 
@@ -167,74 +168,20 @@ function appendCircles(root){
         bubbleText.exit().remove();
     }
 
+
     //tooltip  and event for circle
     var allCirlces = d3.selectAll('circle');
-    var damper = 0.1;
-    //**new
-    //**new
-    function tick(e) {
-        bubbleNode.each(move_towards_center(e.alpha))
-            .attr("transform", function(d){ return 'translate(' + d.x + ',' + d.y + ')';} );
 
-        bubbleText.attr("transform", function(d){ return 'translate(' + (margin.left + d.x) + ',' + (margin.top + d.y)  + ')';} );
-        // .style("left", function(d){ return (margin.left + d.x) - d.dx / 2 + "px"})
-        // .style("top", function(d){ return (margin.top + d.y) - d.dy / 2 + "px"});
-    }
-    var force = d3.layout.force()
-        .nodes(nodes)
-        .size([width, height]);
-
-    force.gravity(layout_gravity)
-        .charge(charge())
-        .friction(0.9)
-        .on("tick", tick)
-        .start();
-
-    function charge(){
-        return function(d){
-            return  -Math.pow(d.r, 2.0) / 8;
-        };
-    }
-
-    // Move nodes toward cluster focus.
-    function move_towards_center(alpha) {
-        return function (d) {
-            var center = width/2;
-
-            d.y += (center - d.y) *  (damper + 0.02)*alpha;
-            d.x += (center - d.x) * (damper + 0.02)* alpha;
-        };
-    }
 
     allCirlces.on("click",function(d){
         currentURL = queryString.parse(location.hash);
         if(currentURL.specificData==""){
-            currentURL.specificData =d.id;
+            currentURL.specificData = d.id;
             location.hash = queryString.stringify(currentURL);
-            $.ajax({
-                url: 'php/parseData.php',
-                data:{
-                    action:"fetchFromToxicant",
-                    filter:d.id
-                },
-                success: function(response){
-                    if (response){
-                        try{
-                            var result = JSON.parse(response);
-                            appendCircles(result);
-                            refreshSearchList(result.children);
-                            $("#graphTitle").text("Diseases realted to " +root.name);
-                        }catch(e){
-                            console.log(e); //error
-                        }
-                }}
-            })
+            if (currentURL.domain=="Toxicants")ajaxRequestDeepView("fetchFromToxicant",d.id);
+            else ajaxRequestDeepView("fetchFromDisease",d.id);
         }
     });
-
-
- 
-    var toolTips = d3.selectAll('circle');
  
     d3.selectAll('circle').each(function(d){
         var currentCircle = d3.select(this);
@@ -265,7 +212,56 @@ function appendCircles(root){
             }
         });
     });
+
+     animation(bubbleNode,bubbleText,nodes);
+
 }
+
+
+function animation(bubbleNode,bubbleText,nodes){
+    
+    if(pastForce!=null){
+        pastForce.stop();
+    }
+
+    var damper = 0.1;
+    function tick(e) {
+        bubbleNode.each(move_towards_center(e.alpha))
+            .attr("transform", function(d){ return 'translate(' + d.x + ',' + d.y + ')';} );
+
+        bubbleText.attr("transform", function(d){ return 'translate(' + (margin.left + d.x) + ',' + (margin.top + d.y)  + ')';} );
+        // .style("left", function(d){ return (margin.left + d.x) - d.dx / 2 + "px"})
+        // .style("top", function(d){ return (margin.top + d.y) - d.dy / 2 + "px"});
+    }
+    var force = d3.layout.force()
+        .nodes(nodes)
+        .size([width, height]);
+
+    function charge(){
+        return function(d){
+            return  -Math.pow(d.r, 2.0) / 8;
+        };
+    }
+
+    // Move nodes toward cluster focus.
+    function move_towards_center(alpha) {
+        return function (d) {
+            var center = width/2;
+            d.y += (center - d.y) *  (damper + 0.02)*alpha;
+            d.x += (center - d.x) * (damper + 0.02)* alpha;                
+
+        };
+    }
+
+    pastForce = force.gravity(layout_gravity)
+                    .charge(charge())
+                    .friction(0.9)
+                    .on("tick", tick)
+                    .start();
+
+}
+
+
 
 /**
  *
@@ -301,6 +297,31 @@ function ajaxRequestAllData(ac){
             refreshSearchList(result.children); }
     });
 }
+
+function ajaxRequestDeepView(ac,id){
+    console.log(ac);
+    console.log(id);
+    $.ajax({
+        url: 'php/parseData.php',
+        data:{
+            action:ac,
+            filter:id
+        },
+        success: function(response){
+            if (response){
+                try{
+                    var result = JSON.parse(response);
+                    appendCircles(result);
+                    refreshSearchList(result.children);
+                    $("#graphTitle").text("Diseases realted to " +root.name);
+                }catch(e){
+                    console.log(e); //error
+                }
+            }
+        }
+    });
+}
+
 
 /**
  * NYI
