@@ -171,11 +171,11 @@ function fetchFromDiseaseCategory(){
     global $conn;
     global $filter;
 
-    $filename = __DIR__.'/../json/tempDC.json';
+    // $filename = __DIR__.'/../json/tempDC.json';
 
-    if(file_exists($filename)){
-        unlink($filename);
-    }
+    // if(file_exists($filename)){
+    //     unlink($filename);
+    // }
 //    else{
 
     $stmt = $conn->prepare('SELECT D.ID as id, D.name as name, D.notes as notes, count(L.contaminant_id) as size
@@ -194,9 +194,9 @@ function fetchFromDiseaseCategory(){
         array_push($data['children'], $_);
     }
 
-    $fp = fopen($filename, "w") or die("can't open file");
-    fwrite($fp, json_encode($data));
-    fclose($fp);
+    // $fp = fopen($filename, "w") or die("can't open file");
+    // fwrite($fp, json_encode($data));
+    // fclose($fp);
 //    }
     echo json_encode($data);
 }
@@ -317,11 +317,11 @@ function fetchFromDisease(){
     global $conn;
     global $filter;
 
-    $filename = __DIR__.'/../json/tempD.json';
+    // $filename = __DIR__.'/../json/tempD.json';
 
-    if(file_exists($filename)){
-        unlink($filename);
-    }
+    // if(file_exists($filename)){
+    //     unlink($filename);
+    // }
 //    else{
 
     $stmt = $conn->prepare("SELECT C.ID as id, C.name as name, L.evidence as strength
@@ -338,9 +338,9 @@ function fetchFromDisease(){
         array_push($data['children'], $d);
     }
 
-    $fp = fopen($filename, "w") or die("can't open file");
-    fwrite($fp, json_encode($data));
-    fclose($fp);
+    // $fp = fopen($filename, "w") or die("can't open file");
+    // fwrite($fp, json_encode($data));
+    // fclose($fp);
     //   }
     echo json_encode($data);
 }

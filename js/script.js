@@ -237,12 +237,18 @@ function appendCircles(root){
     //     }).on("mouseout",function(){
     //         d3.select(this).attr("stroke-width", 1);
     //     });
+    
+    //remove tooltips
+    var toolTips = d3.selectAll('circle');
 
-    d3.selectAll('.bubble').each(function(d){
+    //$(toolTips[0]).qtip('destroy', true);
+
+
+    d3.selectAll('circle').each(function(d){
         var currentCircle = d3.select(this);
         var titleString = "<text id='tooltipTitle'>"+capitalizeFirstLetter(d.className)+"</text>";
         var textString = "Related cases: "+d.value;
-        $(currentCircle).qtip({
+        $(currentCircle[0]).qtip({
             content: {
                 title: titleString,
                 text: textString
@@ -256,6 +262,9 @@ function appendCircles(root){
             }
         });
 
+       // $(currentCircle[0]).data('qtip').options.content.title = titleString;
+       // $(currentCircle[0]).data('qtip').options.content.text = textString;
+      
 
         $(currentCircle[0]).on({
             mouseover: function () {
