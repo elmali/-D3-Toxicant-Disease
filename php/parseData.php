@@ -61,6 +61,9 @@ switch ($action) {
     case 'getFilterToxicantsByDC':
         getFilterToxicantsByDC();
         break;
+    default: 
+        die("No case selected in parseData.php.");
+        break;
 }
 
 /**
