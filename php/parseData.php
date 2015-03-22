@@ -124,12 +124,12 @@ function getAllContaminants(){
 function getDiseaseCategories(){
     global $conn;
 
-    $filename = __DIR__.'/../json/DiseaseCategories.json';
-
-    if(file_exists($filename)){
+//    $filename = __DIR__.'/../json/DiseaseCategories.json';
+//
+//    if(file_exists($filename)){
 //        $data = file_get_contents($filename);
-        unlink($filename);
-    }
+//        unlink($filename);
+//    }
 //    else{
 
     $stmt = 'SELECT ID as id, name FROM toxins_category';
@@ -141,9 +141,9 @@ function getDiseaseCategories(){
         array_push($_category['children'], $_);
     }
 
-    $fp = fopen($filename, "w") or die("can't open file");
-    fwrite($fp, json_encode($_category));
-    fclose($fp);
+//    $fp = fopen($filename, "w") or die("can't open file");
+//    fwrite($fp, json_encode($_category));
+//    fclose($fp);
 //    }
     echo json_encode($_category);
 }
