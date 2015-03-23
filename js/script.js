@@ -228,12 +228,14 @@ function appendCircles(root){
 
 
 function animation(bubbleNode,bubbleText,nodes){
+    var space = 8;  
+    var damper = 0.1;   
     
     if(pastForce!=null){
         pastForce.stop();
     }
-
-    var damper = 0.1;
+    updateVariableURL();
+    (currentURL.specificData=="")? (space = 8):(space = 6);
     function tick(e) {
         bubbleNode.each(move_towards_center(e.alpha))
             .attr("transform", function(d){ return 'translate(' + d.x + ',' + d.y + ')';} );
@@ -248,7 +250,7 @@ function animation(bubbleNode,bubbleText,nodes){
 
     function charge(){
         return function(d){
-            return  -Math.pow(d.r, 2.0) / 8;
+            return  -Math.pow(d.r, 2.0) / space;
         };
     }
 
