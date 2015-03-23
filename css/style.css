@@ -65,3 +65,7 @@ clear: both;
 	color: rgb(43,117,237);
 }
 
+.axislabels{
+	font-weight: bold;
+	font-size: 20px;
+}

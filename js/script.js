@@ -15,7 +15,7 @@ $( document ).ready(function() {
     };
     location.hash = queryString.stringify(currentURL);
     currentSearch="";
-    margin = {top: 5, right: 0, bottom: 5, left: 0};
+    margin = {top: 5, right: 0, bottom: 5, left: 20};
 
     //d3 svg
     layout_gravity = -0.01;
@@ -45,6 +45,18 @@ $( document ).ready(function() {
         .attr("id", "bubble-background")
         .attr("width", width)
         .attr("height", height);
+
+    // svg.append("marker") 
+    //    .attr("id","triangle")
+    //    .attr("viewBox","0 0 10 10")
+    //    .attr("refX",0.1)
+    //    .attr("refY",2)
+    //   // .attr("markerUnits","strokeWidth")
+    //    .attr("markerWidth",6)
+    //    .attr("markerHeight", 6)
+    //    .attr("orient", "auto")
+    //    .append("svg:path")
+    //    .attr("d", "M0,0 V4 L2,2 Z");
 
     $( "#selectRadio" ).buttonset();
     bindEvent();
@@ -145,22 +157,35 @@ function appendCircles(root){
             .append('text')
             .style("text-anchor", "middle")
             .attr("fill","black")
+            .attr("dy", ".3em")
             .text(function(d) {
                 var circleName = d.className.substring(0, Math.round(d.r / 3));
                 return circleName;
             });
-        // d3.select("#bubble-nodes").append("line")                 // attach a line
-        //     .style("stroke", "black")         // colour the line
-        //     .style("stroke-width", 1)        // adjust line width
-        //     .style("stroke-dasharray", ("10,3"))  // stroke-linecap type
-        //     .attr("x1", 0)     // x position of the first end of the line
-        //     .attr("y1", 90)      // y position of the first end of the line
-        //     .attr("x2", 0)     // x position of the second end of the line
-        //     .attr("y2", height*4.5/5);     // y position of the second end of the line
+
+        
+        svg.append("line")                 // attach a line
+            .style("stroke", "black")         // colour the line
+            .style("stroke-width", 1)        // adjust line width
+            .style("stroke-dasharray", ("10,3"))  // stroke-linecap type
+            .attr("x1", 10)     // x position of the first end of the line
+            .attr("y1", 50)      // y position of the first end of the line
+            .attr("x2", 10)     // x position of the second end of the line
+            .attr("y2", height*4.5/5);    // y position of the second end of the line
+            // .attr("marker-start","url(#triangle)");
+
+
+        svg.append("text").attr("class","axislabels")
+            .style("text-anchor", "middle")
+            .attr("fill","black")
+            .attr("transform","translate(50 ,"+ 70 +")")
+            .text("Strong");
+        
 
         
     }else{
-        //d3.select("line").remove();
+        d3.select("line").remove();
+        d3.selectAll(".axislabels").remove();
         bubbleText.remove();
 
     }
@@ -243,11 +268,9 @@ function animation(bubbleNode,bubbleText,nodes){
     (currentURL.specificData=="")? (space = 8):(space = 5.5);
     function tick(e) {
         bubbleNode.each(move_towards_center(e.alpha))
-            .attr("transform", function(d){ return 'translate(' + d.x + ',' + d.y + ')';} );
+            .attr("transform", function(d){ return 'translate(' + (d.x+margin.left) + ',' + (margin.top + d.y)  + ')';} );
 
         bubbleText.attr("transform", function(d){ return 'translate(' + (margin.left + d.x) + ',' + (margin.top + d.y)  + ')';} );
-        // .style("left", function(d){ return (margin.left + d.x) - d.dx / 2 + "px"})
-        // .style("top", function(d){ return (margin.top + d.y) - d.dy / 2 + "px"});
     }
     var force = d3.layout.force()
         .nodes(nodes)
