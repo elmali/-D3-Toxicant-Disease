@@ -46,17 +46,18 @@ $( document ).ready(function() {
         .attr("width", width)
         .attr("height", height);
 
-    // svg.append("marker") 
-    //    .attr("id","triangle")
-    //    .attr("viewBox","0 0 10 10")
-    //    .attr("refX",0.1)
-    //    .attr("refY",2)
-    //   // .attr("markerUnits","strokeWidth")
-    //    .attr("markerWidth",6)
-    //    .attr("markerHeight", 6)
-    //    .attr("orient", "auto")
-    //    .append("svg:path")
-    //    .attr("d", "M0,0 V4 L2,2 Z");
+    svg.append("marker") 
+       .attr("id","triangle")
+       .attr("viewBox","0 0 15 15")
+       .attr("refX",0)
+       .attr("refY",5)
+      // .attr("markerUnits","strokeWidth")
+       .attr("markerWidth",10)
+       .attr("markerHeight", 10)
+       .attr("orient", "270")
+       .append("svg:path")
+       .attr("fill","gray")
+       .attr("d", "M 0 0 L 10 5 L 0 10 z");
 
     $( "#selectRadio" ).buttonset();
     bindEvent();
@@ -165,19 +166,20 @@ function appendCircles(root){
 
         
         svg.append("line")                 // attach a line
-            .style("stroke", "black")         // colour the line
-            .style("stroke-width", 1)        // adjust line width
-            .style("stroke-dasharray", ("10,3"))  // stroke-linecap type
+            .attr("stroke", "gray")         // colour the line
+            .attr("stroke-width", 2)        // adjust line width
+            .attr("stroke-dasharray", ("10,3"))  // stroke-linecap type
             .attr("x1", 10)     // x position of the first end of the line
             .attr("y1", 50)      // y position of the first end of the line
             .attr("x2", 10)     // x position of the second end of the line
-            .attr("y2", height*4.5/5);    // y position of the second end of the line
-            // .attr("marker-start","url(#triangle)");
+            .attr("marker-start","url(#triangle)")
+            .attr("y2", height*4.5/5);   // y position of the second end of the line
+             
 
 
         svg.append("text").attr("class","axislabels")
             .style("text-anchor", "middle")
-            .attr("fill","black")
+            .attr("fill","gray")
             .attr("transform","translate(50 ,"+ 70 +")")
             .text("Strong");
         
