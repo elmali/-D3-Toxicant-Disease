@@ -13,10 +13,10 @@
     <div id="view_selection"  class="center">
         <div>
             <div id="selectRadio">
-              <input type="radio" id="AToxicants" name="radio" checked="checked">
-              <label for="AToxicants">By Toxicant</label>
-              <input type="radio" id="ADiseases" name="radio" >
+              <input type="radio" id="ADiseases" name="radio" checked="checked">
               <label for="ADiseases">By Disease</label>
+              <input type="radio" id="AToxicants" name="radio" >
+              <label for="AToxicants">By Toxicant</label>
               <span id="graphTitle">All Toxicants</span>
           </div>
         </div>

@@ -49,7 +49,7 @@ $( document ).ready(function() {
     $( "#selectRadio" ).buttonset();
     bindEvent();
 
-    ajaxRequestAllData('getToxicants');
+    ajaxRequestAllData('getDiseases');
 
 });
 
