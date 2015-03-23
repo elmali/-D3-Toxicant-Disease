@@ -15,13 +15,13 @@ $( document ).ready(function() {
     };
     location.hash = queryString.stringify(currentURL);
     currentSearch="";
-    margin = {top: 5, right: 0, bottom: 0, left: 0};
+    margin = {top: 5, right: 0, bottom: 5, left: 0};
 
     //d3 svg
     layout_gravity = -0.01;
 
     width = 960,
-        height = 960;
+    height = 960;
     diameter = 960,
         format = d3.format(",d");
     max_amount = 80;
@@ -35,8 +35,8 @@ $( document ).ready(function() {
     appendDiseaseCategoriesList();
 
     svg = d3.select("#graph").append("svg")
-        .attr("width", diameter)
-        .attr("height", diameter);
+        .attr("width", width + margin.right + margin.left)
+        .attr("height", height + margin.top + margin.bottom);
 
     node = d3.select('svg').append("g").attr("id", "bubble-nodes")
         .attr("transform", "translate("+margin.left+","+margin.top+")");
@@ -82,7 +82,7 @@ function classes(root) {
     var dataNode = [];
 
     max_amount = d3.max(root.children, function(d) { return +d.size;} );
-    (max_amount < 5) ? max_range = 40 : max_range = 60;
+    (max_amount < 5) ? max_range = 30 : max_range = 60;
     var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([0, max_range]);
 
     root.children.forEach(function(node){
@@ -103,6 +103,7 @@ function appendCircles(root){
     var radius = d3.scale.sqrt().range([0, 12]);
     //calculating layout values
     var nodes = classes(root);
+    //totalBubbles = nodes.lenght();
     var bubbleNode = node.selectAll("circle").data(nodes);
     // var label = d3.select("node")
     //             .append("div")
@@ -137,10 +138,9 @@ function appendCircles(root){
         .remove();
 
     bubbleNode.transition().duration(duration).attr("r", function(d){return d.r;});
-
+    updateVariableURL();
     if(currentURL.specificData!=""){
         bubbleText.remove();
-
         // bubbleText.text(function(d) {
         //     var circleName = d.className.substring(0, Math.round(d.r / 3));
         //     return circleName;
@@ -158,7 +158,7 @@ function appendCircles(root){
                 var circleName = d.className.substring(0, Math.round(d.r / 3));
                 return circleName;
             });
-        // bubbleText.exit().remove();
+        
     }else{
  
         bubbleText.remove();
@@ -249,10 +249,31 @@ function animation(bubbleNode,bubbleText,nodes){
     function move_towards_center(alpha) {
         return function (d) {
             var center = width/2;
-            d.y += (center - d.y) *  (damper + 0.02)*alpha;
-            d.x += (center - d.x) * (damper + 0.02)* alpha;                
+            updateVariableURL();
+            if(currentURL.specificData=""){
+                d.y += (center - d.y) *  (damper + 0.02)*alpha;
+                d.x += (center - d.x) * (damper + 0.02)* alpha;                 
+            }else{
+                var yCenter = height/4;
+                switch (d.value) {
+                    case 3:
+                        d.y += (yCenter*1.6 - d.y) *  (damper + 0.02)*alpha;
+                        break;
+                    case 2:
+                        d.y += (yCenter*2.5 - d.y) *  (damper + 0.02)*alpha;
+                        break;
+                    case 1:
+                        d.y += (yCenter*3 - d.y) *  (damper + 0.02)*alpha;
+                        break;
+                    default:
+                        d.y += (center - d.y) *  (damper + 0.02)*alpha;
+                        break;
+                }                                             
+                d.x += (center - d.x) * (damper + 0.02)* alpha; 
+            }               
 
         };
+            
     }
 
     pastForce = force.gravity(layout_gravity)
@@ -263,7 +284,13 @@ function animation(bubbleNode,bubbleText,nodes){
 
 }
 
+function updateVariableURL(){
+    currentURL = queryString.parse(location.hash);
+}
 
+function changeURL(){
+    location.hash = queryString.stringify(currentURL);
+}
 
 /**
  *
@@ -290,10 +317,10 @@ function ajaxRequestAllData(ac){
         url: 'php/parseData.php',
         data:{ action:ac },
         success: function(response){
-            var result = JSON.parse(response);
-            currentURL.specificData="";
+            var result = JSON.parse(response);           
             if(ac=="getToxicants") currentURL.domain = 'Toxicants';
             else if(ac="getDiseases")  currentURL.domain = 'Diseases';
+            currentURL.specificData="";
             location.hash = queryString.stringify(currentURL);
             appendCircles(result);
             refreshSearchList(result.children); }
@@ -338,6 +365,7 @@ function clearSearch(){
  */
 function bindEvent(){
     $(document).on("click","#checkall_dc",function(){
+        updateVariableURL();
         if($(this).is(':checked')){
             $("input[name=dc]").each(function(){
                 $(this).prop("checked",true);
@@ -363,6 +391,7 @@ function bindEvent(){
 
     //send ajax request to php to request new set of toxicants data
     $(document).on("click","input[name=dc]",function(){
+        updateVariableURL();
         if(currentURL.specificData==""){
             var filter = [];
             $("input[name=dc]:checked").each(function(){
