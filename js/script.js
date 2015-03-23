@@ -103,14 +103,9 @@ function appendCircles(root){
     var radius = d3.scale.sqrt().range([0, 12]);
     //calculating layout values
     var nodes = classes(root);
-    //totalBubbles = nodes.lenght();
     var bubbleNode = node.selectAll("circle").data(nodes);
-    // var label = d3.select("node")
-    //             .append("div")
-    //             .attr("id", "bubble-labels");
     var bubbleText = node.selectAll(".bubble-label").data(nodes);
 
-    //bubbleNode.property({'px':null, 'px':null});
     // update
     bubbleNode.attr('r', 0)
         .attr("id", function(d){ return d.id;})
@@ -141,10 +136,6 @@ function appendCircles(root){
     updateVariableURL();
     if(currentURL.specificData!=""){
         bubbleText.remove();
-        // bubbleText.text(function(d) {
-        //     var circleName = d.className.substring(0, Math.round(d.r / 3));
-        //     return circleName;
-        // });
 
         bubbleText.enter()
             .append('a')
@@ -158,10 +149,20 @@ function appendCircles(root){
                 var circleName = d.className.substring(0, Math.round(d.r / 3));
                 return circleName;
             });
+        // d3.select("#bubble-nodes").append("line")                 // attach a line
+        //     .style("stroke", "black")         // colour the line
+        //     .style("stroke-width", 1)        // adjust line width
+        //     .style("stroke-dasharray", ("10,3"))  // stroke-linecap type
+        //     .attr("x1", 0)     // x position of the first end of the line
+        //     .attr("y1", 90)      // y position of the first end of the line
+        //     .attr("x2", 0)     // x position of the second end of the line
+        //     .attr("y2", height*4.5/5);     // y position of the second end of the line
+
         
     }else{
- 
+        //d3.select("line").remove();
         bubbleText.remove();
+
     }
 
 
@@ -175,11 +176,15 @@ function appendCircles(root){
             currentURL.specificData = d.id;
             location.hash = queryString.stringify(currentURL);
             if (currentURL.domain=="Toxicants"){
-                $("#graphTitle").text("Diseases realted to " + d.className);
+                var separators = ['\\\+', '\\\(', '\\\)', '\\*', '/'];
+                var showName = d.className.split(new RegExp(separators.join('|'), 'g')); 
+                $("#graphTitle").text("Diseases realted to " + showName[0]);
                 ajaxRequestDeepView("fetchFromToxicant",d.id);
             }
             else {
-                $("#graphTitle").text("Toxicants realted to " +d.className);
+                var separators = ['\\\+', '\\\(', '\\\)', '\\*', '/'];
+                var showName = d.className.split(new RegExp(separators.join('|'), 'g')); 
+                $("#graphTitle").text("Toxicants realted to " + showName[0]);
                 ajaxRequestDeepView("fetchFromDisease",d.id);
             }
         }
