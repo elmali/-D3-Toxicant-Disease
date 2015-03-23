@@ -371,9 +371,9 @@ function bindEvent(){
                 $(this).prop("checked",true);
             });
             if(currentURL.specificData==""){
-
-                ajaxRequestAllData('getToxicants');
-
+                var type;
+                (currentURL.domain=="Toxicants") ? (type = "getToxicants"):(type = "getDiseases")
+                ajaxRequestAllData(type);
             }
 
         }else{
@@ -397,9 +397,11 @@ function bindEvent(){
             $("input[name=dc]:checked").each(function(){
                 filter.push($(this).prop("id"));
             });
-            getFilterToxicantsByDC(filter, function(result){
-                currentURL.specificData="";
-                location.hash = queryString.stringify(currentURL);
+            updateVariableURL();
+            (currentURL.domain=="Toxicants") ? (ac = 'getFilterToxicantsByDC') : (ac = 'getFilterDiseasesByDC')
+            currentURL.specificData="";
+            changeURL();
+            allDataFilterByDC(ac,filter, function(result){
                 appendCircles(result);
                 refreshSearchList(result.children);
             });

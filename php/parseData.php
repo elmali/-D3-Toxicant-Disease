@@ -61,6 +61,9 @@ switch ($action) {
     case 'getFilterToxicantsByDC':
         getFilterToxicantsByDC();
         break;
+    case 'getFilterDiseasesByDC':
+        getFilterDiseasesByDC();
+        break;
     // default: 
     //     die("No case selected in parseData.php.");
     //     break;
@@ -386,5 +389,34 @@ function getFilterToxicantsByDC(){
     }
 }
 
+function getFilterDiseasesByDC(){
+    global $conn;
+    global $filter;
+    if($filter){
+        $cstring = implode(",",$filter);
+
+        $stmt = 'SELECT D.ID as id, D.name as name, count(L.contaminant_id) as size
+                 FROM toxins_links as L LEFT join toxins_disease as D on L.disease_id = D.ID
+                 WHERE L.disease_id in (SELECT did FROM toxins_disease_category WHERE cid in ('.$cstring.'))
+                 GROUP BY D.ID';
+
+        $result = $conn->query($stmt);
+        $data = array("name"=>"Contaminants", "children" => array());
+        while($rows = $result->fetch_assoc()){
+            $tempData = array('name' => $rows['name'], 'size' => $rows['size'], 'id' => $rows['id']);
+            array_push($data['children'], $tempData);
+        }
+
+        echo json_encode($data);
+    }
+    else{
+        $data = array("name"=>"Contaminants", "children" => array());
+        echo json_encode($data);
+    }
+
+
+
+    
+}
 
 ?>

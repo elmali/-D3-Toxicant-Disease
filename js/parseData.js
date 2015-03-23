@@ -91,3 +91,24 @@ function getAllDiseaseCategories(callback){
         }
     });
 }
+
+function allDataFilterByDC(ac,filter,callback){
+    $.ajax({
+        url: GET,
+        data:{
+            action:ac,
+            filter:filter
+        },
+        success: function(response){
+            if (response){
+                try{
+                    var result = JSON.parse(response);
+                    callback(result);
+                }
+                catch (e){
+                    console.log(e);
+                }
+            }
+        }
+    });    
+}
