@@ -21,7 +21,7 @@ $( document ).ready(function() {
     layout_gravity = -0.01;
 
     width = 960,
-    height = 960;
+    height = 1500;
     diameter = 960,
         format = d3.format(",d");
     max_amount = 80;
@@ -82,7 +82,7 @@ function classes(root) {
     var dataNode = [];
 
     max_amount = d3.max(root.children, function(d) { return +d.size;} );
-    (max_amount < 5) ? max_range = 30 : max_range = 60;
+    (max_amount < 5) ? max_range = 40 : max_range = 60;
     var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([0, max_range]);
 
     root.children.forEach(function(node){
@@ -235,7 +235,7 @@ function animation(bubbleNode,bubbleText,nodes){
         pastForce.stop();
     }
     updateVariableURL();
-    (currentURL.specificData=="")? (space = 8):(space = 6);
+    (currentURL.specificData=="")? (space = 8):(space = 5.5);
     function tick(e) {
         bubbleNode.each(move_towards_center(e.alpha))
             .attr("transform", function(d){ return 'translate(' + d.x + ',' + d.y + ')';} );
@@ -263,7 +263,7 @@ function animation(bubbleNode,bubbleText,nodes){
                 d.y += (center - d.y) *  (damper + 0.02)*alpha;
                 d.x += (center - d.x) * (damper + 0.02)* alpha;                 
             }else{
-                var yCenter = height/4;
+                var yCenter = height/5;
                 switch (d.value) {
                     case 3:
                         d.y += (yCenter*1.6 - d.y) *  (damper + 0.02)*alpha;
