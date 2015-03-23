@@ -188,7 +188,14 @@ function appendCircles(root){
     d3.selectAll('circle').each(function(d){
         var currentCircle = d3.select(this);
         var titleString = "<text id='tooltipTitle'>"+capitalizeFirstLetter(d.className)+"</text>";
-        var textString = "Related cases: "+d.value;
+        updateVariableURL();
+        if(currentURL.specificData==""){
+            var textString = "Related cases: "+d.value;
+        }else{
+            var relationship = ["LIMITED","GOOD","STRONG"];
+            var textString = "Strength of evidence: "+relationship[d.value-1];
+        }
+        
         $(currentCircle[0]).qtip({
             content: {
                 title: titleString,
