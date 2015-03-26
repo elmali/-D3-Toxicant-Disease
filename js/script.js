@@ -3,7 +3,9 @@
  */
 
 //Global variables
-var currentSearch,pastForce,color, currentURL, margin, layout_gravity, width, height, diameter, format, max_amount, max_range, padding, duration, delay, svg, node;
+var currentSearch,pastForce,color, currentURL, margin, layout_gravity, width,
+    height, diameter, format, max_amount, max_range, padding, duration, delay,
+    svg, node, is_deeper_view;
 
 /**
  * This function executes when DOM is ready
@@ -123,7 +125,7 @@ function appendCircles(root){
     bubbleNode.attr('r', 0)
         .attr("id", function(d){ return d.id;})
         .attr('class','bubble-circle')
-        .attr("stroke", "black")
+        .attr("stroke", "white")
         .attr("stroke-width", 1)
         .style("fill", function(d,i) {
             return colorbrewer.Spectral[9][Math.floor(color(d.r))];
@@ -135,7 +137,7 @@ function appendCircles(root){
         .attr('r', 0)
         .attr('class','bubble-circle bubble')
         .attr("id", function(d){ return d.id;})
-        .attr("stroke", "black")
+        .attr("stroke", "white")
         .attr("stroke-width", 1)
         .style("fill", function(d,i) {
             return colorbrewer.Spectral[9][Math.floor(color(d.r))];
@@ -198,6 +200,8 @@ function appendCircles(root){
 
 
     allCirlces.on("click",function(d){
+        is_deeper_view = true;
+
         currentURL = queryString.parse(location.hash);
         if(currentURL.specificData==""){
             currentURL.specificData = d.id;
@@ -268,11 +272,29 @@ function animation(bubbleNode,bubbleText,nodes){
     }
     updateVariableURL();
     (currentURL.specificData=="")? (space = 8):(space = 5.5);
+
+
+
     function tick(e) {
         bubbleNode.each(move_towards_center(e.alpha))
             .attr("transform", function(d){ return 'translate(' + (d.x+margin.left) + ',' + (margin.top + d.y)  + ')';} );
 
         bubbleText.attr("transform", function(d){ return 'translate(' + (margin.left + d.x) + ',' + (margin.top + d.y)  + ')';} );
+
+        // When it is deeper view, change the colors to be continuous.
+        if(is_deeper_view){
+            // Color range
+            var colorP = d3.scale.linear()
+                        .domain([100, 500, 900])
+                        .range(["purple", "steelblue", "rgb(255,255,153)"]);
+
+            bubbleNode.style("fill", function(d,i) {
+                var pofy = Math.round(d.y);
+                return colorP(pofy);
+            });
+        }
+
+
     }
     var force = d3.layout.force()
         .nodes(nodes)
@@ -308,6 +330,7 @@ function animation(bubbleNode,bubbleText,nodes){
                         d.y += (center - d.y) *  (damper + 0.02)*alpha;
                         break;
                 }                                             
+
                 d.x += (center - d.x) * (damper + 0.02)* alpha; 
             }               
 
@@ -469,6 +492,9 @@ function bindEvent(){
     })
 
     $(document).on('click', "#AToxicants", function(){        
+        // Reset deeper view flag.
+        is_deeper_view = false;
+
         var filter = [];
         changeGraphTitle("All toxicants");
         $("input[name=dc]:checked").each(function(){
@@ -484,6 +510,8 @@ function bindEvent(){
     })
 
     $(document).on('click', "#ADiseases", function(){
+        // Reset deeper view flag.
+        is_deeper_view = false;
         changeGraphTitle("All diseases");
         currentURL.domain="Diseases";
         currentURL.specificData="";
