@@ -11,6 +11,7 @@ var currentSearch,pastForce,color, currentURL, margin, layout_gravity, width,
  * This function executes when DOM is ready
  */
 $( document ).ready(function() {
+
     currentURL ={
         domain:"Toxicants",
         specificData:""
@@ -86,6 +87,14 @@ function appendDiseaseCategoriesList(){
             $('#checkboxFilters').append(i);
         });
     });
+}
+
+function hideDiseaseCategoriesList(){
+    $('#checkboxFilters').hide();
+}
+
+function showDiseaseCategoriesList(){
+    $('#checkboxFilters').show();
 }
 
 /**
@@ -201,6 +210,10 @@ function appendCircles(root){
 
     allCirlces.on("click",function(d){
         is_deeper_view = true;
+
+        // Hide left hand side Disease Categories List after
+        // entering into deeper view
+        hideDiseaseCategoriesList();
 
         currentURL = queryString.parse(location.hash);
         if(currentURL.specificData==""){
@@ -495,6 +508,10 @@ function bindEvent(){
         // Reset deeper view flag.
         is_deeper_view = false;
 
+        // Append left hand side Disease Categories List after
+        // going to the landing view
+        showDiseaseCategoriesList();
+
         var filter = [];
         changeGraphTitle("All toxicants");
         $("input[name=dc]:checked").each(function(){
@@ -507,11 +524,17 @@ function bindEvent(){
             appendCircles(result);
             refreshSearchList(result.children);
         });
+
     })
 
     $(document).on('click', "#ADiseases", function(){
         // Reset deeper view flag.
         is_deeper_view = false;
+
+        // Append left hand side Disease Categories List after
+        // going to the landing view
+        showDiseaseCategoriesList();
+
         changeGraphTitle("All diseases");
         currentURL.domain="Diseases";
         currentURL.specificData="";
