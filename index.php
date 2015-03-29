@@ -30,6 +30,11 @@
         <select id='bubbleFilter' style="width:10%"></select>
     </div>
 
+    <div class="right selectList">
+        <div id="toxicantList">
+        </div>
+    </div>
+
     <div class="clearBoth">
     </div>
 </div>

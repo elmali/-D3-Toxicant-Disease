@@ -92,6 +92,33 @@ function getAllDiseaseCategories(callback){
     });
 }
 
+
+
+/**
+ * Get all top toxicants from parseData.php via ajax
+ * @param callback
+ */
+function getAllTopToxicants(callback){
+    $.ajax({
+        url: GET,
+        data:{
+            action:"getDiseaseCategories"
+        },
+        success: function(response){
+            if (response){
+                try{
+                    var result = JSON.parse(response);
+                    callback(result);
+                }
+                catch (e){
+                    console.log(e);
+                }
+            }
+        }
+    });
+}
+
+
 function allDataFilterByDC(ac,filter,callback){
     $.ajax({
         url: GET,

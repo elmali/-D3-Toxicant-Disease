@@ -36,6 +36,7 @@ $( document ).ready(function() {
     delay = 0;
 
     appendDiseaseCategoriesList();
+    appendTopToxicantsList();
 
     svg = d3.select("#graph").append("svg")
         .attr("width", width + margin.right + margin.left)
@@ -96,6 +97,30 @@ function hideDiseaseCategoriesList(){
 function showDiseaseCategoriesList(){
     $('#checkboxFilters').show();
 }
+
+
+
+/**
+ * Add top <num> toxicants list to the right side bar
+ */
+function appendTopToxicantsList(){
+    $('#toxicantList').append("<p>Top Toxicants: </p>");
+    $('#toxicantList').append('<div>'+
+        '<input type="checkbox" checked="checked" id="checkall_top_toxicants">'+
+        '<span>Select All</span>'+
+        '</div>');
+    getAllTopToxicants(function(result){
+        result.children.forEach(function(item){
+            var i = $('<div>'+
+                '<input type="checkbox" checked="checked" name="top_toxicant" id='+item.id+'>'+
+                '<span>'+item.name+'</span>'+
+                '</div>');
+            $('#toxicantList').append(i);
+        });
+    });
+}
+
+
 
 /**
  *
