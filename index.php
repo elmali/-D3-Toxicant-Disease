@@ -26,8 +26,10 @@
     </div>
   
     <div class="right searchList" >
-        <span>Search circle</span>
-        <select id='bubbleFilter' style="width:10%"></select>
+        <div id="searchSection">
+          <span>Search circle</span>
+          <select id='bubbleFilter' style="width:10%"></select>
+        </div>
     </div>
 
     <div class="right selectList">
