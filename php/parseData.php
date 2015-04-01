@@ -1,5 +1,8 @@
 <?php
 include 'global.php';
+
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST["action"];
     $filter = $_POST["filter"];
@@ -21,7 +24,14 @@ switch ($action) {
          * Pass POST variable "action" > 'getToxicants'
          * POST variable "filter" > NA
         */
-        getAllContaminants();
+      	getAllContaminants();
+        break;
+    case 'getTopToxicants':
+        /*
+         * Pass POST variable "action" > 'getTopToxicants'
+         * POST variable "filter" > NA
+        */
+        getTopToxicants();
         break;
     case 'getDiseases':
         /*
@@ -87,6 +97,8 @@ switch ($action) {
  */
 function getAllContaminants(){
     global $conn;
+    
+    
 
 //     $filename = __DIR__.'/../json/Contaminants.json';
 
@@ -111,6 +123,37 @@ function getAllContaminants(){
 //    }
     echo json_encode($data);
 }
+
+
+/**
+ * This method returns the data for right side top toxicants list.
+ */
+function getTopToxicants(){
+    global $conn;
+
+    // Get top 25 toxicants that have the largest number of diseases accociated
+    // with them.
+    $stmt = 'SELECT count(distinct r.disease_id) as size, s.name as name, s.ID as id 
+                    FROM toxins_links as r LEFT join toxins_contaminant as s ON r.contaminant_id=s.ID 
+                    group by r.contaminant_id 
+                    ORDER BY size DESC 
+                    LIMIT 25';
+    
+    $result = $conn->query($stmt);
+
+    $data = array("name"=>"TopContaminants", "children" => array());
+
+    while($rows = $result->fetch_assoc()){
+        $tempData = array('id' => $rows['id'], 'name' => $rows['name'], 'size' => $rows['size']);
+        array_push($data['children'], $tempData);
+    }
+    echo json_encode($data);
+}
+
+
+
+
+
 
 /**
  * This method returns the data required for all views.

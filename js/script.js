@@ -114,6 +114,8 @@ function appendTopToxicantsList(){
             var i = $('<div>'+
                 '<input type="checkbox" checked="checked" name="top_toxicant" id='+item.id+'>'+
                 '<span>'+item.name+'</span>'+
+                // TODO
+                '<span>'+ ' [size:  ' + item.size+'] </span>'+
                 '</div>');
             $('#toxicantList').append(i);
         });

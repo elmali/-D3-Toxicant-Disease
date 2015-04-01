@@ -97,12 +97,13 @@ function getAllDiseaseCategories(callback){
 /**
  * Get all top toxicants from parseData.php via ajax
  * @param callback
+ * TODO
  */
 function getAllTopToxicants(callback){
     $.ajax({
         url: GET,
         data:{
-            action:"getDiseaseCategories"
+            action:"getTopToxicants"
         },
         success: function(response){
             if (response){
