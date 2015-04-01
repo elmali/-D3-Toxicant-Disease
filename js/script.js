@@ -295,8 +295,10 @@ function appendCircles(root){
             }
         });
     });
+    
 
-     animation(bubbleNode,bubbleText,nodes);
+
+    animation(bubbleNode,bubbleText,nodes);
 
 }
 
@@ -391,6 +393,7 @@ function updateVariableURL(){
 function changeURL(){
     location.hash = queryString.stringify(currentURL);
 }
+
 
 /**
  *
@@ -513,15 +516,15 @@ function bindEvent(){
         single: true,
         onClose: function() {
             var searchID = "#"+$('select').multipleSelect('getSelects');
-            currentSearch = searchID;
-            $(searchID).trigger('mouseover');
-        },
-        onOpen: function() {
-            if(currentSearch!=""){
-                $(currentSearch).trigger('mouseout');
-            }
-        },
+            var jqueryNode = $(searchID);  //jquery
+            var d3Node = d3.selectAll( jqueryNode.toArray() ); //d3
+            var event = document.createEvent("SVGEvents");
+            event.initEvent("click",true,true);
+            d3Node.node().dispatchEvent(event);
+        }
     });
+
+
 
     $('#graph').on("click",function(){
         if(currentSearch!=""){
