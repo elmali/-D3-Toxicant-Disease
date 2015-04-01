@@ -230,7 +230,7 @@ function appendCircles(root){
                 .attr("class", "bubble-label  bubble")
                 .style("text-anchor", "middle")
                 .style("visibility",function(d,i){
-                    if(d.value<40) return "hidden";
+                    if(d.r<40) return "hidden";
                 })
                 .attr("fill","black")
                 .attr("dy", ".3em")
