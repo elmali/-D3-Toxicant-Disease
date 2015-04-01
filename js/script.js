@@ -153,6 +153,7 @@ function appendCircles(root){
     //calculating layout values
     var nodes = classes(root);
     var bubbleNode = node.selectAll("circle").data(nodes);
+    node.selectAll(".bubble-label").remove();
     var bubbleText = node.selectAll(".bubble-label").data(nodes);
 
     // update
@@ -184,7 +185,6 @@ function appendCircles(root){
     bubbleNode.transition().duration(duration).attr("r", function(d){return d.r;});
     updateVariableURL();
     if(currentURL.specificData!=""){
-        bubbleText.remove();
 
         bubbleText.enter()
             .append('a')
@@ -200,7 +200,7 @@ function appendCircles(root){
                 return circleName;
             });
 
-        
+
         svg.append("line")                 // attach a line
             .attr("stroke", "gray")         // colour the line
             .attr("stroke-width", 2)        // adjust line width
@@ -224,7 +224,20 @@ function appendCircles(root){
     }else{
         d3.select("line").remove();
         d3.selectAll(".axislabels").remove();
-        bubbleText.remove();
+        
+        bubbleText.enter()
+                .append('text')
+                .attr("class", "bubble-label  bubble")
+                .style("text-anchor", "middle")
+                .style("visibility",function(d,i){
+                    if(d.value<40) return "hidden";
+                })
+                .attr("fill","black")
+                .attr("dy", ".3em")
+                .text(function(d) {
+                    var circleName = d.className.substring(0, Math.round(d.r / 3));
+                    return circleName;
+                });    
 
     }
 
@@ -514,7 +527,7 @@ function bindEvent(){
     $("#bubbleFilter").multipleSelect({
         filter: true,
         single: true,
-        onClose: function() {
+        onClose: function() {            
             var searchID = "#"+$('select').multipleSelect('getSelects');
             var jqueryNode = $(searchID);  //jquery
             var d3Node = d3.selectAll( jqueryNode.toArray() ); //d3
