@@ -76,14 +76,18 @@ $( document ).ready(function() {
 function appendDiseaseCategoriesList(){
     $('#checkboxFilters').append("<p>Disease Category : </p>");
     $('#checkboxFilters').append('<div>'+
+        '<label>'+
         '<input type="checkbox" checked="checked" id="checkall_dc">'+
         '<span>Select All</span>'+
+        '</label>'+
         '</div>');
     getAllDiseaseCategories(function(result){
         result.children.forEach(function(item){
             var i = $('<div>'+
+                '<label>'+
                 '<input type="checkbox" checked="checked" name="dc" id='+item.id+'>'+
                 '<span>'+item.name+'</span>'+
+                '</label>'+
                 '</div>');
             $('#checkboxFilters').append(i);
         });
@@ -106,16 +110,20 @@ function showDiseaseCategoriesList(){
 function appendTopToxicantsList(){
     $('#toxicantList').append("<p>Top Toxicants: </p>");
     $('#toxicantList').append('<div>'+
+        '<label>'+
         '<input type="checkbox" checked="checked" id="checkall_top_toxicants">'+
         '<span>Select All</span>'+
+        '</label>'+
         '</div>');
     getAllTopToxicants(function(result){
         result.children.forEach(function(item){
             var i = $('<div>'+
+                '<label>'+
                 '<input type="checkbox" checked="checked" name="top_toxicant" id='+item.id+'>'+
                 '<span>'+item.name+'</span>'+
                 // TODO
                 '<span>'+ ' [size:  ' + item.size+'] </span>'+
+                '</label>'+
                 '</div>');
             $('#toxicantList').append(i);
         });
