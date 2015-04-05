@@ -74,24 +74,29 @@ $( document ).ready(function() {
  * Add disease-category list to the left side bar
  */
 function appendDiseaseCategoriesList(){
-    $('#checkboxFilters').append("<p>Disease Category : </p>");
-    $('#checkboxFilters').append('<div>'+
-        '<label>'+
-        '<input type="checkbox" checked="checked" id="checkall_dc">'+
-        '<span>Select All</span>'+
-        '</label>'+
+    $('#checkboxFilters').append("<p class='checkbox'> Disease Category </p>");
+    $('#checkboxFilters').append('<div class="disease-category">'+
+        '<p><input type="checkbox" checked="checked" id="checkall_dc">'+
+        '<label for="checkall_dc"><span></span>Select All</label><p>'+
         '</div>');
     getAllDiseaseCategories(function(result){
         result.children.forEach(function(item){
-            var i = $('<div>'+
-                '<label>'+
-                '<input type="checkbox" checked="checked" name="dc" id='+item.id+'>'+
-                '<span>'+item.name+'</span>'+
-                '</label>'+
-                '</div>');
-            $('#checkboxFilters').append(i);
+            var i = $(
+                '<p><input type="checkbox" checked="checked" name="dc" id='+item.id+'>'+
+                '<label for="'+item.id+'"><span></span>'+item.name+'</label></p>');
+            $('.disease-category').append(i);
         });
     });
+	
+	$('.checkbox').mouseover(function(){
+		$('.checkbox').css('background-color',"#8096A6");
+		$('.disease-category').show();
+	});
+
+	$('#checkboxFilters').mouseleave(function(){
+		$('.checkbox').css('background-color',"#002E4C");
+		$('.disease-category').hide();
+	});
 }
 
 function hideDiseaseCategoriesList(){
@@ -108,27 +113,31 @@ function showDiseaseCategoriesList(){
  * Add top <num> toxicants list to the right side bar
  */
 function appendTopToxicantsList(){
-    $('#toxicantList').append("<p>Top Toxicants: </p>");
-    $('#toxicantList').append('<div>'+
-        '<label>'+
-        '<input type="checkbox" checked="checked" id="checkall_top_toxicants">'+
-        '<span>Select All</span>'+
-        '</label>'+
+    $('#toxicantList').append("<p class='toptoxicants'>Top Toxicants </p>");
+    $('#toxicantList').append('<div class="top-toxicants">'+
+        '<p><input type="checkbox" checked="checked" id="checkall_top_toxicants">'+
+        '<label for="checkall_top_toxicants"><span></span>Select All</label></p>'+
         '</div>');
     getAllTopToxicants(function(result){
         result.children.forEach(function(item){
-            var i = $('<div>'+
-                '<label>'+
-                '<input type="checkbox" checked="checked" name="top_toxicant" id='+item.id+'>'+
-                '<span>'+item.name+'</span>'+
-                // TODO
-                '<span>'+ ' [size:  ' + item.size+'] </span>'+
-                '</label>'+
-                '</div>');
-            $('#toxicantList').append(i);
+            var i = $(
+                '<p><input type="checkbox" checked="checked" name="top_toxicant" id='+item.id+'>'+
+                '<label for="'+item.id+'"><span></span>'+item.name+'</label><p>');
+            $('.top-toxicants').append(i);
         });
     });
+	
+	$('.toptoxicants').mouseover(function(){
+		$('.toptoxicants').css('background-color',"#8096A6");
+		$('.top-toxicants').show();
+	});
+
+	$('#toxicantList').mouseleave(function(){
+		$('.toptoxicants').css('background-color',"#002E4C");
+		$('.top-toxicants').hide();
+	});
 }
+
 
 
 

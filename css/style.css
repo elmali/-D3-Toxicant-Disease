@@ -2,26 +2,71 @@ body{
 	font-family: Monospace!important;
 	font-size: medium;;
     background-color: #FCFCFC;
+	background-image: url('images/background2.jpg') ;
+	background-repeat: repeat;
+	width:100%;
+	margin: 0;
+	padding: 0;
+	/*font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;*/
 }
 
 
 input[type=checkbox]{
-	vertical-align: text-top;
+	display: none;
+}
+
+input[type=checkbox] + label{
+color: white;
+}
+
+p{
+color: white;
+}
+
+input[type=checkbox] + label>span{
+	display:inline-block;
+    width:18px;
+    height:18px;
+    margin:-1px 4px 0 0;
+    vertical-align:text-top;
+    background:url('images/check_radio_sheet.png') left top no-repeat;
+}
+
+input[type=checkbox]:checked + label>span{
+    background:url('images/check_radio_sheet.png') -19px top no-repeat;
+}
+
+label span{
+cursor:pointer;
 }
 
 svg{
 	fill:#FCFCFC;
+	margin-left: auto;
+	margin-right:auto;
+	display: block;
+	position: relative;
+	z-index: 3;
+	
 }
+
 
 #wrap {
 width: auto;
 position: relative;
 }
 
+#graph{
+margin: 0 auto;
+min-width: 45%;
+}
+
 #graphTitle{
 	margin: 10px;
 	vertical-align: sub;
-	font-size: 25px;;
+	font-size: 25px;
+	color: white;
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 
 #tooltipTitle{
@@ -31,23 +76,60 @@ position: relative;
 	font-weight: bold;
 	margin:5px; 
 }
-.selectList{
-	margin-top: 10%;
+
+#checkboxFilters{
+	float: left;
+	position: relative;
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	margin-right: 33%;
 }
 
 .searchList{
-	margin-top: 10%;
-}
-.left,.right {
-	width: 22%;
-	float: left;
+	float: right;
+	padding-top: 10px;
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 
-.center {
-float: left;
-min-width: 55%;
+.disease-category, .top-toxicants{
+    display: none;
+	position: absolute;
+	z-index: 5;
+	background-color: #002E4C;
+	border: 2px solid;
+	border-radius: 5px;
+	border-color: #8096A6;
+	width: 200px;
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
+.checkbox, .toptoxicants{
+color: white;
+cursor: pointer;
+}
+
+p.toptoxicants, p.checkbox{
+	border: 2px solid;
+	border-radius: 5px;
+	border-color: #8096A6;
+	background-color: #002E4C;
+}
+
+#toxicantList{
 width: auto;
+float: left;
 position: relative;
+font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
+#ADiseases{
+background-color: #002E4C;
+}
+
+#wrap{
+display: inline-block;
+width: 98%;
+margin: auto 0;
+padding: 10px;
 }
 
 .clearBoth {
@@ -68,4 +150,12 @@ clear: both;
 .axislabels{
 	font-weight: bold;
 	font-size: 20px;
+}
+
+#bubble-background{
+fill: none;
+}
+
+div>span{
+color: white;
 }
