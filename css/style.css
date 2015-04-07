@@ -159,3 +159,18 @@ fill: none;
 div>span{
 color: white;
 }
+
+footer{
+background-color: #8096A6;
+text-align: right;
+font-family: 'Tangerine', serif;
+color: #000052;
+font-weight: bold;
+}
+
+img{
+border: 2px solid;
+border-radius: 40px;
+border-color: #8096A6;
+color: 
+}
