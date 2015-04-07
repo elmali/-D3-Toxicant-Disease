@@ -60,7 +60,7 @@ $( document ).ready(function() {
        .attr("markerHeight", 10)
        .attr("orient", "270")
        .append("svg:path")
-       .attr("fill","gray")
+       .attr("fill","white")
        .attr("d", "M 0 0 L 10 5 L 0 10 z");
 
     $( "#selectRadio" ).buttonset();
@@ -138,7 +138,10 @@ function appendTopToxicantsList(){
 	});
 }
 
-
+function hideTopToxicants()
+{
+	$('#toxicantList').hide();
+}
 
 
 /**
@@ -182,7 +185,7 @@ function appendCircles(root){
         .attr("stroke", "white")
         .attr("stroke-width", 1)
         .style("fill", function(d,i) {
-            return colorbrewer.Spectral[9][Math.floor(color(d.r))];
+            return colorbrewer.GnBu[9][Math.floor(color(d.r))];
         });
 
     // enter
@@ -194,7 +197,7 @@ function appendCircles(root){
         .attr("stroke", "white")
         .attr("stroke-width", 1)
         .style("fill", function(d,i) {
-            return colorbrewer.Spectral[9][Math.floor(color(d.r))];
+            return colorbrewer.GnBu[9][Math.floor(color(d.r))];
         });
 
     // exit
@@ -213,6 +216,9 @@ function appendCircles(root){
             .append('text')
             .style("text-anchor", "middle")
             .attr("fill","black")
+			.style("font-weight", "bold")
+			.style("font-family", "verdana")
+			.style("font-size","10px")
             .attr("dy", ".3em")
             .text(function(d) {
                 var circleName = d.className.substring(0, Math.round(d.r / 3));
@@ -221,7 +227,7 @@ function appendCircles(root){
 
 
         svg.append("line")                 // attach a line
-            .attr("stroke", "gray")         // colour the line
+            .attr("stroke", "white")         // colour the line
             .attr("stroke-width", 2)        // adjust line width
             .attr("stroke-dasharray", ("10,3"))  // stroke-linecap type
             .attr("x1", 10)     // x position of the first end of the line
@@ -234,7 +240,7 @@ function appendCircles(root){
 
         svg.append("text").attr("class","axislabels")
             .style("text-anchor", "middle")
-            .attr("fill","gray")
+            .attr("fill","white")
             .attr("transform","translate(50 ,"+ 70 +")")
             .text("Strong");
         
@@ -248,10 +254,14 @@ function appendCircles(root){
                 .append('text')
                 .attr("class", "bubble-label  bubble")
                 .style("text-anchor", "middle")
-                .style("visibility",function(d,i){
+                .attr("fill","white")
+				.style("font-weight", "bold")
+				.style("font-family", "verdana")
+				.style("font-size","15px")
+				.style("visibility",function(d,i){
                     if(d.r<40) return "hidden";
                 })
-                .attr("fill","black")
+                //.attr("fill","black")
                 .attr("dy", ".3em")
                 .text(function(d) {
                     var circleName = d.className.substring(0, Math.round(d.r / 3));
@@ -271,7 +281,8 @@ function appendCircles(root){
         // Hide left hand side Disease Categories List after
         // entering into deeper view
         hideDiseaseCategoriesList();
-
+		hideTopToxicants();
+		
         currentURL = queryString.parse(location.hash);
         if(currentURL.specificData==""){
             currentURL.specificData = d.id;
@@ -279,13 +290,13 @@ function appendCircles(root){
             if (currentURL.domain=="Toxicants"){
                 var separators = ['\\\+', '\\\(', '\\\)', '\\*', '/'];
                 var showName = d.className.split(new RegExp(separators.join('|'), 'g')); 
-                $("#graphTitle").text("Diseases realted to " + showName[0]);
+                $("#graphTitle").text("Diseases related to " + showName[0]);
                 ajaxRequestDeepView("fetchFromToxicant",d.id);
             }
             else {
                 var separators = ['\\\+', '\\\(', '\\\)', '\\*', '/'];
                 var showName = d.className.split(new RegExp(separators.join('|'), 'g')); 
-                $("#graphTitle").text("Toxicants realted to " + showName[0]);
+                $("#graphTitle").text("Toxicants related to " + showName[0]);
                 ajaxRequestDeepView("fetchFromDisease",d.id);
             }
         }
