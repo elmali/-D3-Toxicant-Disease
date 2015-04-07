@@ -131,7 +131,7 @@
                 if ((this.options.blockSeparator > "") && (this.options.blockSeparator == $elm.val())) {
                     html.push(
                         '<li' + clss + style + '>',
-                        '<label class="' + this.options.blockSeparator + (disabled ? 'disabled' : '') + '">',
+                        '<label class="' + this.options.blockSeparator + (disabled ? 'disabled' : '') + '"><span></span>',
                         text,
                         '</label>',
                         '</li>'
@@ -144,7 +144,7 @@
                             (selected ? ' checked="checked"' : '') +
                             (disabled ? ' disabled="disabled"' : '') +
                             (group ? ' data-group="' + group + '"' : '') +
-                            '/> ',
+                            '/><span></span>',
                         text,
                         '</label>',
                         '</li>'
@@ -157,7 +157,7 @@
                 disabled = $elm.prop('disabled');
                 html.push(
                     '<li class="group">',
-                    '<label class="optgroup' + (disabled ? ' disabled' : '') + '" data-group="' + _group + '">',
+                    '<label class="optgroup' + (disabled ? ' disabled' : '') + '" data-group="' + _group + '"><span></span>',
                     (this.options.hideOptgroupCheckboxes ? '' : '<input type="checkbox" ' + this.selectGroupName +
                         (disabled ? ' disabled="disabled"' : '') + ' /> '),
                     label,
