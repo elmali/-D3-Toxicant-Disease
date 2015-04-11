@@ -144,6 +144,12 @@ function hideTopToxicants()
 }
 
 
+function showTopToxicants()
+{
+	$('#toxicantList').show();
+}
+
+
 /**
  *
  * @param root
@@ -582,6 +588,7 @@ function bindEvent(){
         // Append left hand side Disease Categories List after
         // going to the landing view
         showDiseaseCategoriesList();
+        showTopToxicants();
 
         var filter = [];
         changeGraphTitle("All toxicants");
@@ -605,6 +612,7 @@ function bindEvent(){
         // Append left hand side Disease Categories List after
         // going to the landing view
         showDiseaseCategoriesList();
+        showTopToxicants();
 
         changeGraphTitle("All diseases");
         currentURL.domain="Diseases";
