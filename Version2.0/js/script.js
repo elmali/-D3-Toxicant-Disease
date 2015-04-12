@@ -214,6 +214,8 @@ function appendCircles(root){
     updateVariableURL();
     if(currentURL.specificData!=""){
 
+        d3.select("#bubble-nodes").attr("transform", "translate(100, 5)");
+
         bubbleText.enter()
             .append('a')
             .attr("class", "bubble-label  bubble")
@@ -241,9 +243,55 @@ function appendCircles(root){
             .attr("y2", 10)     // x position of the second end of the line
             .attr("marker-start","url(#triangle)")
             .attr("x2", height*4.5/5);   // y position of the second end of the line
-          */
+*/
+        var gradient = svg.append("svg:defs")
+            .append("svg:linearGradient")
+            .attr("id", "gradient")
+            .attr("x1", "0%")
+            .attr("y1", "100%")
+            .attr("x2", "10%")
+            .attr("y2", "100%")
+            .attr("spreadMethod", "pad");
+
+        gradient.append("svg:stop")
+            .attr("offset", "0%")
+            .attr("stop-color", "#120BC0")
+            .attr("stop-opacity", 1);
+
+        gradient.append("svg:stop")
+            .attr("offset", "50%")
+            .attr("stop-color", "#A09DE6")
+            .attr("stop-opacity", 1);
 
 
+        gradient.append("svg:stop")
+            .attr("offset", "100%")
+            .attr("stop-color", "#F3F3FE")
+            .attr("stop-opacity", 1);
+
+        svg.append("svg:rect")
+            .attr("width", 10000)
+            .attr("height", 10)
+            .style("fill", "url(#gradient)");
+
+        /*svg.append("line")
+                .attr("id", "line-gradient")
+                .attr("gradientUnits", "userSpaceOnUse")
+                .attr("x1", 50).attr("y1", 10)
+                .attr("x2", height*4.5/5).attr("y2", 10)
+            .selectAll("stop")
+                .data([
+                {offset: "0%", color: "red"},
+                {offset: "40%", color: "red"},
+                {offset: "40%", color: "black"},
+                {offset: "62%", color: "black"},
+                {offset: "62%", color: "lawngreen"},
+                {offset: "100%", color: "lawngreen"}
+                ])
+            .enter().append("stop")
+                .attr("offset", function(d) { return d.offset; })
+                .attr("stop-color", function(d) { return d.color; });
+*/
         svg.append("text").attr("class","axislabels")
             .style("text-anchor", "middle")
             .attr("fill","rgb(18, 11, 192)")
@@ -258,9 +306,10 @@ function appendCircles(root){
 
         
     }else{
-        d3.select("line").remove();
+        d3.select("#bubble-nodes").attr("transform", "translate(20, 5)");
+        d3.select("rect").remove();
         d3.selectAll(".axislabels").remove();
-        
+
         bubbleText.enter()
                 .append('text')
                 .attr("class", "bubble-label  bubble")
@@ -406,8 +455,8 @@ function animation(bubbleNode,bubbleText,nodes){
             var center = width/2;
             updateVariableURL();
             if(currentURL.specificData=""){
-                d.y += (center - d.y) *  (damper + 0.01)*alpha;
-                d.x += (center - d.x) * (damper + 0.01)* alpha;
+                d.y += (center - d.y) *  (damper + 0.02)*alpha;
+                d.x += (center - d.x) * (damper + 0.02)* alpha;
             }else{
                 var yCenter = width/5;
                 switch (d.value) {
