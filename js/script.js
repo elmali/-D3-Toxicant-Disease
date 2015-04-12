@@ -115,14 +115,11 @@ function showDiseaseCategoriesList(){
 function appendTopToxicantsList(){
     $('#toxicantList').append("<p class='toptoxicants'>Top Toxicants </p>");
     $('#toxicantList').append('<div class="top-toxicants">'+
-        '<p><input type="checkbox" checked="checked" id="checkall_top_toxicants">'+
-        '<label for="checkall_top_toxicants"><span></span>Select All</label></p>'+
         '</div>');
     getAllTopToxicants(function(result){
         result.children.forEach(function(item){
             var i = $(
-                '<p><input type="checkbox" checked="checked" name="top_toxicant" id='+item.id+'>'+
-                '<label for="'+item.id+'"><span></span>'+capitalizeFirstLetter(item.name)+'</label><p>');
+                '<p><input type="radio" name="top_toxicant" id='+item.id+' value="'+item.name+'">'+capitalizeFirstLetter(item.name)+'<p>');
             $('.top-toxicants').append(i);
         });
     });
