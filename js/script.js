@@ -119,7 +119,7 @@ function appendTopToxicantsList(){
     getAllTopToxicants(function(result){
         result.children.forEach(function(item){
             var i = $(
-                '<p><input type="radio" name="top_toxicant" id='+item.id+' value="'+item.name+'">'+capitalizeFirstLetter(item.name)+'<p>');
+                '<p><input type="radio" name="top_toxicant" id="top_toxicant_'+item.id+'" value="'+item.name+'">'+capitalizeFirstLetter(item.name)+'<p>');
             $('.top-toxicants').append(i);
         });
     });
@@ -145,6 +145,9 @@ function showTopToxicants()
 {
 	$('#toxicantList').show();
 }
+
+
+
 
 
 /**
@@ -538,6 +541,9 @@ function bindEvent(){
         }
     });
 
+
+
+
     //send ajax request to php to request new set of toxicants data
     $(document).on("click","input[name=dc]",function(){
         updateVariableURL();
@@ -577,6 +583,7 @@ function bindEvent(){
             $(currentSearch).trigger('mouseout');
         }
     })
+
 
     $(document).on('click', "#AToxicants", function(){        
         // Reset deeper view flag.
