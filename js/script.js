@@ -122,7 +122,7 @@ function appendTopToxicantsList(){
         result.children.forEach(function(item){
             var i = $(
                 '<p><input type="checkbox" checked="checked" name="top_toxicant" id='+item.id+'>'+
-                '<label for="'+item.id+'"><span></span>'+item.name+'</label><p>');
+                '<label for="'+item.id+'"><span></span>'+capitalizeFirstLetter(item.name)+'</label><p>');
             $('.top-toxicants').append(i);
         });
     });
