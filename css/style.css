@@ -1,9 +1,9 @@
 body{
 	font-family: Monospace!important;
 	font-size: medium;;
-    background-color: #FCFCFC;
-	background-image: url('images/background2.jpg') ;
-	background-repeat: repeat;
+    background-color: black;
+	/*background-image: url('images/background2.jpg') ;
+	background-repeat: repeat;*/
 	width:100%;
 	margin: 0;
 	padding: 0;
@@ -34,6 +34,27 @@ input[type=checkbox] + label>span{
 
 input[type=checkbox]:checked + label>span{
     background:url('images/check_radio_sheet.png') -19px top no-repeat;
+}
+
+input[type="radio"]{
+	display: none;
+}
+
+input[type="radio"]+span{
+color: white;
+}
+
+input[type="radio"]+span{
+	display:inline-block;
+    width:18px;
+    height:18px;
+    margin:-1px 4px 0 0;
+    vertical-align:text-top;
+    background:url('images/check_radio_sheet.png') -37px top no-repeat;
+}
+
+input[type="radio"]:checked+span{
+    background:url('images/check_radio_sheet.png') right top no-repeat;
 }
 
 label span{
