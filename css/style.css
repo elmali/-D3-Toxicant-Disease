@@ -36,6 +36,17 @@ input[type=checkbox]:checked + label>span{
     background:url('images/check_radio_sheet.png') -19px top no-repeat;
 }
 
+input[type="radio"] +label>span{
+background-color: #002E4C;
+color: white;
+}
+
+input[type="radio"]:hover +label>span{
+background-color: #8096A6;
+color: white;
+}
+
+
 label span{
 cursor:pointer;
 }
@@ -78,16 +89,18 @@ min-width: 45%;
 }
 
 #checkboxFilters{
-	float: left;
+	float: right;
 	position: relative;
 	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-	margin-right: 33%;
+	margin: 1%;
 }
 
 .searchList{
-	float: right;
+	display:inline-block;
 	padding-top: 10px;
 	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	margin-left: 10px;
+	text-align: left
 }
 
 .disease-category, .top-toxicants{
@@ -115,10 +128,10 @@ p.toptoxicants, p.checkbox{
 }
 
 #toxicantList{
-width: auto;
-float: left;
+float: right;
 position: relative;
 font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+margin: 1%;
 }
 
 #ADiseases{
