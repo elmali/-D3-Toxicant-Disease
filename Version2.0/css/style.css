@@ -136,6 +136,7 @@ p.toptoxicants, p.checkbox{
 	border-radius: 5px;
 	border-color: #8096A6;
 	background-color: #002E4C;
+    padding: 7px;
 }
 
 #toxicantList{
