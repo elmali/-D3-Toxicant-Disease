@@ -37,7 +37,11 @@ $( document ).ready(function() {
 
     appendDiseaseCategoriesList();
     appendTopToxicantsList();
+    appendTopDiseasesList();
+
+    // Hide dropdown lists
     $('.top-toxicants').hide();
+    $('.top-diseases').hide();
 
     // Don't show top toxicant at landing view.
     hideTopToxicants();
@@ -151,6 +155,31 @@ function showTopToxicants()
 }
 
 
+
+/**
+ * Add top <num> diseases list 
+ */
+function appendTopDiseasesList(){
+    $('#diseaseList').append("<p class='topdiseases'>Top Diseases </p>");
+    $('#diseaseList').append('<div class="top-diseases">'+'</div>');
+    getAllTopDiseases(function(result){
+        result.children.forEach(function(item){
+            var i = $(
+                '<p><input type="radio" name="top_disease" id="top_disease_'+item.id+'" value="'+item.name+'">'+capitalizeFirstLetter(item.name)+'<p>');
+            $('.top-diseases').append(i);
+        });
+    });
+	
+	$('.topdiseases').mouseover(function(){
+		$('.topdiseases').css('background-color',"#8096A6");
+		$('.top-diseases').show();
+	});
+
+	$('#diseaseList').mouseleave(function(){
+		$('.topdiseases').css('background-color',"#002E4C");
+		$('.top-diseases').hide();
+	});
+}
 
 
 

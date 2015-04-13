@@ -21,6 +21,9 @@
 	<div id="toxicantList">
     </div>
 	
+	<div id="diseaseList">
+  </div>
+
 	<div class="searchList" >
         <div id="searchSection">
           <span>Search circle</span>

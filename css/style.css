@@ -90,7 +90,7 @@ min-width: 45%;
 	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 
-.disease-category, .top-toxicants{
+.disease-category, .top-toxicants, .top-diseases{
     display: none;
 	position: absolute;
 	z-index: 5;
@@ -102,19 +102,19 @@ min-width: 45%;
 	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 
-.checkbox, .toptoxicants{
+.checkbox, .toptoxicants, .topdiseases{
 color: white;
 cursor: pointer;
 }
 
-p.toptoxicants, p.checkbox{
+p.toptoxicants, p.topdiseases, p.checkbox{
 	border: 2px solid;
 	border-radius: 5px;
 	border-color: #8096A6;
 	background-color: #002E4C;
 }
 
-#toxicantList{
+#toxicantList, #diseaseList{
 width: auto;
 float: left;
 position: relative;
@@ -177,8 +177,8 @@ border-color: #8096A6;
 }
 
 
-/* Make top toxicant list scrollable */
-.top-toxicants{
+/* Make top lists scrollable */
+.top-toxicants, .top-diseases{
   display: block; 
   overflow-y: auto;
   height: 600px;

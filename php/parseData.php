@@ -33,6 +33,13 @@ switch ($action) {
         */
         getTopToxicants();
         break;
+    case 'getTopDiseases':
+        /*
+         * Pass POST variable "action" > 'getTopDiseases'
+         * POST variable "filter" > NA
+        */
+        getTopDiseases();
+        break;
     case 'getDiseases':
         /*
          * Pass POST variable "action" > 'getDiseases'
@@ -151,8 +158,32 @@ function getTopToxicants(){
 }
 
 
+/**
+ * This method returns the data for right side top diseases list.
+ */
+function getTopDiseases(){
+    global $conn;
 
+    // Get top 25 diseases that have the largest number of toxicants accociated
+    // with them.
+    //
+    $stmt = 'SELECT D.ID as id, D.name as name, count(L.contaminant_id) as size
+                     FROM toxins_disease as D, toxins_links as L
+                     WHERE D.ID = L.disease_id
+                     GROUP BY D.ID
+                     ORDER BY size DESC 
+                     LIMIT 25';
+    
+    $result = $conn->query($stmt);
 
+    $data = array("name"=>"TopDiseases", "children" => array());
+
+    while($rows = $result->fetch_assoc()){
+        $tempData = array('id' => $rows['id'], 'name' => $rows['name'], 'size' => $rows['size']);
+        array_push($data['children'], $tempData);
+    }
+    echo json_encode($data);
+}
 
 
 /**

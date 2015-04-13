@@ -97,7 +97,6 @@ function getAllDiseaseCategories(callback){
 /**
  * Get all top toxicants from parseData.php via ajax
  * @param callback
- * TODO
  */
 function getAllTopToxicants(callback){
     $.ajax({
@@ -118,6 +117,31 @@ function getAllTopToxicants(callback){
         }
     });
 }
+
+/**
+ * Get all top diseases from parseData.php via ajax
+ * @param callback
+ */
+function getAllTopDiseases(callback){
+    $.ajax({
+        url: GET,
+        data:{
+            action:"getTopDiseases"
+        },
+        success: function(response){
+            if (response){
+                try{
+                    var result = JSON.parse(response);
+                    callback(result);
+                }
+                catch (e){
+                    console.log(e);
+                }
+            }
+        }
+    });
+}
+
 
 
 function allDataFilterByDC(ac,filter,callback){
