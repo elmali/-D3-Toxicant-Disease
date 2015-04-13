@@ -341,7 +341,6 @@ function appendCircles(root){
         hideTopToxicants();
         // Hide top diseases list
         hideTopDiseases();
-
         currentURL = queryString.parse(location.hash);
         if(currentURL.specificData==""){
             currentURL.specificData = d.id;
