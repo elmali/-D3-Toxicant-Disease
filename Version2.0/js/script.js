@@ -266,7 +266,7 @@ function appendCircles(root){
 
         gradient.append("svg:stop")
             .attr("offset", "100%")
-            .attr("stop-color", "rgb(245, 247, 248)")
+            .attr("stop-color", "rgb(227, 230, 233)")
             .attr("stop-opacity", 1);
 
         svg.append("svg:rect")
@@ -300,7 +300,7 @@ function appendCircles(root){
 
         svg.append("text").attr("class","axislabels")
             .style("text-anchor", "middle")
-            .attr("fill","rgb(245, 247, 248)")
+            .attr("fill","rgb(223, 225, 225)")
             .attr("transform","translate(1100 ,"+ 70 +")")
             .text("Weaker Evidence");
 
@@ -430,7 +430,7 @@ function animation(bubbleNode,bubbleText,nodes){
             var colorP = d3.scale.linear()
                         .domain([100, 500, 900])
                         //.range(["rgb(18, 11, 192)", "rgb(160, 157, 230)", "rgb(243, 243, 254)"]);
-                        .range(["rgb(54, 91, 110)", "rgb(154, 173, 182)", "rgb(245, 247, 248)"]);
+                        .range(["rgb(54, 91, 110)", "rgb(154, 173, 182)", "rgb(227, 230, 233)"]);
 
             bubbleNode.style("fill", function(d,i) {
                 var pofy = Math.round(d.x);

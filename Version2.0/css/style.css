@@ -1,9 +1,10 @@
 body{
 	font-family: Monospace!important;
 	font-size: medium;;
-    background-color: #FCFCFC;
-	background-image: url('images/background2.jpg') ;
+    background-color: #E7EBED;
+/*	background-image: url('images/background2.jpg') ;
 	background-repeat: repeat;
+	*/
 	width:100%;
 	margin: 0;
 	padding: 0;
