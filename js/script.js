@@ -39,6 +39,9 @@ $( document ).ready(function() {
     appendTopToxicantsList();
     $('.top-toxicants').hide();
 
+    // Don't show top toxicant at landing view.
+    hideTopToxicants();
+
     svg = d3.select("#graph").append("svg")
         .attr("width", width + margin.right + margin.left)
         .attr("height", height + margin.top + margin.bottom);
