@@ -2,9 +2,9 @@ body{
 	font-family: Monospace!important;
 	font-size: medium;;
     background-color: #000000;
-/*	background-image: url('images/background2.jpg') ;
-	background-repeat: repeat;
-	*/
+	background-image: url('images/background2.jpg') ;
+	background-repeat: no-repeat;
+
 	width:100%;
 	margin: 0;
 	padding: 0;
@@ -69,7 +69,7 @@ svg{
 	display: block;
 	position: relative;
 	z-index: 3;
-
+	
 }
 
 
@@ -86,12 +86,11 @@ min-width: 45%;
 }
 
 #graphTitle{
-    /*margin: 10px;*/
-    display:inline-block;
-    vertical-align: sub;
-    font-size: 25px;
-    color: white;
-    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	margin: 10px;
+	vertical-align: sub;
+	font-size: 25px;
+	color: white;
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 
 #tooltipTitle{
@@ -99,7 +98,7 @@ min-width: 45%;
 	color: rgb(43,117,237);
 	text-align: center;
 	font-weight: bold;
-	margin:5px;
+	margin:5px; 
 }
 
 #checkboxFilters{
@@ -146,6 +145,7 @@ position: relative;
 font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 
+<<<<<<< HEAD
 /* Effect on button : NYI commenting for future work
 #selectRadio input[type="radio"] {
     display:none;
@@ -182,6 +182,10 @@ font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 
 #header{
     position: fixed;
+=======
+#ADiseases{
+background-color: #002E4C;
+>>>>>>> origin/master
 }
 
 #wrap{
