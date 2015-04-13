@@ -1,10 +1,7 @@
 body{
 	font-family: Monospace!important;
 	font-size: medium;;
-    background-color: #000000;
-	background-image: url('images/background2.jpg') ;
-	background-repeat: no-repeat;
-
+    background-color: black;
 	width:100%;
 	margin: 0;
 	padding: 0;
@@ -36,30 +33,19 @@ input[type=checkbox] + label>span{
 input[type=checkbox]:checked + label>span{
     background:url('images/check_radio_sheet.png') -19px top no-repeat;
 }
-/*
-input[type="radio"]{
-	display: none;
+
+label span{
+cursor:pointer;
 }
 
-input[type="radio"]+span{
+input[type="radio"] +label>span{
+background-color: #002E4C;
 color: white;
 }
 
-input[type="radio"]+span{
-	display:inline-block;
-    width:18px;
-    height:18px;
-    margin:-1px 4px 0 0;
-    vertical-align:text-top;
-    background:url('images/check_radio_sheet.png') -37px top no-repeat;
-}
-
-input[type="radio"]:checked+span{
-    background:url('images/check_radio_sheet.png') right top no-repeat;
-}
-*/
-label span{
-cursor:pointer;
+input[type="radio"]:checked +label>span{
+background-color: #8096A6;
+color: white;
 }
 
 svg{
@@ -69,15 +55,12 @@ svg{
 	display: block;
 	position: relative;
 	z-index: 3;
-	
 }
 
 
 #wrap {
-    margin-top: 55px;
-    display: inline-block;
-    width: 98%;
-    padding: 10px;
+width: auto;
+position: relative;
 }
 
 #graph{
@@ -101,17 +84,23 @@ min-width: 45%;
 	margin:5px; 
 }
 
+#selectRadio{
+float: left;
+}
+
 #checkboxFilters{
 	float: left;
 	position: relative;
 	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-	margin-right: 33%;
+	margin-right: 150px;
 }
 
 .searchList{
-	float: right;
+	display:inline-block;
 	padding-top: 10px;
 	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	text-align: left;
+	margin-left: 10px;
 }
 
 .disease-category, .top-toxicants, .top-diseases{
@@ -124,6 +113,7 @@ min-width: 45%;
 	border-color: #8096A6;
 	width: 200px;
 	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	text-align: left;
 }
 
 .checkbox, .toptoxicants, .topdiseases{
@@ -136,64 +126,23 @@ p.toptoxicants, p.topdiseases, p.checkbox{
 	border-radius: 5px;
 	border-color: #8096A6;
 	background-color: #002E4C;
-    padding: 7px;
 }
 
 #toxicantList, #diseaseList{
-width: auto;
 float: left;
+margin-top: -5px;
 position: relative;
 font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+margin-left: 150px;
 }
 
 #ADiseases{
 background-color: #002E4C;
 }
 
-/* Effect on button : NYI commenting for future work
-#selectRadio input[type="radio"] {
-    display:none;
-}
-
-#selectRadio label{
-    display:inline-block;
-    background-color: #002E4C;
-    border-radius: 5px;
-    border-color: #8096A6;
-}
-
-#selectRadio input[type="radio"]:checked + label {
-    background-color:#ffff00;
-}*/
-
-/*.ui-button, .ui-widget, .ui-state-default, .ui-button-text-only, .ui-corner-right{
-    font-size: 0.5em !important;
-    font-weight:normal !important;
-    background-color: #002E4C !important;
-}*/
-
-
-#selectRadio{
-    position: fixed;
-    width: 550px;
-    height: 40px;
-    right: -21.3%;
-    top: 0;
-    margin-top: 5px;
-    padding: 2px;
-    margin-bottom: 40px;
-    float: left;
-}
-
-#header{
-    position: fixed;
-}
-
 #wrap{
-    margin-top: 55px;
-    display: inline-block;
-    width: 98%;
-    padding: 10px;
+display: inline-block;
+margin: auto 0;
 }
 
 .clearBoth {
@@ -247,4 +196,3 @@ border-color: #8096A6;
   overflow-y: auto;
   height: 600px;
 }
-
