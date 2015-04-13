@@ -413,9 +413,7 @@ function animation(bubbleNode,bubbleText,nodes){
             .attr("transform", function(d){ return 'translate(' + (d.x+margin.left) + ',' + (margin.top + d.y)  + ')';} );
         bubbleText.attr("transform", function(d){ return 'translate(' + (margin.left + d.x) + ',' + (margin.top + d.y)  + ')';} );
 
-        setTimeout(function() {
-            continuousColor(bubbleNode);
-        }, 2000);
+         continuousColor(bubbleNode);
     }
 
 
@@ -478,13 +476,15 @@ function continuousColor(color_nodes){
         // When it is deeper view, change the colors to be continuous.
         if(is_deeper_view){
             // Color range
+              
             var colorP = d3.scale.linear()
-                        .domain([100, 500, 900])
-                        .range(["purple", "steelblue", "rgb(255,255,153)"]);
+                        .domain([100, 600, 900])
+                        .range(["rgb(8, 64, 129)", "rgb(78, 179, 211)", "rgb(204, 235, 197)"]);
+
             color_nodes.style("fill", function(d,i) {
-                var pofy = Math.round(d.y);
-                return colorP(pofy);
-            });
+                                  var pofy = Math.round(d.y);
+                                  return colorP(pofy); })
+                       .attr("fill-opacity", 0.85);
         }
 }
 
