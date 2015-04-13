@@ -72,7 +72,7 @@ min-width: 45%;
 	vertical-align: sub;
 	font-size: 25px;
 	color: white;
-	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-family: Verdana, "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 
 #tooltipTitle{
@@ -91,14 +91,14 @@ width: auto;
 #checkboxFilters{
 	float: left;
 	position: relative;
-	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-family: Verdana, "Palatino Linotype", "Book Antiqua", Palatino, serif;
 	margin-right: 15%;
 }
 
 .searchList{
 	display:inline-block;
 	padding-top: 10px;
-	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-family: Verdana, "Palatino Linotype", "Book Antiqua", Palatino, serif;
 	text-align: left;
 	margin-left: 10px;
 }
@@ -112,7 +112,7 @@ width: auto;
 	border-radius: 5px;
 	border-color: #8096A6;
 	width: 200px;
-	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-family: Verdana, "Palatino Linotype", "Book Antiqua", Palatino, serif;
 	text-align: left;
 }
 
@@ -132,7 +132,7 @@ p.toptoxicants, p.topdiseases, p.checkbox{
 float: left;
 margin-top: -5px;
 position: relative;
-font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+font-family: Verdana, "Palatino Linotype", "Book Antiqua", Palatino, serif;
 margin-left: 15%;
 }
 
@@ -176,7 +176,7 @@ color: white;
 footer{
 background-color: #8096A6;
 text-align: right;
-font-family: 'Tangerine', serif;
+font-family: Verdana, 'Tangerine', serif;
 color: #000052;
 font-weight: bold;
 border: 2px solid;
@@ -208,3 +208,7 @@ and (max-device-width : 480px)
 		margin-left: 1%;
 	}
 }
+
+
+* { font-family: Verdana; }
+ 
