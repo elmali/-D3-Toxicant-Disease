@@ -411,24 +411,14 @@ function animation(bubbleNode,bubbleText,nodes){
     function tick(e) {
         bubbleNode.each(move_towards_center(e.alpha))
             .attr("transform", function(d){ return 'translate(' + (d.x+margin.left) + ',' + (margin.top + d.y)  + ')';} );
-
         bubbleText.attr("transform", function(d){ return 'translate(' + (margin.left + d.x) + ',' + (margin.top + d.y)  + ')';} );
 
-        // When it is deeper view, change the colors to be continuous.
-        if(is_deeper_view){
-            // Color range
-            var colorP = d3.scale.linear()
-                        .domain([100, 500, 900])
-                        .range(["purple", "steelblue", "rgb(255,255,153)"]);
-
-            bubbleNode.style("fill", function(d,i) {
-                var pofy = Math.round(d.y);
-                return colorP(pofy);
-            });
-        }
-
-
+        setTimeout(function() {
+            continuousColor(bubbleNode);
+        }, 2000);
     }
+
+
     var force = d3.layout.force()
         .nodes(nodes)
         .size([width, height]);
@@ -438,6 +428,8 @@ function animation(bubbleNode,bubbleText,nodes){
             return  -Math.pow(d.r, 2.0) / space;
         };
     }
+
+
 
     // Move nodes toward cluster focus.
     function move_towards_center(alpha) {
@@ -477,6 +469,23 @@ function animation(bubbleNode,bubbleText,nodes){
                     .on("tick", tick)
                     .start();
 
+
+}
+
+
+
+function continuousColor(color_nodes){
+        // When it is deeper view, change the colors to be continuous.
+        if(is_deeper_view){
+            // Color range
+            var colorP = d3.scale.linear()
+                        .domain([100, 500, 900])
+                        .range(["purple", "steelblue", "rgb(255,255,153)"]);
+            color_nodes.style("fill", function(d,i) {
+                var pofy = Math.round(d.y);
+                return colorP(pofy);
+            });
+        }
 }
 
 function updateVariableURL(){
