@@ -219,6 +219,7 @@ function classes(root) {
 function appendCircles(root){
 
     clearSearch();
+
     var radius = d3.scale.sqrt().range([0, 12]);
     //calculating layout values
     var nodes = classes(root);
@@ -324,6 +325,9 @@ function appendCircles(root){
 
 
     allCirlces.on("click",function(d){
+        if(pastForce!=null){
+            pastForce.stop();
+        }
         is_deeper_view = true;
 
         // Hide left hand side Disease Categories List after
@@ -398,6 +402,7 @@ function appendCircles(root){
 
 
 function animation(bubbleNode,bubbleText,nodes){
+
     var space = 8;  
     var damper = 0.1;   
     
@@ -410,14 +415,13 @@ function animation(bubbleNode,bubbleText,nodes){
 
 
     function tick(e) {
+
         bubbleNode.each(move_towards_center(e.alpha))
             .attr("transform", function(d){ return 'translate(' + (d.x+margin.left) + ',' + (margin.top + d.y)  + ')';} );
         bubbleText.attr("transform", function(d){ return 'translate(' + (margin.left + d.x) + ',' + (margin.top + d.y)  + ')';} );
-        //** Comment following lines -- Start
-        setTimeout(function() {
+//        setTimeout(function() {
              continuousColor(bubbleNode);
-        }, 2000);
-        //** End
+//        }, 2000);
     }
 
 
@@ -470,8 +474,6 @@ function animation(bubbleNode,bubbleText,nodes){
                     .friction(0.9)
                     .on("tick", tick)
                     .start();
-
-
 }
 
 
