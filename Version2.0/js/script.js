@@ -24,7 +24,7 @@ $( document ).ready(function() {
     layout_gravity = -0.01;
 
     width = 980,
-    height = 1500;
+    height = 1000;
     diameter = 960,
         format = d3.format(",d");
     max_amount = 80;
