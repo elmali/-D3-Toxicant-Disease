@@ -341,6 +341,7 @@ function appendCircles(root){
         hideTopToxicants();
         // Hide top diseases list
         hideTopDiseases();
+		$('#selectRadio').css("float","center");
         currentURL = queryString.parse(location.hash);
         if(currentURL.specificData==""){
             currentURL.specificData = d.id;
