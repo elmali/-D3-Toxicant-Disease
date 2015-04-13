@@ -138,13 +138,13 @@ function getAllContaminants(){
 function getTopToxicants(){
     global $conn;
 
-    // Get top 25 toxicants that have the largest number of diseases accociated
+    // Get top 100 toxicants that have the largest number of diseases accociated
     // with them.
     $stmt = 'SELECT count(distinct r.disease_id) as size, s.name as name, s.ID as id 
                     FROM toxins_links as r LEFT join toxins_contaminant as s ON r.contaminant_id=s.ID 
                     group by r.contaminant_id 
                     ORDER BY size DESC 
-                    LIMIT 25';
+                    LIMIT 100';
     
     $result = $conn->query($stmt);
 
@@ -164,7 +164,7 @@ function getTopToxicants(){
 function getTopDiseases(){
     global $conn;
 
-    // Get top 25 diseases that have the largest number of toxicants accociated
+    // Get top 100 diseases that have the largest number of toxicants accociated
     // with them.
     //
     $stmt = 'SELECT D.ID as id, D.name as name, count(L.contaminant_id) as size
@@ -172,7 +172,7 @@ function getTopDiseases(){
                      WHERE D.ID = L.disease_id
                      GROUP BY D.ID
                      ORDER BY size DESC 
-                     LIMIT 25';
+                     LIMIT 100';
     
     $result = $conn->query($stmt);
 
