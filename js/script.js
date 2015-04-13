@@ -95,16 +95,16 @@ function appendDiseaseCategoriesList(){
             $('.disease-category').append(i);
         });
     });
-	
-	$('.checkbox').mouseover(function(){
-		$('.checkbox').css('background-color',"#8096A6");
-		$('.disease-category').show();
-	});
+    
+    $('.checkbox').mouseover(function(){
+        $('.checkbox').css('background-color',"#8096A6");
+        $('.disease-category').show();
+    });
 
-	$('#checkboxFilters').mouseleave(function(){
-		$('.checkbox').css('background-color',"#002E4C");
-		$('.disease-category').hide();
-	});
+    $('#checkboxFilters').mouseleave(function(){
+        $('.checkbox').css('background-color',"#002E4C");
+        $('.disease-category').hide();
+    });
 }
 
 function hideDiseaseCategoriesList(){
@@ -131,27 +131,27 @@ function appendTopToxicantsList(){
             $('.top-toxicants').append(i);
         });
     });
-	
-	$('.toptoxicants').mouseover(function(){
-		$('.toptoxicants').css('background-color',"#8096A6");
-		$('.top-toxicants').show();
-	});
+    
+    $('.toptoxicants').mouseover(function(){
+        $('.toptoxicants').css('background-color',"#8096A6");
+        $('.top-toxicants').show();
+    });
 
-	$('#toxicantList').mouseleave(function(){
-		$('.toptoxicants').css('background-color',"#002E4C");
-		$('.top-toxicants').hide();
-	});
+    $('#toxicantList').mouseleave(function(){
+        $('.toptoxicants').css('background-color',"#002E4C");
+        $('.top-toxicants').hide();
+    });
 }
 
 function hideTopToxicants()
 {
-	$('#toxicantList').hide();
+    $('#toxicantList').hide();
 }
 
 
 function showTopToxicants()
 {
-	$('#toxicantList').show();
+    $('#toxicantList').show();
 }
 
 
@@ -169,26 +169,26 @@ function appendTopDiseasesList(){
             $('.top-diseases').append(i);
         });
     });
-	
-	$('.topdiseases').mouseover(function(){
-		$('.topdiseases').css('background-color',"#8096A6");
-		$('.top-diseases').show();
-	});
+    
+    $('.topdiseases').mouseover(function(){
+        $('.topdiseases').css('background-color',"#8096A6");
+        $('.top-diseases').show();
+    });
 
-	$('#diseaseList').mouseleave(function(){
-		$('.topdiseases').css('background-color',"#002E4C");
-		$('.top-diseases').hide();
-	});
+    $('#diseaseList').mouseleave(function(){
+        $('.topdiseases').css('background-color',"#002E4C");
+        $('.top-diseases').hide();
+    });
 }
 
 function hideTopDiseases()
 {
-	$('#diseaseList').hide();
+    $('#diseaseList').hide();
 }
 
 function showTopDiseases()
 {
-	$('#diseaseList').show();
+    $('#diseaseList').show();
 }
 
 
@@ -265,9 +265,9 @@ function appendCircles(root){
             .append('text')
             .style("text-anchor", "middle")
             .attr("fill","black")
-			.style("font-weight", "bold")
-			.style("font-family", "verdana")
-			.style("font-size","10px")
+            .style("font-weight", "bold")
+            .style("font-family", "verdana")
+            .style("font-size","10px")
             .attr("dy", ".3em")
             .text(function(d) {
                 var circleName = d.className.substring(0, Math.round(d.r / 3));
@@ -304,10 +304,10 @@ function appendCircles(root){
                 .attr("class", "bubble-label  bubble")
                 .style("text-anchor", "middle")
                 .attr("fill","white")
-				.style("font-weight", "bold")
-				.style("font-family", "verdana")
-				.style("font-size","15px")
-				.style("visibility",function(d,i){
+                .style("font-weight", "bold")
+                .style("font-family", "verdana")
+                .style("font-size","15px")
+                .style("visibility",function(d,i){
                     if(d.r<40) return "hidden";
                 })
                 //.attr("fill","black")
@@ -333,7 +333,7 @@ function appendCircles(root){
         // Hide left hand side Disease Categories List after
         // entering into deeper view
         hideDiseaseCategoriesList();
-		hideTopToxicants();
+        hideTopToxicants();
         // Hide top diseases list
         hideTopDiseases();
 
@@ -396,8 +396,7 @@ function appendCircles(root){
 
 
     animation(bubbleNode,bubbleText,nodes);
-    //uncomment following line
-    //continuousColor(bubbleNode);
+
 }
 
 
@@ -474,6 +473,8 @@ function animation(bubbleNode,bubbleText,nodes){
                     .friction(0.9)
                     .on("tick", tick)
                     .start();
+
+
 }
 
 
@@ -482,13 +483,15 @@ function continuousColor(color_nodes){
         // When it is deeper view, change the colors to be continuous.
         if(is_deeper_view){
             // Color range
+              
             var colorP = d3.scale.linear()
-                        .domain([100, 500, 900])
-                        .range(["purple", "steelblue", "rgb(255,255,153)"]);
+                        .domain([100, 600, 900])
+                        .range(["rgb(8, 64, 129)", "rgb(78, 179, 211)", "rgb(204, 235, 197)"]);
+
             color_nodes.style("fill", function(d,i) {
-                var pofy = Math.round(d.y);
-                return colorP(pofy);
-            });
+                                  var pofy = Math.round(d.y);
+                                  return colorP(pofy); })
+                       .attr("fill-opacity", 0.85);
         }
 }
 
