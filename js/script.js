@@ -37,6 +37,7 @@ $( document ).ready(function() {
 
     appendDiseaseCategoriesList();
     appendTopToxicantsList();
+    $('.top-toxicants').hide();
 
     svg = d3.select("#graph").append("svg")
         .attr("width", width + margin.right + margin.left)
