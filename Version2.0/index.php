@@ -12,7 +12,6 @@
         <label for="ADiseases">By Disease</label>
         <input type="radio" id="AToxicants" name="radio" >
         <label for="AToxicants">By Toxicant</label>
-        <span id="graphTitle">All diseases</span>
     </div>
 </div>
 
