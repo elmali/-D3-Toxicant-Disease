@@ -69,7 +69,7 @@ svg{
 	display: block;
 	position: relative;
 	z-index: 3;
-	
+
 }
 
 
@@ -84,11 +84,12 @@ min-width: 45%;
 }
 
 #graphTitle{
-	margin: 10px;
-	vertical-align: sub;
-	font-size: 25px;
-	color: white;
-	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    /*margin: 10px;*/
+    display:inline-block;
+    vertical-align: sub;
+    font-size: 25px;
+    color: white;
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 
 #tooltipTitle{
@@ -96,7 +97,7 @@ min-width: 45%;
 	color: rgb(43,117,237);
 	text-align: center;
 	font-weight: bold;
-	margin:5px; 
+	margin:5px;
 }
 
 #checkboxFilters{
@@ -146,6 +147,45 @@ font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 #ADiseases{
 background-color: #002E4C;
 }
+
+/* Effect on button : NYI commenting for future work
+#selectRadio input[type="radio"] {
+    display:none;
+}
+
+#selectRadio label{
+    display:inline-block;
+    background-color: #002E4C;
+    border-radius: 5px;
+    border-color: #8096A6;
+}
+
+#selectRadio input[type="radio"]:checked + label {
+    background-color:#ffff00;
+}*/
+
+/*.ui-button, .ui-widget, .ui-state-default, .ui-button-text-only, .ui-corner-right{
+    font-size: 0.5em !important;
+    font-weight:normal !important;
+    background-color: #002E4C !important;
+}*/
+
+#selectRadio{
+    position: fixed;
+    width: 550px;
+    height: 40px;
+    right: -21.3%;
+    top: 0;
+    margin-top: 5px;
+    padding: 2px;
+    margin-bottom: 40px;
+    float: left;
+}
+
+#header{
+    position: fixed;
+}
+
 
 #wrap{
 display: inline-block;

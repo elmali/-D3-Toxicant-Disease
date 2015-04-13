@@ -4,13 +4,13 @@
     require('php/header.php');
 ?>
 
-<div style="margin:0 auto;text-align:center;">
+<div  id='header'> <!-- style="margin:0 auto;text-align:center;">-->
+    <span id="graphTitle">All diseases</span>
     <div id="selectRadio">
 	  <input type="radio" id="ADiseases" name="radio" checked="checked">
 	  <label for="ADiseases">By Disease</label>
 	  <input type="radio" id="AToxicants" name="radio" >
 	  <label for="AToxicants">By Toxicant</label>
-	  <span id="graphTitle">All diseases</span>
     </div>
 </div>
 
