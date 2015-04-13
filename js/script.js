@@ -610,13 +610,25 @@ function bindEvent(){
     $("#bubbleFilter").multipleSelect({
         filter: true,
         single: true,
-        onClose: function() {            
-            var searchID = "#"+$('select').multipleSelect('getSelects');
-            var jqueryNode = $(searchID);  //jquery
-            var d3Node = d3.selectAll( jqueryNode.toArray() ); //d3
-            var event = document.createEvent("SVGEvents");
-            event.initEvent("click",true,true);
-            d3Node.node().dispatchEvent(event);
+        onClose: function() {
+            updateVariableURL();            
+            if(currentURL.specificData==""){
+                if (currentSearch !=""){
+                    $(currentSearch).trigger('mouseout');
+                    currentSearch ="";
+                }
+                var searchID = "#"+$('select').multipleSelect('getSelects');
+                var jqueryNode = $(searchID);  //jquery
+                var d3Node = d3.selectAll( jqueryNode.toArray() ); //d3
+                var event = document.createEvent("SVGEvents");
+                event.initEvent("click",true,true);
+                d3Node.node().dispatchEvent(event);                
+            }else{
+                var searchID = "#"+$('select').multipleSelect('getSelects');
+                currentSearch = searchID;
+                $(searchID).trigger('mouseover');
+            }
+
         }
     });
 
