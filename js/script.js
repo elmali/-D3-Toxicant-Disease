@@ -74,9 +74,14 @@ $( document ).ready(function() {
     $( "#selectRadio" ).buttonset();
     bindEvent();
 
+    toolTip();
+
     ajaxRequestAllData('getDiseases');
 
+
 });
+
+
 
 /**
  * Add disease-category list to the left side bar
@@ -576,6 +581,8 @@ function clearSearch(){
  *
  */
 function bindEvent(){
+
+
     $(document).on("click","#checkall_dc",function(){
         updateVariableURL();
         if($(this).is(':checked')){
@@ -732,4 +739,25 @@ function bindEvent(){
         d3Node_top_disease.node().dispatchEvent(event_top_disease);
    });
 
+
+}
+
+
+
+function toolTip(){
+        $('#diseaseList').qtip({
+            content: {
+                text: "This list shows the top 100 diseases in descending order."
+            },
+            position: {
+                my: 'middle left',
+                at: 'middle right'
+            },
+            show: {
+                event: 'click'
+            },
+            style:{
+                classes:'qtip-bootstrap qtip2Css'
+            }
+        });
 }
