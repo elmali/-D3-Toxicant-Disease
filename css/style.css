@@ -175,3 +175,11 @@ border: 2px solid;
 border-radius: 40px;
 border-color: #8096A6;
 }
+
+
+/* Make top toxicant list scrollable */
+.top-toxicants{
+  display: block; 
+  overflow-y: auto;
+  height: 600px;
+}
