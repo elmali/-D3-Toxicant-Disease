@@ -181,6 +181,15 @@ function appendTopDiseasesList(){
 	});
 }
 
+function hideTopDiseases()
+{
+	$('#diseaseList').hide();
+}
+
+function showTopDiseases()
+{
+	$('#diseaseList').show();
+}
 
 
 /**
@@ -626,6 +635,8 @@ function bindEvent(){
         // going to the landing view
         showDiseaseCategoriesList();
         showTopToxicants();
+        // Hide top diseases list
+        hideTopDiseases();
 
         var filter = [];
         changeGraphTitle("All toxicants");
@@ -649,7 +660,8 @@ function bindEvent(){
         // Append left hand side Disease Categories List after
         // going to the landing view
         showDiseaseCategoriesList();
-        showTopToxicants();
+        hideTopToxicants();
+        showTopDiseases();
 
         changeGraphTitle("All diseases");
         currentURL.domain="Diseases";
