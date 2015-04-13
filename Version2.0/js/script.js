@@ -255,18 +255,18 @@ function appendCircles(root){
 
         gradient.append("svg:stop")
             .attr("offset", "0%")
-            .attr("stop-color", "#120BC0")
+            .attr("stop-color", "rgb(54, 91, 110)")
             .attr("stop-opacity", 1);
 
         gradient.append("svg:stop")
             .attr("offset", "50%")
-            .attr("stop-color", "#A09DE6")
+            .attr("stop-color", "rgb(154, 173, 182)")
             .attr("stop-opacity", 1);
 
 
         gradient.append("svg:stop")
             .attr("offset", "100%")
-            .attr("stop-color", "#F3F3FE")
+            .attr("stop-color", "rgb(245, 247, 248)")
             .attr("stop-opacity", 1);
 
         svg.append("svg:rect")
@@ -294,13 +294,13 @@ function appendCircles(root){
 */
         svg.append("text").attr("class","axislabels")
             .style("text-anchor", "middle")
-            .attr("fill","rgb(18, 11, 192)")
+            .attr("fill","rgb(54, 91, 110)")
             .attr("transform","translate(90 ,"+ 70 +")")
             .text("Stronger Evidence");
 
         svg.append("text").attr("class","axislabels")
             .style("text-anchor", "middle")
-            .attr("fill","rgb(243, 243, 254)")
+            .attr("fill","rgb(245, 247, 248)")
             .attr("transform","translate(1100 ,"+ 70 +")")
             .text("Weaker Evidence");
 
@@ -429,7 +429,8 @@ function animation(bubbleNode,bubbleText,nodes){
             // Color range
             var colorP = d3.scale.linear()
                         .domain([100, 500, 900])
-                        .range(["rgb(18, 11, 192)", "rgb(160, 157, 230)", "rgb(243, 243, 254)"]);
+                        //.range(["rgb(18, 11, 192)", "rgb(160, 157, 230)", "rgb(243, 243, 254)"]);
+                        .range(["rgb(54, 91, 110)", "rgb(154, 173, 182)", "rgb(245, 247, 248)"]);
 
             bubbleNode.style("fill", function(d,i) {
                 var pofy = Math.round(d.x);
