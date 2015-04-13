@@ -127,7 +127,7 @@ function appendTopToxicantsList(){
     getAllTopToxicants(function(result){
         result.children.forEach(function(item){
             var i = $(
-                '<p><input type="radio" name="top_toxicant" id="top_toxicant_'+item.id+'" value="'+item.name+'">'+capitalizeFirstLetter(item.name)+'<p>');
+                '<p><label><input type="radio" name="top_toxicant" id="top_toxicant_'+item.id+'" value="'+item.name+'">'+capitalizeFirstLetter(item.name)+'</label><p>');
             $('.top-toxicants').append(i);
         });
     });
@@ -165,7 +165,7 @@ function appendTopDiseasesList(){
     getAllTopDiseases(function(result){
         result.children.forEach(function(item){
             var i = $(
-                '<p><input type="radio" name="top_disease" id="top_disease_'+item.id+'" value="'+item.name+'">'+capitalizeFirstLetter(item.name)+'<p>');
+                '<p><label><input type="radio" name="top_disease" id="top_disease_'+item.id+'" value="'+item.name+'">'+capitalizeFirstLetter(item.name)+'</label><p>');
             $('.top-diseases').append(i);
         });
     });
