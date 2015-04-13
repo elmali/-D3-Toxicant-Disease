@@ -624,6 +624,10 @@ function bindEvent(){
                 event.initEvent("click",true,true);
                 d3Node.node().dispatchEvent(event);                
             }else{
+                if (currentSearch !=""){
+                    $(currentSearch).trigger('mouseout');
+                    currentSearch ="";
+                }
                 var searchID = "#"+$('select').multipleSelect('getSelects');
                 currentSearch = searchID;
                 $(searchID).trigger('mouseover');
