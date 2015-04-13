@@ -624,4 +624,20 @@ function bindEvent(){
         location.hash = queryString.stringify(currentURL);
         ajaxRequestAllData('getDiseases');
     })
+
+
+    // Top toxicant radio list
+    // Clicking on the radio buttons will show its related diseases in the
+    // deeper view.
+    $(document).on("change","input[name=top_toxicant]",function(){
+        // Get the selected toxicant id
+        var radio_id = '#' + $("input[name=top_toxicant]:checked").attr('id').replace("top_toxicant_", "");
+        var jqueryNodeRadio = $(radio_id);
+        var d3Node_radio = d3.selectAll( jqueryNodeRadio.toArray() ); 
+        var event_radio = document.createEvent("SVGEvents");
+        event_radio.initEvent("click",true,true);
+        d3Node_radio.node().dispatchEvent(event_radio);
+   });
+
+
 }
