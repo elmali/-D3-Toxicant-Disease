@@ -392,8 +392,7 @@ function appendCircles(root){
 
 
     animation(bubbleNode,bubbleText,nodes);
-    //uncomment following line
-    //continuousColor(bubbleNode);
+
 }
 
 
@@ -413,11 +412,10 @@ function animation(bubbleNode,bubbleText,nodes){
         bubbleNode.each(move_towards_center(e.alpha))
             .attr("transform", function(d){ return 'translate(' + (d.x+margin.left) + ',' + (margin.top + d.y)  + ')';} );
         bubbleText.attr("transform", function(d){ return 'translate(' + (margin.left + d.x) + ',' + (margin.top + d.y)  + ')';} );
-        //** Comment following lines -- Start
+
         setTimeout(function() {
-             continuousColor(bubbleNode);
+            continuousColor(bubbleNode);
         }, 2000);
-        //** End
     }
 
 
