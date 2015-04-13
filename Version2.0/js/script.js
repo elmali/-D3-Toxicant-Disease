@@ -37,6 +37,14 @@ $( document ).ready(function() {
 
     appendDiseaseCategoriesList();
     appendTopToxicantsList();
+    appendTopDiseasesList();
+
+    // Hide dropdown lists
+    $('.top-toxicants').hide();
+    $('.top-diseases').hide();
+
+    // Don't show top toxicant at landing view.
+    hideTopToxicants();
 
     svg = d3.select("#graph").append("svg")
         .attr("width", width + margin.right + margin.left)
@@ -119,7 +127,7 @@ function appendTopToxicantsList(){
     getAllTopToxicants(function(result){
         result.children.forEach(function(item){
             var i = $(
-                '<p><input type="radio" name="top_toxicant" id="top_toxicant_'+item.id+'" value="'+item.name+'"><span></span>'+capitalizeFirstLetter(item.name)+'<p>');
+                '<p><label><input type="radio" name="top_toxicant" id="top_toxicant_'+item.id+'" value="'+item.name+'">'+capitalizeFirstLetter(item.name)+'</label><p>');
             $('.top-toxicants').append(i);
         });
     });
@@ -148,6 +156,40 @@ function showTopToxicants()
 
 
 
+/**
+ * Add top <num> diseases list 
+ */
+function appendTopDiseasesList(){
+    $('#diseaseList').append("<p class='topdiseases'>Top Diseases </p>");
+    $('#diseaseList').append('<div class="top-diseases">'+'</div>');
+    getAllTopDiseases(function(result){
+        result.children.forEach(function(item){
+            var i = $(
+                '<p><label><input type="radio" name="top_disease" id="top_disease_'+item.id+'" value="'+item.name+'">'+capitalizeFirstLetter(item.name)+'</label><p>');
+            $('.top-diseases').append(i);
+        });
+    });
+	
+	$('.topdiseases').mouseover(function(){
+		$('.topdiseases').css('background-color',"#8096A6");
+		$('.top-diseases').show();
+	});
+
+	$('#diseaseList').mouseleave(function(){
+		$('.topdiseases').css('background-color',"#002E4C");
+		$('.top-diseases').hide();
+	});
+}
+
+function hideTopDiseases()
+{
+	$('#diseaseList').hide();
+}
+
+function showTopDiseases()
+{
+	$('#diseaseList').show();
+}
 
 
 /**
@@ -336,13 +378,18 @@ function appendCircles(root){
 
 
     allCirlces.on("click",function(d){
+        if(pastForce!=null){
+            pastForce.stop();
+        }
         is_deeper_view = true;
 
         // Hide left hand side Disease Categories List after
         // entering into deeper view
         hideDiseaseCategoriesList();
 		hideTopToxicants();
-		
+        // Hide top diseases list
+        hideTopDiseases();
+
         currentURL = queryString.parse(location.hash);
         if(currentURL.specificData==""){
             currentURL.specificData = d.id;
@@ -488,6 +535,23 @@ function animation(bubbleNode,bubbleText,nodes){
                     .on("tick", tick)
                     .start();
 
+
+}
+
+
+
+function continuousColor(color_nodes){
+        // When it is deeper view, change the colors to be continuous.
+        if(is_deeper_view){
+            // Color range
+            var colorP = d3.scale.linear()
+                        .domain([100, 500, 900])
+                        .range(["purple", "steelblue", "rgb(255,255,153)"]);
+            color_nodes.style("fill", function(d,i) {
+                var pofy = Math.round(d.y);
+                return colorP(pofy);
+            });
+        }
 }
 
 function updateVariableURL(){
@@ -621,13 +685,29 @@ function bindEvent(){
     $("#bubbleFilter").multipleSelect({
         filter: true,
         single: true,
-        onClose: function() {            
-            var searchID = "#"+$('select').multipleSelect('getSelects');
-            var jqueryNode = $(searchID);  //jquery
-            var d3Node = d3.selectAll( jqueryNode.toArray() ); //d3
-            var event = document.createEvent("SVGEvents");
-            event.initEvent("click",true,true);
-            d3Node.node().dispatchEvent(event);
+        onClose: function() {
+            updateVariableURL();            
+            if(currentURL.specificData==""){
+                if (currentSearch !=""){
+                    $(currentSearch).trigger('mouseout');
+                    currentSearch ="";
+                }
+                var searchID = "#"+$('select').multipleSelect('getSelects');
+                var jqueryNode = $(searchID);  //jquery
+                var d3Node = d3.selectAll( jqueryNode.toArray() ); //d3
+                var event = document.createEvent("SVGEvents");
+                event.initEvent("click",true,true);
+                d3Node.node().dispatchEvent(event);                
+            }else{
+                if (currentSearch !=""){
+                    $(currentSearch).trigger('mouseout');
+                    currentSearch ="";
+                }
+                var searchID = "#"+$('select').multipleSelect('getSelects');
+                currentSearch = searchID;
+                $(searchID).trigger('mouseover');
+            }
+
         }
     });
 
@@ -648,6 +728,8 @@ function bindEvent(){
         // going to the landing view
         showDiseaseCategoriesList();
         showTopToxicants();
+        // Hide top diseases list
+        hideTopDiseases();
 
         var filter = [];
         changeGraphTitle("All toxicants");
@@ -671,7 +753,8 @@ function bindEvent(){
         // Append left hand side Disease Categories List after
         // going to the landing view
         showDiseaseCategoriesList();
-        showTopToxicants();
+        hideTopToxicants();
+        showTopDiseases();
 
         changeGraphTitle("All diseases");
         currentURL.domain="Diseases";
@@ -679,4 +762,33 @@ function bindEvent(){
         location.hash = queryString.stringify(currentURL);
         ajaxRequestAllData('getDiseases');
     })
+
+
+    // Top toxicant radio list
+    // Clicking on the radio buttons will show its related diseases in the
+    // deeper view.
+    $(document).on("change","input[name=top_toxicant]",function(){
+        // Get the selected toxicant id
+        var radio_id = '#' + $("input[name=top_toxicant]:checked").attr('id').replace("top_toxicant_", "");
+        var jqueryNodeRadio = $(radio_id);
+        var d3Node_radio = d3.selectAll( jqueryNodeRadio.toArray() ); 
+        var event_radio = document.createEvent("SVGEvents");
+        event_radio.initEvent("click",true,true);
+        d3Node_radio.node().dispatchEvent(event_radio);
+   });
+
+
+    // Top diseases radio list
+    // Clicking on the radio buttons will show its related toxicants in the
+    // deeper view.
+    $(document).on("change","input[name=top_disease]",function(){
+        // Get the selected disease id
+        var top_disease_radio_id = '#' + $("input[name=top_disease]:checked").attr('id').replace("top_disease_", "");
+        var jqueryNodeTopDisease = $(top_disease_radio_id);
+        var d3Node_top_disease = d3.selectAll( jqueryNodeTopDisease.toArray() ); 
+        var event_top_disease = document.createEvent("SVGEvents");
+        event_top_disease.initEvent("click",true,true);
+        d3Node_top_disease.node().dispatchEvent(event_top_disease);
+   });
+
 }
