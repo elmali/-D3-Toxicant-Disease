@@ -296,13 +296,13 @@ function appendCircles(root){
             .style("text-anchor", "middle")
             .attr("fill","rgb(18, 11, 192)")
             .attr("transform","translate(90 ,"+ 70 +")")
-            .text("Strong Evidence");
+            .text("Stronger Evidence");
 
         svg.append("text").attr("class","axislabels")
             .style("text-anchor", "middle")
             .attr("fill","rgb(243, 243, 254)")
             .attr("transform","translate(1100 ,"+ 70 +")")
-            .text("Weak Evidence");
+            .text("Weaker Evidence");
 
         
     }else{
