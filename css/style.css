@@ -191,7 +191,7 @@ border-color: #8096A6;
 
 
 /* Make top lists scrollable */
-.top-toxicants, .top-diseases,.disease-category{
+.top-toxicants, .top-diseases{
   display: block; 
   overflow-y: auto;
   height: 600px;
