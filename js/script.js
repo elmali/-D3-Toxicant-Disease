@@ -760,4 +760,21 @@ function toolTip(){
                 classes:'qtip-bootstrap qtip2Css'
             }
         });
+
+
+        $('#toxicantList').qtip({
+            content: {
+                text: "This list shows the top 100 toxicants in descending order."
+            },
+            position: {
+                my: 'middle left',
+                at: 'middle right'
+            },
+            show: {
+                event: 'click'
+            },
+            style:{
+                classes:'qtip-bootstrap qtip2Css'
+            }
+        });
 }
