@@ -715,7 +715,7 @@ function bindEvent(){
     // Top toxicant radio list
     // Clicking on the radio buttons will show its related diseases in the
     // deeper view.
-    $(document).on("change","input[name=top_toxicant]",function(){
+    $(document).on("click","input[name=top_toxicant]",function(){
         // Get the selected toxicant id
         var radio_id = '#' + $("input[name=top_toxicant]:checked").attr('id').replace("top_toxicant_", "");
         var jqueryNodeRadio = $(radio_id);
@@ -729,7 +729,7 @@ function bindEvent(){
     // Top diseases radio list
     // Clicking on the radio buttons will show its related toxicants in the
     // deeper view.
-    $(document).on("change","input[name=top_disease]",function(){
+    $(document).on("click","input[name=top_disease]",function(){
         // Get the selected disease id
         var top_disease_radio_id = '#' + $("input[name=top_disease]:checked").attr('id').replace("top_disease_", "");
         var jqueryNodeTopDisease = $(top_disease_radio_id);
