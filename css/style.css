@@ -85,6 +85,7 @@ min-width: 45%;
 
 #selectRadio{
 float: left;
+width: auto;
 }
 
 #checkboxFilters{
