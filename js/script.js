@@ -3,6 +3,7 @@
  */
 
 //Global variables
+
 var currentSearch,pastForce,color, currentURL, margin, layout_gravity, width,
     height, diameter, format, max_amount, max_range, padding, duration, delay,
     svg, node, is_deeper_view;
@@ -191,6 +192,7 @@ function hideTopDiseases()
     $('#diseaseList').hide();
 }
 
+
 function showTopDiseases()
 {
     $('#diseaseList').show();
@@ -198,9 +200,8 @@ function showTopDiseases()
 
 
 /**
- *
- * @param root
- * @returns {Array}
+ * Extrac data info from json object
+ * @param  {[object]} root [data]
  */
 function classes(root) {
     var dataNode = [];
@@ -218,8 +219,9 @@ function classes(root) {
 }
 
 /**
- *
- * @param root
+ * Render page, append data as circles on the page
+ * @param  {[type]} root [data]
+ * @return {[type]}      [description]
  */
 function appendCircles(root){
 
@@ -405,7 +407,12 @@ function appendCircles(root){
 
 }
 
-
+/**
+ * Move the circles
+ * @param  {SVG-cirlce}  bubbleNode [d3 select all circles]
+ * @param  {SVG-text} bubbleText [d3 select all text]
+ * @param  {object} nodes      [data]
+ */
 function animation(bubbleNode,bubbleText,nodes){
 
     var space = 8;  
@@ -424,9 +431,7 @@ function animation(bubbleNode,bubbleText,nodes){
         bubbleNode.each(move_towards_center(e.alpha))
             .attr("transform", function(d){ return 'translate(' + (d.x+margin.left) + ',' + (margin.top + d.y)  + ')';} );
         bubbleText.attr("transform", function(d){ return 'translate(' + (margin.left + d.x) + ',' + (margin.top + d.y)  + ')';} );
-//        setTimeout(function() {
-             continuousColor(bubbleNode);
-//        }, 2000);
+        continuousColor(bubbleNode);
     }
 
 
@@ -484,7 +489,10 @@ function animation(bubbleNode,bubbleText,nodes){
 }
 
 
-
+/**
+ * Applied color according to circles'postion
+ * @param  {[SVG-cirlce]} color_nodes [d3 select all circles]
+ */
 function continuousColor(color_nodes){
         // When it is deeper view, change the colors to be continuous.
         if(is_deeper_view){
@@ -501,18 +509,24 @@ function continuousColor(color_nodes){
         }
 }
 
+/**
+ * update variables currentURL
+ */
 function updateVariableURL(){
     currentURL = queryString.parse(location.hash);
 }
 
+/**
+ * change web page URL 
+ */
 function changeURL(){
     location.hash = queryString.stringify(currentURL);
 }
 
 
 /**
- *
- * @param data
+ * Renew search circle list
+ * @param  {object} data [new search list]
  */
 function refreshSearchList(data){
     $('#bubbleFilter').empty();
@@ -529,7 +543,10 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-
+/**
+ * Request data for landing view
+ * @param  {string} ac :diseases or toxicants
+ */
 function ajaxRequestAllData(ac){
     $.ajax({
         url: 'php/parseData.php',
@@ -545,6 +562,11 @@ function ajaxRequestAllData(ac){
     });
 }
 
+/**
+ * Request data for deeper view
+ * @param  {string} ac: diseases/toxicants
+ * @param  {int} id: requested ID 
+ */
 function ajaxRequestDeepView(ac,id){
     $.ajax({
         url: 'php/parseData.php',
@@ -579,7 +601,7 @@ function clearSearch(){
 }
 
 /**
- *
+ * bind event for all DOM elemets
  */
 function bindEvent(){
 
@@ -746,7 +768,9 @@ function bindEvent(){
 }
 
 
-
+/**
+ * Tooltip setup
+ */
 function toolTip(){
         $('#diseaseList').qtip({
             content: {
