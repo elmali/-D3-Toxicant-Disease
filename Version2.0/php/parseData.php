@@ -137,22 +137,25 @@ function getAllContaminants(){
  */
 function getTopToxicants(){
     global $conn;
+    $topListSize = 100;
 
-    // Get top 100 toxicants that have the largest number of diseases accociated
+    // Get top <num> toxicants that have the largest number of diseases accociated
     // with them.
-    $stmt = 'SELECT count(distinct r.disease_id) as size, s.name as name, s.ID as id 
+    $stmt = $conn->prepare('SELECT s.ID as id, s.name as name, count(distinct r.disease_id) as size
                     FROM toxins_links as r LEFT join toxins_contaminant as s ON r.contaminant_id=s.ID 
                     group by r.contaminant_id 
                     ORDER BY size DESC 
-                    LIMIT 100';
+                    LIMIT ?');
     
-    $result = $conn->query($stmt);
+    $stmt->bind_param('i', $topListSize);
+    $stmt->execute();
+    $stmt->bind_result($id, $name, $size);
 
     $data = array("name"=>"TopContaminants", "children" => array());
 
-    while($rows = $result->fetch_assoc()){
-        $tempData = array('id' => $rows['id'], 'name' => $rows['name'], 'size' => $rows['size']);
-        array_push($data['children'], $tempData);
+    while($stmt->fetch()){
+        $_ = array('id' => $id, 'name' => $name, 'size' => $size);
+        array_push($data['children'], $_);
     }
     echo json_encode($data);
 }
@@ -163,24 +166,27 @@ function getTopToxicants(){
  */
 function getTopDiseases(){
     global $conn;
+    $topListSize = 100;
 
-    // Get top 100 diseases that have the largest number of toxicants accociated
+    // Get top <num> diseases that have the largest number of toxicants accociated
     // with them.
     //
-    $stmt = 'SELECT D.ID as id, D.name as name, count(L.contaminant_id) as size
+    $stmt = $conn->prepare('SELECT D.ID as id, D.name as name, count(L.contaminant_id) as size
                      FROM toxins_disease as D, toxins_links as L
                      WHERE D.ID = L.disease_id
                      GROUP BY D.ID
                      ORDER BY size DESC 
-                     LIMIT 100';
+                     LIMIT ?');
     
-    $result = $conn->query($stmt);
+    $stmt->bind_param('i', $topListSize);
+    $stmt->execute();
+    $stmt->bind_result($id, $name, $size);
 
     $data = array("name"=>"TopDiseases", "children" => array());
 
-    while($rows = $result->fetch_assoc()){
-        $tempData = array('id' => $rows['id'], 'name' => $rows['name'], 'size' => $rows['size']);
-        array_push($data['children'], $tempData);
+    while($stmt->fetch()){
+        $_ = array('id' => $id, 'name' => $name, 'size' => $size);
+        array_push($data['children'], $_);
     }
     echo json_encode($data);
 }
