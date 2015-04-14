@@ -342,6 +342,7 @@ function appendCircles(root){
         // Hide top diseases list
         hideTopDiseases();
 		$('#selectRadio').css("float","center");
+
         currentURL = queryString.parse(location.hash);
         if(currentURL.specificData==""){
             currentURL.specificData = d.id;
@@ -671,6 +672,7 @@ function bindEvent(){
     $(document).on('click', "#AToxicants", function(){        
         // Reset deeper view flag.
         is_deeper_view = false;
+		$('#selectRadio').css("float","");
 
         // Append left hand side Disease Categories List after
         // going to the landing view
@@ -697,6 +699,7 @@ function bindEvent(){
     $(document).on('click', "#ADiseases", function(){
         // Reset deeper view flag.
         is_deeper_view = false;
+		$('#selectRadio').css("float","");
 
         // Append left hand side Disease Categories List after
         // going to the landing view
