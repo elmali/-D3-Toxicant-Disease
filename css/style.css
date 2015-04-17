@@ -1,8 +1,7 @@
 body{
 	font-family: Monospace!important;
 	font-size: medium;;
-  background-color: black;
-  background-image: url('images/background.jpg') ;
+	background-image: url('images/background.jpg') ;
 	background-repeat: repeat-x;
 	width:100%;
 	margin: 0;
