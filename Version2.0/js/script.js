@@ -315,30 +315,14 @@ function appendCircles(root){
         svg.append("svg:rect")
             .attr("width", 10000)
             .attr("height", 10)
+            .attr("x", 10)
+            .attr("y", 20)
             .style("fill", "url(#gradient)");
 
-        /*svg.append("line")
-                .attr("id", "line-gradient")
-                .attr("gradientUnits", "userSpaceOnUse")
-                .attr("x1", 50).attr("y1", 10)
-                .attr("x2", height*4.5/5).attr("y2", 10)
-            .selectAll("stop")
-                .data([
-                {offset: "0%", color: "red"},
-                {offset: "40%", color: "red"},
-                {offset: "40%", color: "black"},
-                {offset: "62%", color: "black"},
-                {offset: "62%", color: "lawngreen"},
-                {offset: "100%", color: "lawngreen"}
-                ])
-            .enter().append("stop")
-                .attr("offset", function(d) { return d.offset; })
-                .attr("stop-color", function(d) { return d.color; });
-*/
         svg.append("text").attr("class","axislabels")
             .style("text-anchor", "middle")
             .attr("fill","rgb(54, 91, 110)")
-            .attr("transform","translate(90 ,"+ 70 +")")
+            .attr("transform","translate(100 ,"+ 70 +")")
             .text("Stronger Evidence");
 
         svg.append("text").attr("class","axislabels")
